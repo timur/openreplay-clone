@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hero-Kurven — Varianten-Vergleich</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:wght@300..800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --indigo-deep:#0D033B; --primary:#394DFE; --accent-violet:#6f5bff;
+    --accent-teal:#18b8a6; --accent-green:#25c26e; --accent-red:#ef5b6e; --accent-orange:#ff8a3d;
+    --veil:#3b2b86; --ink:#14101f; --muted:#8b8798; --line:#e9e7f0;
+    --font-display:"Bricolage Grotesque",sans-serif; --font-body:"Figtree",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font-body);background:var(--indigo-deep);color:#fff;overflow-x:hidden;}
+
+  /* Varianten-Schalter */
+  .switcher{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;gap:8px;flex-wrap:wrap;
+    padding:12px 18px;background:rgba(8,3,30,.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);}
+  .switcher b{font-family:var(--font-display);font-size:15px;margin-right:8px;align-self:center;}
+  .vbtn{font-family:var(--font-body);font-weight:600;font-size:13px;color:rgba(255,255,255,.8);
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:999px;
+    padding:7px 14px;cursor:pointer;transition:.18s;}
+  .vbtn:hover{border-color:rgba(255,255,255,.5);}
+  .vbtn.on{background:var(--primary);border-color:var(--primary);color:#fff;}
+  .vlabel{position:fixed;top:64px;right:18px;z-index:100;font-family:var(--font-display);
+    font-size:13px;color:rgba(255,255,255,.7);background:rgba(8,3,30,.7);padding:6px 12px;border-radius:8px;}
+
+  /* Hero-Layout */
+  .hero{position:relative;min-height:100vh;overflow:hidden;padding-top:60px;}
+  .hero-inner{position:relative;z-index:6;max-width:1200px;margin:0 auto;padding:80px 24px;max-width:560px;}
+  h1{font-family:var(--font-display);font-weight:800;font-size:58px;line-height:1.02;margin:0 0 20px;}
+  .sub{font-size:18px;color:rgba(255,255,255,.74);max-width:440px;margin:0 0 28px;}
+  .cta{display:flex;gap:14px;}
+  .btn{display:inline-flex;align-items:center;gap:8px;height:52px;padding:0 24px;border-radius:999px;
+    font-family:var(--font-body);font-weight:600;font-size:17px;border:1.5px solid transparent;cursor:pointer;text-decoration:none;}
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px -8px rgba(57,77,254,.7);}
+  .btn-ghost{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.22);}
+
+  /* ---- DER ANIMIERTE VISUAL-BEREICH ---- */
+  .hero-visual{position:absolute;top:0;right:0;bottom:0;width:58%;z-index:1;overflow:hidden;}
+  .hv-dots{position:absolute;inset:0;z-index:4;pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1.4px);background-size:22px 22px;}
+  .hv-tint{position:absolute;inset:0;z-index:3;pointer-events:none;
+    background:linear-gradient(120deg,rgba(57,77,254,.30),rgba(111,91,255,.14) 60%,rgba(111,91,255,.05));}
+  .hv-veil{position:absolute;inset:0;z-index:5;pointer-events:none;}
+
+  .montage{position:absolute;inset:-8% -4%;z-index:2;}
+  .montage-track{display:grid;grid-template-columns:repeat(3,240px);gap:16px;width:max-content;
+    animation:drift 60s linear infinite;will-change:transform;}
+  @keyframes drift{from{transform:translate3d(0,0,0);}to{transform:translate3d(-2%,-50%,0);}}
+
+  .mc{background:#fff;border-radius:14px;padding:12px;box-shadow:0 6px 18px -6px rgba(8,3,40,.5);color:var(--ink);font-size:11px;}
+  .mc h5{font-family:var(--font-body);font-weight:700;font-size:11px;margin:0 0 8px;}
+  .mc .sub2{color:var(--muted);font-size:9px;margin:6px 0 0;}
+  .mini-bars{display:flex;align-items:flex-end;gap:5px;height:64px;}
+  .mini-bars span{flex:1;border-radius:3px 3px 0 0;background:var(--primary);opacity:.85;}
+  .mini-bars span:nth-child(2n){background:var(--accent-violet);}
+  .mini-bars span:nth-child(3n){background:var(--accent-teal);}
+  .mini-svg{width:100%;height:60px;display:block;}
+  .donut{width:70px;height:70px;border-radius:50%;margin:4px auto;
+    background:conic-gradient(var(--primary) 0 42%,var(--accent-violet) 42% 70%,var(--accent-teal) 70% 100%);
+    -webkit-mask:radial-gradient(circle 18px at center,transparent 98%,#000 100%);
+            mask:radial-gradient(circle 18px at center,transparent 98%,#000 100%);}
+  .mini-funnel span{display:block;height:12px;border-radius:3px;margin-bottom:7px;background:linear-gradient(90deg,var(--accent-teal),var(--accent-green));}
+  .mini-heat{height:76px;border-radius:8px;background:
+    radial-gradient(circle at 30% 40%,rgba(239,91,110,.9),transparent 26%),
+    radial-gradient(circle at 62% 55%,rgba(255,138,61,.85),transparent 24%),
+    radial-gradient(circle at 48% 70%,rgba(37,194,110,.7),transparent 22%),
+    radial-gradient(circle at 75% 30%,rgba(57,77,254,.55),transparent 22%),#eef0fb;}
+  .mini-table div{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line);color:var(--ink);}
+  .mini-console{background:#0f1024;border-radius:8px;padding:8px;font-family:ui-monospace,monospace;font-size:9px;color:#b9c2ff;}
+  .mini-console .err{color:#ff8a9b;} .mini-console .ok{color:#6ee7a8;}
+
+  /* ===================================================================
+     KURVEN-VARIANTEN — jede setzt mask-image/clip-path auf .hero-visual
+     und den passenden Verlauf auf .hv-veil
+     =================================================================== */
+
+  /* A — Sanfter Radial (aktuell in index.html) */
+  [data-variant="A"] .hero-visual{
+    -webkit-mask-image:radial-gradient(135% 120% at 80% 50%,#000 56%,transparent 82%);
+            mask-image:radial-gradient(135% 120% at 80% 50%,#000 56%,transparent 82%);}
+  [data-variant="A"] .hv-veil{background:linear-gradient(104deg,var(--indigo-deep) 0%,var(--veil) 16%,
+    rgba(59,43,134,.78) 30%,rgba(59,43,134,.34) 46%,transparent 62%);}
+
+  /* B — Konkaver Bogen (Original-nah, wölbt sich mittig nach rechts) */
+  [data-variant="B"] .hero-visual{
+    -webkit-mask-image:radial-gradient(75% 135% at 115% 50%,#000 58%,transparent 86%);
+            mask-image:radial-gradient(75% 135% at 115% 50%,#000 58%,transparent 86%);}
+  [data-variant="B"] .hv-veil{background:radial-gradient(70% 120% at 108% 50%,transparent 40%,
+    rgba(59,43,134,.5) 62%,var(--veil) 80%,var(--indigo-deep) 100%);}
+
+  /* C — Scharfe Ellipsen-Kurve (clip-path: ellipse, knackige Kante + Farb-Veil) */
+  [data-variant="C"] .hero-visual{
+    clip-path:ellipse(88% 135% at 100% 50%);}
+  [data-variant="C"] .hv-veil{background:linear-gradient(100deg,transparent 30%,
+    rgba(59,43,134,.45) 55%,transparent 75%);}
+
+  /* D — S-Welle (zwei überlagerte Radial-Masken = weiche S-Kurve) */
+  [data-variant="D"] .hero-visual{
+    -webkit-mask-image:
+      radial-gradient(60% 70% at 60% 22%,#000 60%,transparent 88%),
+      radial-gradient(60% 70% at 95% 78%,#000 60%,transparent 88%);
+    -webkit-mask-composite:source-over;
+    mask-image:
+      radial-gradient(60% 70% at 60% 22%,#000 60%,transparent 88%),
+      radial-gradient(60% 70% at 95% 78%,#000 60%,transparent 88%);}
+  [data-variant="D"] .hv-veil{background:linear-gradient(104deg,var(--indigo-deep) 0%,
+    var(--veil) 18%,rgba(59,43,134,.4) 44%,transparent 60%);}
+
+  /* E — Weiche Diagonale (angewinkelter Linearverlauf als Maske) */
+  [data-variant="E"] .hero-visual{
+    -webkit-mask-image:linear-gradient(108deg,transparent 18%,#000 40%);
+            mask-image:linear-gradient(108deg,transparent 18%,#000 40%);}
+  [data-variant="E"] .hv-veil{background:linear-gradient(108deg,var(--indigo-deep) 8%,
+    var(--veil) 24%,rgba(59,43,134,.3) 42%,transparent 56%);}
+
+  /* F — Gerader weicher Fade (1:1 DOM-treu, nur der #3b2b86-Verlauf, keine Maske) */
+  [data-variant="F"] .hero-visual{ -webkit-mask-image:none; mask-image:none; clip-path:none; }
+  [data-variant="F"] .hv-veil{background:linear-gradient(to right,var(--veil) 0%,
+    rgba(59,43,134,.55) 22%,transparent 50%);}
+
+  /* G — Tropfen/Blob (organische Wölbung via radialer Maske, weit aussen) */
+  [data-variant="G"] .hero-visual{
+    -webkit-mask-image:radial-gradient(95% 80% at 90% 38%,#000 60%,transparent 88%);
+            mask-image:radial-gradient(95% 80% at 90% 38%,#000 60%,transparent 88%);}
+  [data-variant="G"] .hv-veil{background:linear-gradient(116deg,var(--indigo-deep) 4%,
+    var(--veil) 20%,rgba(59,43,134,.3) 48%,transparent 64%);}
+
+  @media (max-width:900px){.hero-visual{display:none;}}
+</style>
+</head>
+<body data-variant="A">
+
+  <div class="switcher">
+    <b>Kurve:</b>
+    <button class="vbtn on" data-v="A">A · Sanfter Radial</button>
+    <button class="vbtn" data-v="B">B · Konkaver Bogen</button>
+    <button class="vbtn" data-v="C">C · Scharfe Ellipse</button>
+    <button class="vbtn" data-v="D">D · S-Welle</button>
+    <button class="vbtn" data-v="E">E · Weiche Diagonale</button>
+    <button class="vbtn" data-v="F">F · Gerader Fade</button>
+    <button class="vbtn" data-v="G">G · Blob</button>
+  </div>
+  <div class="vlabel" id="vlabel">Variante A — Sanfter Radial</div>
+
+  <section class="hero">
+    <div class="hero-visual">
+      <div class="hv-tint"></div>
+      <div class="hv-dots"></div>
+      <div class="montage"><div class="montage-track" id="track"></div></div>
+      <div class="hv-veil"></div>
+    </div>
+    <div class="hero-inner">
+      <h1>Session replay &amp; product analytics you can self-host</h1>
+      <p class="sub">Vergleiche die Kurven-Varianten der Übergangskante oben über die Buttons.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#">Self-Host</a>
+        <a class="btn btn-ghost" href="#">Try Cloud</a>
+      </div>
+    </div>
+  </section>
+
+<script>
+  // Montage-Karten (wie index.html), 2× für nahtlose Schleife
+  const CARDS = [
+    `<div class="mc"><h5>Most Visited Guides</h5><svg class="mini-svg" viewBox="0 0 120 50" preserveAspectRatio="none"><path d="M0 40 C20 20 35 30 55 18 S95 10 120 22 L120 50 L0 50 Z" fill="rgba(57,77,254,.18)"/><path d="M0 40 C20 20 35 30 55 18 S95 10 120 22" fill="none" stroke="#394DFE" stroke-width="2"/></svg></div>`,
+    `<div class="mc"><h5>Performance</h5><div class="mini-bars"><span style="height:55%"></span><span style="height:80%"></span><span style="height:40%"></span><span style="height:65%"></span><span style="height:90%"></span><span style="height:50%"></span></div></div>`,
+    `<div class="mc"><h5>Most Visited pages trend</h5><svg class="mini-svg" viewBox="0 0 120 50" preserveAspectRatio="none"><path d="M0 30 L18 22 L34 34 L52 18 L70 26 L88 12 L106 24 L120 16" fill="none" stroke="#18b8a6" stroke-width="2"/></svg></div>`,
+    `<div class="mc"><h5>User Environment</h5><div class="donut"></div><p class="sub2" style="text-align:center">Windows · Mac · Linux</p></div>`,
+    `<div class="mc"><h5>Conversion Funnel</h5><div class="mini-funnel"><span style="width:100%"></span><span style="width:62%"></span><span style="width:28%"></span></div><p class="sub2">10% conversion · 1m12s</p></div>`,
+    `<div class="mc"><h5>Session Heatmap</h5><div class="mini-heat"></div></div>`,
+    `<div class="mc"><h5>Common Events</h5><div class="mini-table"><div><span>clicked (asc)</span><b>2,424</b></div><div><span>clicked (pay)</span><b>389</b></div><div><span>clicked (qty)</span><b>593</b></div></div></div>`,
+    `<div class="mc"><h5>Deployments</h5><div class="mini-bars"><span style="height:30%;background:#6f5bff"></span><span style="height:70%;background:#6f5bff"></span><span style="height:45%;background:#6f5bff"></span><span style="height:85%;background:#6f5bff"></span><span style="height:60%;background:#6f5bff"></span></div></div>`,
+    `<div class="mc"><h5>Console</h5><div class="mini-console"><div class="err">GET /api 404 ERR_BLOCKED</div><div>Crisp found state of...</div><div class="ok">preBlock loaded ✓</div></div></div>`,
+  ];
+  document.getElementById('track').innerHTML = CARDS.join('') + CARDS.join('');
+
+  const labels = {A:'Sanfter Radial',B:'Konkaver Bogen',C:'Scharfe Ellipse',D:'S-Welle',E:'Weiche Diagonale',F:'Gerader Fade',G:'Blob'};
+  document.querySelectorAll('.vbtn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const v=btn.dataset.v;
+      document.body.dataset.variant=v;
+      document.querySelectorAll('.vbtn').forEach(b=>b.classList.toggle('on',b===btn));
+      document.getElementById('vlabel').textContent='Variante '+v+' — '+labels[v];
+    });
+  });
+</script>
+</body>
+</html>
