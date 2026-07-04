@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Status-Seite</title>
+<meta name="description" content="Status-Seiten-Vorlage — Puls-Badge, Komponenten-Liste mit 90-Tage-Uptime-Balken und Incident-Historie." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: Status-Seite (.bs-status) · hell
+     Grüner Puls-Punkt "Alle Systeme funktionsfähig", Komponenten-Liste
+     mit 90-Tage-Uptime-Balken (90 kleine divs aus einem JS-Array,
+     einzelne gelbe/rote Tage) und Incident-Historie.
+     Semantische Farben: Grün var(--green), Rot var(--red),
+     Warn-Gelb lokal als --warn (kein Marken-Token nötig).
+     Weitere Varianten (hier nicht umgesetzt):
+     · Nur Footer-Badge mit Puls-Punkt, verlinkt auf diese Seite
+     · Incident-Banner für die Nav: "Eingeschränkte Verfügbarkeit"
+     ═══════════════════════════════════════════════════════════════ */
+  .bs-status { --warn: #ffce4a; padding: 64px 0 96px; }
+  .bs-status .inner { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  .bs-status .back { display: inline-flex; align-items: center; gap: 7px;
+    font-size: 14.5px; font-weight: 600; color: var(--brand); margin-bottom: 30px; }
+  .bs-status .back:hover { text-decoration: underline; }
+  .bs-status h1 { font-size: clamp(30px, 4vw, 40px); font-weight: 800; margin-bottom: 24px; }
+
+  /* Gesamtstatus-Banner mit Puls-Punkt */
+  .bs-status .overall { display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 18px 20px; border-radius: var(--r-md);
+    background: rgba(37,194,110,.1); border: 1px solid rgba(37,194,110,.4); }
+  .bs-status .overall .dot { flex: none; width: 12px; height: 12px; border-radius: 50%;
+    background: var(--green); animation: bsStatusPulse 2s ease-out infinite; }
+  @keyframes bsStatusPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(37,194,110,.45); }
+    70%  { box-shadow: 0 0 0 12px rgba(37,194,110,0); }
+    100% { box-shadow: 0 0 0 0 rgba(37,194,110,0); }
+  }
+  .bs-status .overall b { font-family: var(--font-display); font-size: 18px; color: var(--fg); }
+  .bs-status .overall small { margin-left: auto; font-size: 13px; color: var(--fg-muted); }
+
+  /* Komponenten mit Uptime-Balken */
+  .bs-status .comps { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+  .bs-status .comp { background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 18px 20px; }
+  .bs-status .comp header { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .bs-status .comp h3 { font-size: 16.5px; font-weight: 700; }
+  .bs-status .comp .desc { font-size: 13.5px; color: var(--fg-muted); }
+  .bs-status .comp .state { margin-left: auto; display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13.5px; font-weight: 700; color: var(--green); }
+  .bs-status .comp .state::before { content: ""; width: 8px; height: 8px; border-radius: 50%;
+    background: currentColor; }
+  .bs-status .bar { display: flex; gap: 2px; margin-top: 14px; }
+  .bs-status .bar i { flex: 1 1 0; height: 34px; border-radius: 2px; background: var(--green);
+    opacity: .85; transition: opacity .15s, transform .15s; }
+  .bs-status .bar i:hover { opacity: 1; transform: scaleY(1.12); }
+  .bs-status .bar i.warn { background: var(--warn); }
+  .bs-status .bar i.down { background: var(--red); }
+  .bs-status .comp footer { display: flex; justify-content: space-between; gap: 12px;
+    margin-top: 8px; font-size: 12.5px; color: var(--fg-muted); }
+  .bs-status .comp footer .uptime { font-weight: 700; color: var(--fg-soft);
+    font-variant-numeric: tabular-nums; }
+  @media (max-width: 520px) { .bs-status .bar { gap: 1px; } .bs-status .bar i { height: 26px; } }
+
+  /* Legende */
+  .bs-status .legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 16px;
+    font-size: 13px; color: var(--fg-muted); }
+  .bs-status .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .bs-status .legend i { width: 10px; height: 10px; border-radius: 3px; }
+
+  /* Incident-Historie */
+  .bs-status h2 { font-size: 22px; font-weight: 700; margin: 48px 0 18px; }
+  .bs-status .incident { background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 18px 20px; margin-bottom: 14px; }
+  .bs-status .incident header { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 12px; }
+  .bs-status .incident h3 { font-size: 16px; font-weight: 700; }
+  .bs-status .incident .when { font-size: 13px; color: var(--fg-muted); }
+  .bs-status .incident .tag { margin-left: auto; font-size: 12px; font-weight: 700;
+    letter-spacing: .04em; text-transform: uppercase; color: var(--green);
+    background: rgba(37,194,110,.12); border: 1px solid rgba(37,194,110,.4);
+    border-radius: 999px; padding: 3px 11px; }
+  .bs-status .incident ul { display: flex; flex-direction: column; gap: 7px; }
+  .bs-status .incident li { display: flex; gap: 12px; font-size: 14px; line-height: 1.55; }
+  .bs-status .incident li time { flex: none; width: 78px; font-weight: 700;
+    color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+  .bs-status .foot { margin-top: 32px; font-size: 14px; color: var(--fg-muted); }
+  .bs-status .foot a { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<section class="bs-status">
+  <div class="inner">
+    <a class="back" href="index.html">← Zurück zur Startseite</a>
+    <h1>System-Status</h1>
+
+    <div class="overall" data-reveal>
+      <span class="dot" aria-hidden="true"></span>
+      <b>Alle Systeme funktionsfähig</b>
+      <small>Zuletzt aktualisiert: <span data-updated>—</span></small>
+    </div>
+
+    <div class="comps" data-stagger>
+      <article class="comp" data-comp="api">
+        <header>
+          <h3>API</h3><span class="desc">REST- &amp; GraphQL-Endpunkte</span>
+          <span class="state">Funktionsfähig</span>
+        </header>
+        <div class="bar" data-bar></div>
+        <footer><span>vor 90 Tagen</span><span class="uptime" data-uptime>—</span><span>Heute</span></footer>
+      </article>
+
+      <article class="comp" data-comp="dashboard">
+        <header>
+          <h3>Dashboard</h3><span class="desc">Web-Oberfläche &amp; Berichte</span>
+          <span class="state">Funktionsfähig</span>
+        </header>
+        <div class="bar" data-bar></div>
+        <footer><span>vor 90 Tagen</span><span class="uptime" data-uptime>—</span><span>Heute</span></footer>
+      </article>
+
+      <article class="comp" data-comp="recorder">
+        <header>
+          <h3>Recorder</h3><span class="desc">Aufnahme-Snippet im Browser</span>
+          <span class="state">Funktionsfähig</span>
+        </header>
+        <div class="bar" data-bar></div>
+        <footer><span>vor 90 Tagen</span><span class="uptime" data-uptime>—</span><span>Heute</span></footer>
+      </article>
+
+      <article class="comp" data-comp="ingest">
+        <header>
+          <h3>Ingest</h3><span class="desc">Annahme &amp; Verarbeitung der Session-Daten</span>
+          <span class="state">Funktionsfähig</span>
+        </header>
+        <div class="bar" data-bar></div>
+        <footer><span>vor 90 Tagen</span><span class="uptime" data-uptime>—</span><span>Heute</span></footer>
+      </article>
+    </div>
+
+    <div class="legend" aria-hidden="true">
+      <span><i style="background:var(--green)"></i> Funktionsfähig</span>
+      <span><i style="background:var(--warn)"></i> Beeinträchtigt</span>
+      <span><i style="background:var(--red)"></i> Ausfall</span>
+    </div>
+
+    <h2>Vergangene Vorfälle</h2>
+
+    <div class="incident" data-reveal>
+      <header>
+        <h3>Erhöhte Latenz bei der Session-Verarbeitung (Ingest)</h3>
+        <span class="when">13. Juni 2026</span>
+        <span class="tag">Behoben</span>
+      </header>
+      <ul>
+        <li><time>10:05</time><span><b>Behoben</b> — Die Verarbeitung läuft wieder in Echtzeit. Aufgestaute Sessions wurden vollständig nachverarbeitet, es sind keine Daten verloren gegangen.</span></li>
+        <li><time>09:40</time><span><b>Ursache identifiziert</b> — Ein fehlerhaftes Autoscaling-Limit hat die Verarbeitungs-Warteschlange gebremst. Wir haben die Kapazität manuell erhöht.</span></li>
+        <li><time>09:12</time><span><b>Untersuchung</b> — Wir sehen verzögerte Verarbeitung neuer Sessions (bis zu 20 Minuten). Aufnahmen sind nicht betroffen.</span></li>
+      </ul>
+    </div>
+
+    <div class="incident" data-reveal>
+      <header>
+        <h3>API nicht erreichbar in Region eu-central</h3>
+        <span class="when">19. Mai 2026</span>
+        <span class="tag">Behoben</span>
+      </header>
+      <ul>
+        <li><time>15:26</time><span><b>Behoben</b> — Alle API-Endpunkte antworten wieder normal. Wir haben ein Postmortem veröffentlicht und das Failover automatisiert.</span></li>
+        <li><time>14:31</time><span><b>Update</b> — Der Traffic wird auf eine zweite Region umgeleitet, die Fehlerrate sinkt deutlich.</span></li>
+        <li><time>14:03</time><span><b>Untersuchung</b> — Ein Netzwerkproblem bei unserem Cloud-Anbieter führt zu Timeouts bei API-Aufrufen in eu-central.</span></li>
+      </ul>
+    </div>
+
+    <p class="foot">Bei Störungen informieren wir hier zuerst — Updates auch per <a href="#">RSS</a> oder <a href="#">E-Mail-Abo</a>.</p>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-status");
+  if (!root) return;
+
+  var DAYS = 90;
+  var STATUS_TEXT = { ok: "Funktionsfähig", warn: "Beeinträchtigt", down: "Ausfall" };
+
+  // Vorfall-Tage pro Komponente: Index 0 = vor 89 Tagen … Index 89 = heute.
+  // Passend zur Incident-Historie unten (API ≈ Mitte Mai, Ingest ≈ Mitte Juni).
+  var comps = [
+    { id: "api",       incidents: { 44: "down", 45: "warn" } },
+    { id: "dashboard", incidents: { 62: "warn" } },
+    { id: "recorder",  incidents: {} },
+    { id: "ingest",    incidents: { 21: "warn", 69: "warn" } }
+  ];
+
+  var fmt = new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "short", year: "numeric" });
+
+  comps.forEach(function (c) {
+    var row = root.querySelector('[data-comp="' + c.id + '"]');
+    if (!row) return;
+    var bar = row.querySelector("[data-bar]");
+    var frag = document.createDocumentFragment();
+    var downs = 0, warns = 0;
+
+    for (var i = 0; i < DAYS; i++) {
+      var st = c.incidents[i] || "ok";
+      if (st === "down") downs++;
+      if (st === "warn") warns++;
+      var seg = document.createElement("i");
+      seg.className = st === "ok" ? "" : st;
+      var date = new Date(Date.now() - (DAYS - 1 - i) * 864e5);
+      seg.title = fmt.format(date) + " — " + STATUS_TEXT[st];
+      frag.appendChild(seg);
+    }
+    bar.appendChild(frag);
+    bar.setAttribute("role", "img");
+    bar.setAttribute("aria-label",
+      "Uptime-Verlauf der letzten 90 Tage: " + downs + " Tag(e) mit Ausfall, " +
+      warns + " Tag(e) beeinträchtigt, sonst funktionsfähig.");
+
+    // Uptime grob: Ausfall zählt voll, Beeinträchtigung halb
+    var uptime = ((DAYS - downs - warns * 0.5) / DAYS) * 100;
+    var up = row.querySelector("[data-uptime]");
+    if (up) up.textContent = uptime.toLocaleString("de-DE", {
+      minimumFractionDigits: 2, maximumFractionDigits: 2
+    }) + " % Uptime";
+  });
+
+  var updated = root.querySelector("[data-updated]");
+  if (updated) updated.textContent = new Date().toLocaleString("de-DE", {
+    day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit"
+  }) + " Uhr";
+})();
+</script>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

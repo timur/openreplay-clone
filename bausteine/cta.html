@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Call-to-Action</title>
+<meta name="description" content="3 wiederverwendbare Call-to-Action-Bausteine für Landing Pages — Plain HTML/CSS/JS, hell & dunkel." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: CTA 1 · Zentriertes Band (dunkel)
+     Große Headline, zwei Buttons, Radial-Glows + Punktraster.
+     Kopieren: diesen <style>-Block + die <section> darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">CTA 1 · Zentriertes Band <code>.bs-cta-center</code> <code>data-theme="dark"</code></p></div>
+<style>
+  .bs-cta-center { position: relative; overflow: hidden; text-align: center; }
+  .bs-cta-center::before { /* weiche Glows hinter allem */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(50% 80% at 50% 110%, rgba(var(--brand-rgb),.38), transparent 65%),
+      radial-gradient(35% 55% at 12% 0%, rgba(var(--violet-rgb),.2), transparent 65%),
+      radial-gradient(30% 50% at 88% 8%, rgba(24,184,166,.14), transparent 65%);
+  }
+  .bs-cta-center .bs-dots { position: absolute; inset: 0; pointer-events: none;
+    mask-image: radial-gradient(70% 90% at 50% 50%, #000 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(70% 90% at 50% 50%, #000 20%, transparent 75%); }
+  .bs-cta-center .inner { position: relative; padding-top: 96px; padding-bottom: 100px; }
+  .bs-cta-center h2 { font-size: clamp(32px, 4.6vw, 56px); font-weight: 800; max-width: 20ch; margin: 18px auto 18px; }
+  .bs-cta-center .sub { font-size: 18.5px; max-width: 50ch; margin: 0 auto 34px; }
+  .bs-cta-center .cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .bs-cta-center .note { margin-top: 16px; font-size: 13.5px; color: var(--fg-muted); }
+</style>
+<section class="bs-cta-center" data-theme="dark">
+  <div class="bs-dots" aria-hidden="true"></div>
+  <div class="bs-container inner" data-stagger>
+    <span class="bs-eyebrow" style="margin-bottom:0">Bereit, wenn du es bist</span>
+    <h2>Starte heute — dein Team wird es dir morgen danken</h2>
+    <p class="sub">Richte Klarwerk in fünf Minuten ein und bring Aufgaben, Deadlines und Absprachen an einen Ort. Ohne Schulung, ohne IT-Projekt.</p>
+    <div class="cta">
+      <a href="#" class="bs-btn bs-btn-primary bs-btn-lg">Kostenlos starten</a>
+      <a href="#" class="bs-btn bs-btn-ghost bs-btn-lg">Demo buchen</a>
+    </div>
+    <p class="note">Keine Kreditkarte nötig · Monatlich kündbar · Serverstandort Deutschland</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: CTA 2 · Verlaufs-Karte mit E-Mail-Feld (hell)
+     CTA als Karte (brand→violet), weißer Text, E-Mail-Eingabe + Button
+     nebeneinander (Formular ohne Backend, nur Markup).
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">CTA 2 · Verlaufs-Karte mit E-Mail-Feld <code>.bs-cta-card</code> <code>hell</code></p>
+<style>
+  .bs-cta-card .inner { padding-top: 84px; padding-bottom: 84px; }
+  .bs-cta-card .card { position: relative; overflow: hidden; text-align: center;
+    border-radius: var(--r-xl); padding: clamp(40px, 6vw, 76px) clamp(22px, 5vw, 64px);
+    color: rgba(255,255,255,.82);
+    background: linear-gradient(118deg, var(--brand) 0%, var(--violet) 100%);
+    box-shadow: 0 34px 80px -32px rgba(var(--brand-rgb),.6); }
+  .bs-cta-card .card::before { /* Lichtkante oben */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(60% 60% at 50% -20%, rgba(255,255,255,.28), transparent 60%); }
+  .bs-cta-card .card > * { position: relative; }
+  .bs-cta-card h2 { font-size: clamp(28px, 3.8vw, 46px); font-weight: 800; color: #fff; max-width: 22ch; margin: 0 auto 14px; }
+  .bs-cta-card .sub { font-size: 17.5px; max-width: 46ch; margin: 0 auto 30px; }
+  .bs-cta-card form { display: flex; gap: 10px; max-width: 500px; margin: 0 auto; }
+  .bs-cta-card input { flex: 1; min-width: 0; height: 52px; padding: 0 20px;
+    border: 1.5px solid rgba(255,255,255,.35); border-radius: 999px;
+    background: rgba(255,255,255,.12); color: #fff;
+    font-family: var(--font-body); font-size: 16px; }
+  .bs-cta-card input::placeholder { color: rgba(255,255,255,.6); }
+  .bs-cta-card input:focus { outline: 2px solid #fff; outline-offset: 2px; }
+  .bs-cta-card .btn-light { background: #fff; color: var(--brand-700); border-color: #fff;
+    box-shadow: 0 10px 26px -10px rgba(13,3,59,.5); }
+  .bs-cta-card .btn-light:hover { background: rgba(255,255,255,.9); }
+  .bs-cta-card .note { margin-top: 16px; font-size: 13.5px; color: rgba(255,255,255,.65); }
+  @media (max-width: 560px) {
+    .bs-cta-card form { flex-direction: column; }
+    .bs-cta-card form .bs-btn { width: 100%; }
+  }
+</style>
+<section class="bs-cta-card">
+  <div class="bs-container inner">
+    <div class="card" data-reveal="zoom">
+      <h2>Dein nächster Newsletter schreibt sich fast von selbst</h2>
+      <p class="sub">Hol dir wellenpost: Vorlagen, Zielgruppen und Auswertung in einem Tool. Trag dich ein und leg in zwei Minuten los.</p>
+      <form action="#" method="post">
+        <input type="email" name="email" placeholder="name@firma.de" autocomplete="email" required aria-label="E-Mail-Adresse" />
+        <button type="submit" class="bs-btn bs-btn-lg btn-light">Loslegen</button>
+      </form>
+      <p class="note">14 Tage kostenlos · Jederzeit kündbar · DSGVO-konform</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: CTA 3 · Zweispaltig mit Vorteils-Liste (hell)
+     Links Headline + Text + Button, rechts drei abgehakte Vorteile.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">CTA 3 · Zweispaltig mit Vorteilen <code>.bs-cta-split</code> <code>hell</code></p>
+<style>
+  .bs-cta-split { background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%); }
+  .bs-cta-split .inner { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px;
+    align-items: center; padding-top: 92px; padding-bottom: 92px; }
+  .bs-cta-split h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 800; margin: 14px 0 16px; }
+  .bs-cta-split .sub { font-size: 18px; max-width: 46ch; margin-bottom: 30px; }
+  .bs-cta-split .checks { display: flex; flex-direction: column; gap: 14px; }
+  .bs-cta-split .checks li { display: flex; gap: 14px; align-items: flex-start;
+    padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--r-md);
+    background: var(--card); box-shadow: var(--shadow); }
+  .bs-cta-split .checks svg { flex: none; margin-top: 2px; color: var(--green); }
+  .bs-cta-split .checks b { display: block; color: var(--fg); font-size: 16px; margin-bottom: 2px; }
+  .bs-cta-split .checks p { font-size: 15px; color: var(--fg-soft); }
+  @media (max-width: 860px) {
+    .bs-cta-split .inner { grid-template-columns: 1fr; gap: 40px; padding-top: 64px; padding-bottom: 64px; }
+  }
+</style>
+<section class="bs-cta-split">
+  <div class="bs-container inner">
+    <div data-reveal="left">
+      <p class="bs-eyebrow">Wechsel leicht gemacht</p>
+      <h2>Umsteigen an einem Nachmittag — nicht in einem Quartal</h2>
+      <p class="sub">Wir übernehmen den Umzug deiner Daten und richten dein Team persönlich ein. Du kümmerst dich ums Geschäft, wir uns um den Rest.</p>
+      <a href="#" class="bs-btn bs-btn-primary bs-btn-lg">Umzug jetzt planen</a>
+    </div>
+    <ul class="checks" data-stagger="right">
+      <li>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        <div><b>Kostenloser Datenimport</b><p>CSV, Excel oder direkt aus deinem alten Tool — wir migrieren alles für dich.</p></div>
+      </li>
+      <li>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        <div><b>Persönliches Onboarding</b><p>Ein fester Ansprechpartner richtet Workflows und Rechte mit dir ein.</p></div>
+      </li>
+      <li>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        <div><b>30 Tage Geld-zurück-Garantie</b><p>Nicht überzeugt? Eine Mail genügt und du bekommst alles erstattet.</p></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

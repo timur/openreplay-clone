@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · 404-Seite</title>
+<meta name="description" content="404-Seiten-Vorlage — minimal typografisch, mit Karten-Links zurück in den Funnel. GitHub Pages liefert 404.html automatisch aus." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: 404-Seite (.bs-404) · minimal typografisch, dunkel
+     Riesige "404" im Display-Font, ein Satz, Zurück-Button und
+     drei Karten-Links zurück in den Funnel.
+     Hinweis: GitHub Pages liefert eine 404.html im Root automatisch
+     bei unbekannten Pfaden aus — Links dann auf absolute Pfade stellen.
+     Weitere Varianten (hier nicht umgesetzt):
+     · Developer-Terminal-Stil: "Error 404" + blinkender Cursor
+     · Mit Suchfeld-Attrappe + 4 Seiten-Karten
+     ═══════════════════════════════════════════════════════════════ */
+  .bs-404 { position: relative; overflow: hidden; min-height: 100vh; min-height: 100svh;
+    display: grid; place-items: center; text-align: center; }
+  .bs-404::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(55% 60% at 50% 0%, rgba(var(--brand-rgb),.24), transparent 65%),
+      radial-gradient(40% 50% at 85% 100%, rgba(var(--violet-rgb),.16), transparent 65%); }
+  .bs-404 .bs-dots { position: absolute; inset: 0; pointer-events: none;
+    mask-image: radial-gradient(70% 60% at 50% 30%, #000 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 30%, #000 20%, transparent 75%); }
+  .bs-404 .inner { position: relative; padding-top: 72px; padding-bottom: 88px; }
+  .bs-404 .code { font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(110px, 26vw, 240px); line-height: .92; letter-spacing: -.05em;
+    background: linear-gradient(180deg, var(--fg) 30%, var(--brand-300) 105%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    -webkit-user-select: none; user-select: none; margin-bottom: 6px; }
+  .bs-404 h1 { font-size: clamp(24px, 3.2vw, 34px); font-weight: 700; margin-bottom: 14px; }
+  .bs-404 .sub { max-width: 46ch; margin: 0 auto 30px; font-size: 17.5px; color: var(--fg-soft); }
+  .bs-404 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    max-width: 780px; margin: 52px auto 0; }
+  .bs-404 .card { display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+    text-align: left; padding: 20px; border: 1px solid var(--line); border-radius: var(--r-md);
+    background: var(--card); transition: transform .15s ease, border-color .2s, background-color .2s; }
+  .bs-404 .card:hover { transform: translateY(-3px); border-color: rgba(var(--brand-rgb),.55); background: var(--glass); }
+  .bs-404 .card .ico { display: grid; place-items: center; width: 40px; height: 40px;
+    border-radius: 12px; background: rgba(var(--brand-rgb),.16); color: var(--brand-300); }
+  .bs-404 .card svg { width: 20px; height: 20px; fill: none; stroke: currentColor;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .bs-404 .card b { font-family: var(--font-display); font-size: 16.5px; color: var(--fg); }
+  .bs-404 .card small { font-size: 13.5px; color: var(--fg-muted); line-height: 1.5; }
+  .bs-404 .card .go { margin-top: auto; font-size: 13.5px; font-weight: 700; color: var(--brand-300);
+    transition: transform .15s ease; }
+  .bs-404 .card:hover .go { transform: translateX(4px); }
+  @media (max-width: 720px) {
+    .bs-404 .cards { grid-template-columns: 1fr; max-width: 420px; }
+    .bs-404 .card { flex-direction: row; align-items: center; }
+    .bs-404 .card .ico { flex: none; }
+    .bs-404 .card .txt { flex: 1; }
+    .bs-404 .card .go { margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<section class="bs-404" data-theme="dark">
+  <div class="bs-dots" aria-hidden="true"></div>
+  <div class="bs-container inner" data-stagger>
+    <p class="bs-eyebrow">Fehler 404 · Seite nicht gefunden</p>
+    <p class="code" aria-hidden="true">404</p>
+    <h1>Diese Seite gibt es nicht — oder nicht mehr.</h1>
+    <p class="sub">Vielleicht ist der Link veraltet oder ein Tippfehler dabei. Kein Problem: Von hier aus findest du alles Wichtige wieder.</p>
+    <a class="bs-btn bs-btn-primary bs-btn-lg" href="index.html">← Zurück zur Startseite</a>
+
+    <!-- Karten-Links: hrefs an die eigene Seitenstruktur anpassen -->
+    <nav class="cards" aria-label="Wichtige Seiten">
+      <a class="card" href="index.html">
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5" /><path d="M5.5 10.5V20h13v-9.5" /><path d="M10 20v-5.5h4V20" /></svg></span>
+        <span class="txt"><b>Startseite</b><br /><small>Produkt, Features und alles Weitere im Überblick.</small></span>
+        <span class="go" aria-hidden="true">Zur Startseite →</span>
+      </a>
+      <a class="card" href="preise.html">
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z" /><circle cx="7.5" cy="7.5" r="1.5" /></svg></span>
+        <span class="txt"><b>Preise</b><br /><small>Alle Pläne im Vergleich — inklusive kostenlosem Einstieg.</small></span>
+        <span class="go" aria-hidden="true">Pläne ansehen →</span>
+      </a>
+      <a class="card" href="leadgen.html">
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 11.5a8 8 0 0 1-8.5 8L5 21l1.7-3.6A8 8 0 1 1 21 11.5Z" /><path d="M9 10.5h6M9 13.5h4" /></svg></span>
+        <span class="txt"><b>Kontakt</b><br /><small>Frage stellen oder direkt eine Demo vereinbaren.</small></span>
+        <span class="go" aria-hidden="true">Kontakt aufnehmen →</span>
+      </a>
+    </nav>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

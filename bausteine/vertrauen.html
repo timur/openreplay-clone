@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Vertrauen &amp; Menschen</title>
+<meta name="description" content="5 Vertrauens-Bausteine für Landing Pages: Team, Gründer-Note, Bewertungen, Presse, Awards — Plain HTML/CSS/JS, hell & dunkel." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: VERTRAUEN 1 · Team-Grid „Die Menschen dahinter" (hell)
+     Foto-Grid mit Initialen-Avataren (Farbflächen statt echter Fotos),
+     Name, Rolle und einem persönlichen Ein-Satz-Fakt pro Person.
+     Weitere Varianten (hier nicht umgesetzt): Hover-Flip-Karten mit
+     Kurz-Bio + GitHub/LinkedIn · großes Teamfoto mit Hotspot-Tooltips ·
+     „Wer antwortet dir"-Reihe mit nur 3–4 Kernpersonen.
+     Kopieren: diesen <style>-Block + die <section> darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Vertrauen 1 · Team-Grid „Die Menschen dahinter" <code>.bs-team</code> <code>hell</code></p></div>
+<style>
+  .bs-team .inner { padding-top: 88px; padding-bottom: 96px; }
+  .bs-team .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .bs-team .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 12px 12px 22px; box-shadow: var(--shadow); transition: transform .2s ease; }
+  .bs-team .card:hover { transform: translateY(-4px); }
+
+  /* Avatar = Farbfläche + Initialen — durch echtes <img> ersetzbar.
+     Farben pro Person via --a1/--a2 (nur Design-Tokens!) am <li>. */
+  .bs-team .avatar { position: relative; aspect-ratio: 1 / .92; border-radius: 16px; overflow: hidden;
+    display: grid; place-items: center; background: linear-gradient(140deg, var(--a1), var(--a2)); }
+  .bs-team .avatar::before { content: ""; position: absolute; width: 150%; aspect-ratio: 1;
+    border-radius: 50%; border: 2px solid rgba(255,255,255,.22); left: 52%; top: 42%; }
+  .bs-team .avatar::after { content: ""; position: absolute; inset: 0;
+    background: radial-gradient(90% 80% at 18% 0%, rgba(255,255,255,.3), transparent 55%); }
+  .bs-team .avatar b { position: relative; z-index: 1; font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(38px, 4.5vw, 52px); color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.2); }
+  .bs-team .info { padding: 16px 8px 0; }
+  .bs-team h3 { font-size: 17px; font-weight: 700; }
+  .bs-team .role { font-size: 13.5px; color: var(--fg-muted); margin-top: 2px; }
+  .bs-team .fact { margin-top: 12px; font-size: 14.5px; line-height: 1.5; color: var(--fg-soft);
+    padding-left: 12px; border-left: 2px solid rgba(var(--brand-rgb), .45); }
+
+  @media (max-width: 940px) { .bs-team .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) {
+    .bs-team .grid { grid-template-columns: 1fr; gap: 16px; }
+    .bs-team .card { display: grid; grid-template-columns: 92px 1fr; gap: 14px; align-items: center; padding: 12px; }
+    .bs-team .avatar { aspect-ratio: 1; border-radius: 12px; }
+    .bs-team .avatar b { font-size: 30px; }
+    .bs-team .info { padding: 0; }
+  }
+</style>
+<section class="bs-team">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Unser Team</p>
+      <h2>Die Menschen dahinter</h2>
+      <p>Kein anonymes Tool: Zwölf Menschen in Berlin bauen Klarblick — sechs davon siehst du hier. Und ja, sie beantworten auch deine Support-Anfragen.</p>
+    </div>
+    <ul class="grid" data-stagger>
+      <li class="card" style="--a1: var(--brand); --a2: var(--violet)">
+        <span class="avatar" aria-hidden="true"><b>LB</b></span>
+        <div class="info">
+          <h3>Lena Berg</h3>
+          <p class="role">Mitgründerin &amp; CEO</p>
+          <p class="fact">Beantwortet sonntags am liebsten selbst Support-Tickets — freiwillig.</p>
+        </div>
+      </li>
+      <li class="card" style="--a1: var(--violet); --a2: var(--teal)">
+        <span class="avatar" aria-hidden="true"><b>JW</b></span>
+        <div class="info">
+          <h3>Jonas Winter</h3>
+          <p class="role">Mitgründer &amp; CTO</p>
+          <p class="fact">Hat die erste Version im Nachtzug nach Kopenhagen geschrieben.</p>
+        </div>
+      </li>
+      <li class="card" style="--a1: var(--orange); --a2: var(--red)">
+        <span class="avatar" aria-hidden="true"><b>AK</b></span>
+        <div class="info">
+          <h3>Aylin Kaya</h3>
+          <p class="role">Produktdesign</p>
+          <p class="fact">Skizziert jedes Feature zuerst mit Bleistift auf Papier.</p>
+        </div>
+      </li>
+      <li class="card" style="--a1: var(--teal); --a2: var(--green)">
+        <span class="avatar" aria-hidden="true"><b>MH</b></span>
+        <div class="info">
+          <h3>Mats Hoffmann</h3>
+          <p class="role">Backend &amp; Infrastruktur</p>
+          <p class="fact">Hält unseren Uptime-Rekord: 431 Tage ohne Ausfall.</p>
+        </div>
+      </li>
+      <li class="card" style="--a1: var(--red); --a2: var(--violet)">
+        <span class="avatar" aria-hidden="true"><b>CR</b></span>
+        <div class="info">
+          <h3>Carla Ruiz</h3>
+          <p class="role">Customer Success</p>
+          <p class="fact">Spricht vier Sprachen — und beantwortet Kundenfragen in fünf.</p>
+        </div>
+      </li>
+      <li class="card" style="--a1: var(--brand-700); --a2: var(--brand-300)">
+        <span class="avatar" aria-hidden="true"><b>DO</b></span>
+        <div class="info">
+          <h3>David Okafor</h3>
+          <p class="role">Frontend</p>
+          <p class="fact">Misst Ladezeiten sogar bei seiner Kaffeemaschine.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: VERTRAUEN 2 · Gründer-Note mit Unterschrift (dunkel)
+     Brief-Optik: getönte Papier-Karte mit Serifenschrift, „Klebestreifen"
+     und handschriftlicher SVG-Unterschrift, die sich beim Scroll-Reveal
+     per stroke-dashoffset selbst „schreibt" (pathLength="1", kein JS —
+     getriggert über die .is-in-Klasse des vorhandenen Reveal-Systems).
+     Weitere Varianten (hier nicht umgesetzt): Split mit Portraitfoto
+     links · Video-Botschaft-Platzhalter mit Play-Overlay + Zitat.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Vertrauen 2 · Gründer-Note mit Unterschrift <code>.bs-founder</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-founder { position: relative; overflow: hidden; }
+  .bs-founder::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(55% 60% at 50% 15%, rgba(var(--violet-rgb), .18), transparent 65%),
+                radial-gradient(40% 50% at 85% 90%, rgba(var(--brand-rgb), .14), transparent 60%); }
+  .bs-founder .inner { position: relative; padding-top: 92px; padding-bottom: 104px; }
+  .bs-founder .bs-section-head { margin-bottom: 46px; }
+
+  /* Papier-Karte: bewusst IMMER hell (wie ein echter Brief), deshalb
+     hier fixe, neutrale Papiertöne statt Flächen-Tokens. */
+  .bs-founder .paper { position: relative; max-width: 640px; margin: 0 auto; transform: rotate(-.6deg);
+    background: linear-gradient(180deg, #fdfaf2, #f6efdd);
+    border: 1px solid #e7dcc0; border-radius: 6px;
+    padding: clamp(28px, 6vw, 54px);
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,.55);
+    font-family: Georgia, "Times New Roman", serif; font-size: 16.5px; line-height: 1.8; color: #4b4433; }
+  .bs-founder .paper::before { /* Klebestreifen in Markenfarbe */
+    content: ""; position: absolute; top: -13px; left: 50%; width: 128px; height: 28px;
+    transform: translateX(-50%) rotate(-2deg);
+    background: rgba(var(--brand-rgb), .22); border: 1px solid rgba(var(--brand-rgb), .3); border-radius: 3px; }
+  .bs-founder .date { text-align: right; font-style: italic; font-size: 14px; color: #9a8f6d; }
+  .bs-founder .salut { font-weight: 700; font-size: 18px; color: #2e2a1d; margin-top: 20px; }
+  .bs-founder .paper p + p { margin-top: 14px; }
+  .bs-founder .paper q { font-style: italic; }
+
+  /* Unterschrift: zeichnet sich beim Reveal (nur wenn JS läuft) */
+  .bs-founder .sig { width: 225px; height: auto; margin: 28px 0 4px; overflow: visible; }
+  .bs-founder .sig path { fill: none; stroke: #283163; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  html.js .bs-founder .sig path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  html.js .bs-founder .is-in .sig path { stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1.5s cubic-bezier(.45, 0, .3, 1) .45s; }
+  html.js .bs-founder .is-in .sig .flourish { transition-duration: .5s; transition-delay: 1.9s; }
+  @media (prefers-reduced-motion: reduce) { .bs-founder .sig path { transition-delay: 0s !important; } }
+
+  .bs-founder .who { display: flex; gap: 12px; align-items: center; font-family: var(--font-body); }
+  .bs-founder .chip { flex: none; width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(140deg, var(--brand), var(--violet));
+    color: #fff; display: grid; place-items: center; font: 800 14px/1 var(--font-display); }
+  .bs-founder .who b { display: block; font-size: 15.5px; color: #2e2a1d; line-height: 1.3; }
+  .bs-founder .who small { font-size: 13px; color: #9a8f6d; }
+  .bs-founder .ps { margin-top: 24px; padding-top: 14px; border-top: 1px dashed #dccfa9;
+    font-style: italic; font-size: 14.5px; color: #7d7355; }
+</style>
+<section class="bs-founder" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Gründer-Note</p>
+      <h2>Warum es Klarblick gibt</h2>
+    </div>
+    <div data-reveal data-reveal-delay="120">
+      <article class="paper">
+        <p class="date">Berlin, im Juli 2026</p>
+        <p class="salut">Hallo,</p>
+        <p>2022 saßen Jonas und ich in einem Kundenprojekt und hörten zum dritten Mal denselben Satz: <q>Wir wissen nicht, warum die Leute im Checkout abspringen.</q> Die Tools, die eine Antwort versprachen, schickten entweder Daten in die USA oder setzten ein eigenes Data-Team voraus. Beides kam für uns nicht infrage.</p>
+        <p>Also haben wir Klarblick gebaut: Session-Replays und Produkt-Analytics, gehostet in Frankfurt, verständlich ohne Statistik-Studium. Heute arbeiten zwölf Menschen daran — und jede Support-Anfrage landet bei jemandem, der den Code selbst mitgeschrieben hat.</p>
+        <p>Wenn dich etwas stört oder du eine Idee hast: Schreib mir persönlich. Ich lese jede Mail — und antworte auch.</p>
+        <svg class="sig" viewBox="0 0 300 90" role="img" aria-label="Unterschrift von Lena Berg">
+          <path pathLength="1" d="M18 58 C 22 30, 40 12, 44 24 C 48 36, 26 62, 18 58 C 34 66, 52 48, 62 50 C 70 52, 66 60, 74 56 C 82 52, 86 42, 90 48 C 93 53, 100 54, 106 46 C 112 38, 110 52, 118 52 C 128 52, 134 30, 132 44 C 130 57, 142 44, 150 48 C 158 52, 164 40, 172 46 C 179 51, 190 36, 196 46 C 201 54, 214 40, 222 46 C 228 50, 238 44, 246 40" />
+          <path class="flourish" pathLength="1" d="M40 72 C 100 80, 190 62, 262 68" />
+        </svg>
+        <div class="who">
+          <span class="chip" aria-hidden="true">LB</span>
+          <p><b>Lena Berg</b><small>Mitgründerin &amp; CEO, Klarblick GmbH</small></p>
+        </div>
+        <p class="ps">PS: Unsere Roadmap ist öffentlich — inklusive der Dinge, die schiefgegangen sind.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: VERTRAUEN 3 · Bewertungs-Widget im G2/Trustpilot-Stil (hell)
+     Rating-Karte: große Durchschnittsnote 4,7 mit teilgefüllten Sternen
+     (Overlay-Breite 94 %), Balken-Verteilung 5→1 Sterne (Breite animiert
+     über die .is-in-Klasse des Reveal-Systems, Prozente via data-count-to)
+     und generische Quellen-Badges. Kein eigenes JS nötig.
+     Weitere Varianten (hier nicht umgesetzt): Badge-Cluster im Medaillen-
+     Look · zwei Plattform-Karten mit Top-Zitat · Ein-Zeilen-Snippet
+     „★ 4,7/5 aus 1.284 Bewertungen" für Hero/CTA.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Vertrauen 3 · Bewertungs-Widget <code>.bs-rating</code> <code>hell</code></p>
+<style>
+  .bs-rating .inner { padding-top: 88px; padding-bottom: 96px; }
+  .bs-rating .panel { display: grid; grid-template-columns: 1fr 1.15fr; gap: clamp(28px, 5vw, 56px);
+    max-width: 980px; margin: 0 auto; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-xl); box-shadow: var(--shadow); padding: clamp(26px, 5vw, 52px); }
+
+  /* Links: Gesamtnote + Sterne + Quellen */
+  .bs-rating .score { display: flex; align-items: baseline; gap: 6px; }
+  .bs-rating .score .num { font: 800 clamp(56px, 8vw, 76px)/1 var(--font-display); letter-spacing: -.03em; color: var(--fg); }
+  .bs-rating .score .den { font-size: 20px; font-weight: 700; color: var(--fg-muted); }
+  .bs-rating .stars { position: relative; width: max-content; margin: 14px 0 12px; }
+  .bs-rating .stars .row { display: flex; gap: 5px; }
+  .bs-rating .stars svg { width: 28px; height: 28px; flex: none; fill: var(--line); }
+  .bs-rating .stars .fillrow { position: absolute; inset: 0 auto 0 0; overflow: hidden; display: flex; gap: 5px; }
+  .bs-rating .stars .fillrow svg { fill: #f2a51f; } /* semantisches Bewertungs-Gelb */
+  .bs-rating .basis { font-size: 15px; }
+  .bs-rating .basis b { color: var(--fg); }
+  .bs-rating .sources { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .bs-rating .sources li { display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13.5px; font-weight: 600; color: var(--fg-soft);
+    border: 1px solid var(--line); background: var(--glass); border-radius: 999px; padding: 6px 14px 6px 7px; }
+  .bs-rating .sources .logo { width: 24px; height: 24px; border-radius: 8px; background: var(--c, var(--brand));
+    color: #fff; display: grid; place-items: center; font: 800 12px/1 var(--font-display); font-style: normal; }
+  .bs-rating .sources b { color: var(--fg); }
+  .bs-rating .sources b::before { content: "★ "; color: #f2a51f; }
+
+  /* Rechts: Verteilung 5→1 Sterne */
+  .bs-rating .dist-wrap { border-left: 1px solid var(--line); padding-left: clamp(28px, 5vw, 56px); }
+  .bs-rating .dist-wrap h3 { font-size: 18px; margin-bottom: 16px; }
+  .bs-rating .dist li { display: grid; grid-template-columns: 42px 1fr 58px; align-items: center; gap: 12px;
+    padding: 7px 0; font-size: 14.5px; }
+  .bs-rating .dist .lbl { font-weight: 700; color: var(--fg); white-space: nowrap; }
+  .bs-rating .dist .lbl i { font-style: normal; color: #f2a51f; }
+  .bs-rating .dist .pct { text-align: right; font-weight: 600; color: var(--fg-soft); font-variant-numeric: tabular-nums; }
+  .bs-rating .bar { height: 10px; border-radius: 999px; background: var(--glass); border: 1px solid var(--line); overflow: hidden; }
+  .bs-rating .bar i { display: block; height: 100%; border-radius: inherit; width: var(--w);
+    background: linear-gradient(90deg, #e99a12, #ffc23d);
+    transition: width 1.05s cubic-bezier(.2, .7, .3, 1); }
+  html.js .bs-rating .bar i { width: 0; }
+  html.js .bs-rating .panel.is-in .bar i { width: var(--w); }
+  .bs-rating .dist li:nth-child(2) .bar i { transition-delay: .12s; }
+  .bs-rating .dist li:nth-child(3) .bar i { transition-delay: .24s; }
+  .bs-rating .dist li:nth-child(4) .bar i { transition-delay: .36s; }
+  .bs-rating .dist li:nth-child(5) .bar i { transition-delay: .48s; }
+  @media (prefers-reduced-motion: reduce) { .bs-rating .bar i { transition-delay: 0s !important; } }
+
+  .bs-rating .note { text-align: center; font-size: 13px; color: var(--fg-muted); margin-top: 22px; }
+
+  @media (max-width: 820px) {
+    .bs-rating .panel { grid-template-columns: 1fr; }
+    .bs-rating .dist-wrap { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 26px; }
+  }
+</style>
+<section class="bs-rating">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Bewertungen</p>
+      <h2>Was unabhängige Bewertungen sagen</h2>
+      <p>Nicht von uns kuratiert: die aggregierte Wertung von drei Bewertungsplattformen — inklusive der kritischen Stimmen.</p>
+    </div>
+    <div class="panel" data-reveal>
+      <div class="sum">
+        <p class="score"><b class="num">4,7</b><span class="den">/5</span></p>
+        <div class="stars" role="img" aria-label="4,7 von 5 Sternen">
+          <div class="row" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 17.3l-5.9 3.4 1.6-6.7-5.2-4.5 6.8-.6L12 2.6l2.7 6.3 6.8.6-5.2 4.5 1.6 6.7z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.3l-5.9 3.4 1.6-6.7-5.2-4.5 6.8-.6L12 2.6l2.7 6.3 6.8.6-5.2 4.5 1.6 6.7z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.3l-5.9 3.4 1.6-6.7-5.2-4.5 6.8-.6L12 2.6l2.7 6.3 6.8.6-5.2 4.5 1.6 6.7z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.3l-5.9 3.4 1.6-6.7-5.2-4.5 6.8-.6L12 2.6l2.7 6.3 6.8.6-5.2 4.5 1.6 6.7z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.3l-5.9 3.4 1.6-6.7-5.2-4.5 6.8-.6L12 2.6l2.7 6.3 6.8.6-5.2 4.5 1.6 6.7z"/></svg>
+          </div>
+          <div class="fillrow" style="width: 94%" aria-hidden="true"><!-- 4,7 / 5 = 94 % -->
+            <svg viewBox="0 0 24 24"><path d="M12 17.3l-5.9 3.4 1.6-6.7-5.2-4.5 6.8-.6L12 2.6l2.7 6.3 6.8.6-5.2 4.5 1.6 6.7z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.3l-5.9 3.4 1.6-6.7-5.2-4.5 6.8-.6L12 2.6l2.7 6.3 6.8.6-5.2 4.5 1.6 6.7z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.3l-5.9 3.4 1.6-6.7-5.2-4.5 6.8-.6L12 2.6l2.7 6.3 6.8.6-5.2 4.5 1.6 6.7z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.3l-5.9 3.4 1.6-6.7-5.2-4.5 6.8-.6L12 2.6l2.7 6.3 6.8.6-5.2 4.5 1.6 6.7z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 17.3l-5.9 3.4 1.6-6.7-5.2-4.5 6.8-.6L12 2.6l2.7 6.3 6.8.6-5.2 4.5 1.6 6.7z"/></svg>
+          </div>
+        </div>
+        <p class="basis">auf Basis von <b><span data-count-to="1284">0</span></b> verifizierten Bewertungen</p>
+        <ul class="sources" aria-label="Bewertungsplattformen">
+          <li><i class="logo" style="--c: var(--brand)" aria-hidden="true">T</i> TrustRadar <b>4,8</b></li>
+          <li><i class="logo" style="--c: var(--violet)" aria-hidden="true">S</i> SoftLotse <b>4,6</b></li>
+          <li><i class="logo" style="--c: var(--teal)" aria-hidden="true">R</i> ReviewHub <b>4,7</b></li>
+        </ul>
+      </div>
+      <div class="dist-wrap">
+        <h3>So verteilen sich die Stimmen</h3>
+        <ul class="dist">
+          <li><span class="lbl">5 <i>★</i></span><span class="bar" aria-hidden="true"><i style="--w: 76%"></i></span><span class="pct" data-count-to="76" data-count-suffix=" %">0 %</span></li>
+          <li><span class="lbl">4 <i>★</i></span><span class="bar" aria-hidden="true"><i style="--w: 17%"></i></span><span class="pct" data-count-to="17" data-count-suffix=" %">0 %</span></li>
+          <li><span class="lbl">3 <i>★</i></span><span class="bar" aria-hidden="true"><i style="--w: 4%"></i></span><span class="pct" data-count-to="4" data-count-suffix=" %">0 %</span></li>
+          <li><span class="lbl">2 <i>★</i></span><span class="bar" aria-hidden="true"><i style="--w: 2%"></i></span><span class="pct" data-count-to="2" data-count-suffix=" %">0 %</span></li>
+          <li><span class="lbl">1 <i>★</i></span><span class="bar" aria-hidden="true"><i style="--w: 1%"></i></span><span class="pct" data-count-to="1" data-count-suffix=" %">0 %</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="note" data-reveal>Aggregiert aus drei unabhängigen Bewertungsplattformen · zuletzt aktualisiert: Juli 2026</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: VERTRAUEN 4 · Presse „Bekannt aus" (dunkel)
+     Statische Wortmarken-Zitatleiste: monochrome Publikations-Wortmarken
+     (Hover → farbig) mit je einem prägnanten Satz aus dem Artikel.
+     Bewusst KEIN Laufband — Abgrenzung zum Logo-Marquee im Hero.
+     Weitere Varianten (hier nicht umgesetzt): reine Logo-Zeile ohne
+     Zitate · Pressezitat-Karussell · „Featured"-Band mit einem großen Zitat.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Vertrauen 4 · Presse „Bekannt aus" <code>.bs-press</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-press .inner { padding-top: 76px; padding-bottom: 84px; }
+  .bs-press .label { display: flex; align-items: center; justify-content: center; gap: 18px;
+    font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--fg-muted); margin-bottom: 36px; }
+  .bs-press .label::before, .bs-press .label::after { content: ""; height: 1px; width: min(120px, 16vw); background: var(--line); }
+  .bs-press .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .bs-press figure { margin: 0; display: flex; flex-direction: column;
+    border: 1px solid var(--line); background: var(--glass); border-radius: var(--r-md);
+    padding: 22px 22px 24px; transition: border-color .25s, transform .2s ease; }
+  .bs-press figure:hover { border-color: rgba(var(--brand-rgb), .55); transform: translateY(-3px); }
+  /* figcaption darf erstes Kind von <figure> sein — Wortmarke oben */
+  .bs-press .mark { order: -1; display: flex; align-items: center; min-height: 32px; margin-bottom: 12px;
+    color: var(--fg-muted); transition: color .25s; }
+  .bs-press figure:hover .mark { color: var(--fg); }
+  .bs-press .mark i { font-style: normal; transition: color .25s; }
+  .bs-press figure:hover .mark i { color: var(--brand-300); }
+  .bs-press blockquote { margin: 0 0 12px; font-size: 15px; line-height: 1.55; color: var(--fg-soft); }
+  .bs-press .meta { margin-top: auto; font-size: 12.5px; color: var(--fg-muted); }
+  /* 4 unterschiedliche Wortmarken-Typografien — alle monochrom */
+  .bs-press .mark-1 { font-family: var(--font-display); font-weight: 800; letter-spacing: .16em; font-size: 15px; }
+  .bs-press .mark-2 { font-family: var(--font-body); font-weight: 800; font-size: 17.5px; letter-spacing: -.01em; }
+  .bs-press .mark-3 { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600; font-size: 15px; }
+  .bs-press .mark-4 { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 18.5px; }
+  @media (max-width: 960px) { .bs-press .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .bs-press .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-press" data-theme="dark">
+  <div class="bs-container inner">
+    <p class="label" data-reveal>Bekannt aus</p>
+    <div class="grid" data-stagger>
+      <figure>
+        <blockquote>„Das Session-Replay-Tool, das Datenschutz endlich ernst nimmt."</blockquote>
+        <figcaption class="mark mark-1">TECHWOCHE</figcaption>
+        <p class="meta">Tool-Test · Ausgabe 03/2026</p>
+      </figure>
+      <figure>
+        <blockquote>„Vom Nebenprojekt zum Standardwerkzeug für Produktteams."</blockquote>
+        <figcaption class="mark mark-2">STARTFELD<i>.</i></figcaption>
+        <p class="meta">Gründer-Porträt · 11/2025</p>
+      </figure>
+      <figure>
+        <blockquote>„Selten war ein Analytics-Setup in unter zehn Minuten produktiv."</blockquote>
+        <figcaption class="mark mark-3">digitalreport<i>_</i></figcaption>
+        <p class="meta">Praxischeck · 01/2026</p>
+      </figure>
+      <figure>
+        <blockquote>„Ein Berliner Team, das leise an den Großen vorbeizieht."</blockquote>
+        <figcaption class="mark mark-4">Der Ökonom</figcaption>
+        <p class="meta">Wirtschaft · 05/2026</p>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: VERTRAUEN 5 · Auszeichnungen & Awards (hell)
+     Medaillen-Reihe: 4 Award-Badges mit Lorbeerkranz als
+     wiederverwendbarem Inline-SVG-<symbol> (einmal definiert,
+     4× per <use> referenziert), Kennzahl im Kranz, Titel + Quelle/Jahr.
+     Weitere Varianten (hier nicht umgesetzt): Award-Timeline ·
+     eine hervorgehobene Award-Karte („#1 Product of the Day") mit
+     Kontext-Satz.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Vertrauen 5 · Auszeichnungen &amp; Awards <code>.bs-awards</code> <code>hell</code></p>
+<style>
+  .bs-awards .inner { padding-top: 90px; padding-bottom: 96px; }
+  .bs-awards .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1040px; margin: 0 auto; }
+  .bs-awards .card { text-align: center; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 30px 18px 28px; box-shadow: var(--shadow);
+    transition: transform .2s ease, border-color .25s; }
+  .bs-awards .card:hover { transform: translateY(-4px); border-color: rgba(var(--brand-rgb), .45); }
+  .bs-awards .medal { position: relative; display: block; width: 116px; height: 116px; margin: 0 auto 14px; color: var(--brand); }
+  [data-theme="dark"] .bs-awards .medal { color: var(--brand-300); }
+  .bs-awards .medal svg { width: 100%; height: 100%; }
+  .bs-awards .medal b { position: absolute; inset: 0; display: grid; place-items: center; padding-top: 8px;
+    font-family: var(--font-display); font-weight: 800; font-size: 25px; letter-spacing: -.02em; color: var(--fg); }
+  .bs-awards h3 { font-size: 16.5px; }
+  .bs-awards .src { font-size: 13px; color: var(--fg-muted); margin-top: 4px; }
+  @media (max-width: 900px) { .bs-awards .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 420px) { .bs-awards .medal { width: 96px; height: 96px; } }
+</style>
+<section class="bs-awards">
+  <!-- Lorbeerkranz einmal als <symbol> — unten 4× per <use> referenziert -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <path id="bs-award-leaf" d="M0 0 C 5.5 -4.5, 6.5 -11.5, 0 -17 C -6.5 -11.5, -5.5 -4.5, 0 0 Z" fill="currentColor" />
+      <g id="bs-award-branch">
+        <path d="M57 112 C 30 104, 12 78, 20 30" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+        <use href="#bs-award-leaf" transform="translate(48,107) rotate(-118)" />
+        <use href="#bs-award-leaf" transform="translate(36,99) rotate(-100)" />
+        <use href="#bs-award-leaf" transform="translate(26,88) rotate(-82)" />
+        <use href="#bs-award-leaf" transform="translate(19,74) rotate(-62)" />
+        <use href="#bs-award-leaf" transform="translate(16,59) rotate(-42)" />
+        <use href="#bs-award-leaf" transform="translate(17,44) rotate(-22)" />
+        <use href="#bs-award-leaf" transform="translate(21,31) rotate(-6)" />
+      </g>
+      <symbol id="bs-award-laurel" viewBox="0 0 120 120">
+        <use href="#bs-award-branch" />
+        <use href="#bs-award-branch" transform="translate(120,0) scale(-1,1)" />
+      </symbol>
+    </defs>
+  </svg>
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Auszeichnungen</p>
+      <h2>Anerkennung, die man nicht kaufen kann</h2>
+      <p>Von Launch-Plattformen bis Design-Jurys: vier Auszeichnungen aus zwei Jahren — gesammelt, nicht gekauft.</p>
+    </div>
+    <ul class="grid" data-stagger>
+      <li class="card">
+        <span class="medal"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#bs-award-laurel" /></svg><b>#1</b></span>
+        <h3>Produkt des Tages</h3>
+        <p class="src">LaunchPad · Februar 2026</p>
+      </li>
+      <li class="card">
+        <span class="medal"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#bs-award-laurel" /></svg><b>4,7</b></span>
+        <h3>Leader Herbst 2026</h3>
+        <p class="src">TrustRadar Grid Report</p>
+      </li>
+      <li class="card">
+        <span class="medal"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#bs-award-laurel" /></svg><b>A+</b></span>
+        <h3>Bester Support</h3>
+        <p class="src">SoftLotse Awards · 2025</p>
+      </li>
+      <li class="card">
+        <span class="medal"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#bs-award-laurel" /></svg><b>UX</b></span>
+        <h3>Interface-Design-Preis</h3>
+        <p class="src">Digital Design Jahrbuch · 2025</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

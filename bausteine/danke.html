@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Danke-Seite</title>
+<meta name="description" content="Danke-/Bestätigungsseiten-Vorlage — animiertes Häkchen, 'Was jetzt passiert'-Schritte und Weiterempfehlen-Block mit Copy-Link." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: Danke-/Bestätigungsseite (.bs-danke) · hell
+     Animiertes SVG-Häkchen (stroke-dashoffset per CSS-Keyframes),
+     "Was jetzt passiert"-Liste in 3 Schritten und Weiterempfehlen-
+     Block mit Copy-Link-Button. Als Ziel-URL für Kontakt- und
+     Wartelisten-Formulare verlinken (Conversion-Endpunkt fürs Tracking).
+     Weitere Varianten (hier nicht umgesetzt):
+     · Double-Opt-in: "Bestätige deine E-Mail" + Erneut-senden-Platzhalter
+     · Mit Terminbuchungs-CTA: "Direkt eine Demo buchen"
+     ═══════════════════════════════════════════════════════════════ */
+  .bs-danke { position: relative; overflow: hidden; }
+  .bs-danke::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(55% 60% at 50% -10%, rgba(var(--brand-rgb),.08), transparent 65%); }
+  .bs-danke .inner { position: relative; max-width: 640px; margin: 0 auto;
+    padding: 88px 24px 96px; text-align: center; }
+
+  /* Häkchen: Kreis + Haken zeichnen sich per stroke-dashoffset */
+  .bs-danke .check { width: 96px; height: 96px; margin: 0 auto 26px; }
+  .bs-danke .check circle { fill: rgba(37,194,110,.1); stroke: var(--green); stroke-width: 3;
+    stroke-dasharray: 202; stroke-dashoffset: 202;
+    transform: rotate(-90deg); transform-origin: 50% 50%;
+    animation: bsDankeRing .7s cubic-bezier(.5,0,.3,1) forwards; }
+  .bs-danke .check path { fill: none; stroke: var(--green); stroke-width: 5;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 48; stroke-dashoffset: 48;
+    animation: bsDankeTick .45s cubic-bezier(.5,0,.3,1) .55s forwards; }
+  @keyframes bsDankeRing { to { stroke-dashoffset: 0; } }
+  @keyframes bsDankeTick { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .bs-danke .check circle, .bs-danke .check path { stroke-dashoffset: 0; animation: none; }
+  }
+
+  .bs-danke h1 { font-size: clamp(32px, 4.5vw, 44px); font-weight: 800; margin-bottom: 14px; }
+  .bs-danke .sub { font-size: 18px; max-width: 46ch; margin: 0 auto; }
+  .bs-danke .sub b { color: var(--fg); }
+
+  /* "Was jetzt passiert" — 3 Schritte mit Verbindungslinie */
+  .bs-danke .steps-head { margin: 52px 0 22px; font-family: var(--font-display);
+    font-size: 21px; font-weight: 700; color: var(--fg); }
+  .bs-danke .steps { text-align: left; display: flex; flex-direction: column; gap: 22px; }
+  .bs-danke .steps li { position: relative; display: grid; grid-template-columns: 36px 1fr;
+    gap: 16px; align-items: start; }
+  .bs-danke .steps li:not(:last-child)::before { content: ""; position: absolute;
+    left: 17px; top: 42px; bottom: -18px; width: 2px; background: var(--line); }
+  .bs-danke .steps .num { display: grid; place-items: center; width: 36px; height: 36px;
+    border-radius: 50%; background: rgba(var(--brand-rgb),.12); border: 1px solid rgba(var(--brand-rgb),.3);
+    font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--brand); }
+  .bs-danke .steps h3 { font-size: 16.5px; font-weight: 700; margin-bottom: 4px; }
+  .bs-danke .steps p { font-size: 15px; color: var(--fg-soft); line-height: 1.6; }
+
+  /* Weiterempfehlen-Block mit Copy-Link */
+  .bs-danke .share { margin-top: 56px; padding: 26px 24px; text-align: left;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+    box-shadow: var(--shadow); }
+  .bs-danke .share h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .bs-danke .share > p { font-size: 15px; color: var(--fg-soft); margin-bottom: 16px; }
+  .bs-danke .copy { display: flex; gap: 10px; flex-wrap: wrap; }
+  .bs-danke .copy .bs-input { flex: 1; min-width: 200px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; }
+  .bs-danke .copy .bs-btn { min-width: 148px; }
+  .bs-danke .copied { min-height: 22px; margin-top: 8px; font-size: 13.5px;
+    font-weight: 600; color: var(--green); }
+
+  .bs-danke .back { margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<section class="bs-danke">
+  <div class="inner">
+    <svg class="check" viewBox="0 0 72 72" role="img" aria-label="Erfolgreich abgeschickt">
+      <circle cx="36" cy="36" r="32" />
+      <path d="M22 37.5 32 47 51 27" />
+    </svg>
+
+    <h1>Danke — deine Anfrage ist angekommen!</h1>
+    <p class="sub">Wir haben dir gerade eine Bestätigung an <b>deine E-Mail-Adresse</b> geschickt. Falls sie nicht auftaucht: kurz im Spam-Ordner nachsehen.</p>
+
+    <h2 class="steps-head">Was jetzt passiert</h2>
+    <ol class="steps" data-stagger>
+      <li>
+        <span class="num" aria-hidden="true">1</span>
+        <div>
+          <h3>Bestätigung ist unterwegs</h3>
+          <p>In den nächsten Minuten landet eine E-Mail mit allen Details zu deiner Anfrage in deinem Postfach.</p>
+        </div>
+      </li>
+      <li>
+        <span class="num" aria-hidden="true">2</span>
+        <div>
+          <h3>Wir melden uns persönlich</h3>
+          <p>Lena aus unserem Team antwortet dir werktags innerhalb von 24 Stunden — mit konkreten nächsten Schritten, keine Standardmail.</p>
+        </div>
+      </li>
+      <li>
+        <span class="num" aria-hidden="true">3</span>
+        <div>
+          <h3>Dein Zugang wird vorbereitet</h3>
+          <p>Sobald alles geklärt ist, richten wir deinen Workspace ein. Von der Anfrage bis zur ersten Session-Aufnahme vergehen meist nur zwei Tage.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="share" data-reveal>
+      <h3>Kennst du jemanden, dem Klarblick weiterhilft?</h3>
+      <p>Teile den Link mit deinem Team — wer über ihn startet, bekommt einen Monat gratis dazu.</p>
+      <div class="copy">
+        <input class="bs-input" type="text" value="https://klarblick.app/?ref=empfehlung" readonly aria-label="Empfehlungs-Link" />
+        <button class="bs-btn bs-btn-primary" type="button" data-copy>Link kopieren</button>
+      </div>
+      <p class="copied" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="back">
+      <a class="bs-btn bs-btn-outline" href="index.html">← Zurück zur Startseite</a>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-danke");
+  if (!root) return;
+  var btn = root.querySelector("[data-copy]");
+  var input = root.querySelector(".copy input");
+  var status = root.querySelector(".copied");
+  var reset = null;
+
+  function fallbackCopy() {
+    // Fallback für file:// bzw. Browser ohne Clipboard-API
+    input.select();
+    try { document.execCommand("copy"); } catch (e) { /* still ok — Link ist markiert */ }
+  }
+  function confirmCopy() {
+    btn.textContent = "Kopiert ✓";
+    status.textContent = "Link wurde in die Zwischenablage kopiert.";
+    if (reset) clearTimeout(reset);
+    reset = setTimeout(function () {
+      btn.textContent = "Link kopieren";
+      status.textContent = "";
+    }, 2400);
+  }
+  btn.addEventListener("click", function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(input.value).then(confirmCopy, function () {
+        fallbackCopy();
+        confirmCopy();
+      });
+    } else {
+      fallbackCopy();
+      confirmCopy();
+    }
+  });
+})();
+</script>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

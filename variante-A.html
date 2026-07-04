@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="css/themes.css" />
 </head>
 <body data-curve="A">
 
@@ -22,9 +23,9 @@
   <div class="container nav">
     <a href="#" class="brand" aria-label="OpenReplay Startseite">
       <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 4.5v15l13-7.5L5 4.5Z" fill="currentColor"/></svg>
+        <svg viewBox="0 0 24 24" width="26" height="26"><path d="M6.5 4.8v14.4L19 12 6.5 4.8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
       </span>
-      <span class="brand-name">Open<strong>Replay</strong></span>
+      <span class="brand-name">Open <strong>Replay</strong></span>
     </a>
 
     <nav class="primary-nav" aria-label="Hauptnavigation">
@@ -49,11 +50,13 @@
     </nav>
 
     <div class="nav-actions">
-      <a href="#" class="gh-pill" aria-label="GitHub Stars">
-        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.72c-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9l-.01 2.81c0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
-        <span class="star" aria-hidden="true">★</span> 12k
+      <a href="#" class="lang-pill" aria-label="Sprache wählen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        EN
       </a>
-      <a href="#" class="nav-text-link">Login</a>
+      <a href="#" class="gh-pill" aria-label="GitHub Stars">
+        <span class="star" aria-hidden="true">☆</span> 12k
+      </a>
       <a href="#" class="btn btn-outline btn-sm">
         <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
         Self-Host
@@ -62,6 +65,7 @@
         <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 16a4 4 0 0 1 .9-7.9 5 5 0 0 1 9.6 1.4A3.5 3.5 0 0 1 17 16H6Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m11 13-1.5 3h3L11 19"/></svg>
         Try Cloud
       </a>
+      <a href="#" class="nav-text-link">Login</a>
     </div>
 
     <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false">
@@ -348,7 +352,7 @@
           <div class="cb-stage">
             <span class="skel skel-green" style="--w:70%"></span>
             <span class="cb-tag cb-tag-support">Support</span>
-            <svg class="cb-cursor cb-cursor-support" viewBox="0 0 24 24" width="24" height="24"><path d="M5 3l14 7-6 2-3 6-5-15Z" fill="#6f5bff" stroke="#fff" stroke-width="1.2"/></svg>
+            <svg class="cb-cursor cb-cursor-support" viewBox="0 0 24 24" width="24" height="24"><path d="M5 3l14 7-6 2-3 6-5-15Z" style="fill:var(--accent-violet)" stroke="#fff" stroke-width="1.2"/></svg>
             <svg class="cb-cursor cb-cursor-user" viewBox="0 0 24 24" width="24" height="24"><path d="M5 3l14 7-6 2-3 6-5-15Z" fill="#111" stroke="#fff" stroke-width="1.2"/></svg>
             <span class="cb-tag cb-tag-user">User</span>
           </div>
@@ -491,8 +495,8 @@
     <div class="footer-top">
       <div class="footer-cta">
         <a href="#" class="brand brand-dark">
-          <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 4.5v15l13-7.5L5 4.5Z" fill="currentColor"/></svg></span>
-          <span class="brand-name">Open<strong>Replay</strong></span>
+          <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M6.5 4.8v14.4L19 12 6.5 4.8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+          <span class="brand-name">Open <strong>Replay</strong></span>
         </a>
         <div class="footer-buttons">
           <a href="#" class="btn btn-primary btn-sm"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg> Self-Host</a>
@@ -521,5 +525,8 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/font-switcher.js"></script>
+<script src="js/color-switcher.js"></script>
+<script src="js/mode-switcher.js"></script>
 </body>
 </html>

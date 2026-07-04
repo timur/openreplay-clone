@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Hero-Designs</title>
+<meta name="description" content="5 wiederverwendbare Hero-Bausteine für Landing Pages — Plain HTML/CSS/JS, hell & dunkel." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: HERO 1 · Split mit Produkt-Visual (dunkel)
+     Headline links, schwebendes Produkt-Mockup rechts, Logo-Marquee.
+     Kopieren: diesen <style>-Block + die <section> darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Hero 1 · Split mit Produkt-Visual <code>.bs-hero-split</code> <code>data-theme="dark"</code></p></div>
+<style>
+  .bs-hero-split { position: relative; overflow: hidden; }
+  .bs-hero-split::before { /* weiche Glows hinter allem */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(70% 90% at 85% 0%, rgba(var(--brand-rgb),.30), transparent 60%),
+      radial-gradient(50% 70% at 5% 100%, rgba(var(--violet-rgb),.22), transparent 60%);
+  }
+  .bs-hero-split .bs-dots { position: absolute; inset: 0; pointer-events: none;
+    mask-image: radial-gradient(80% 80% at 70% 20%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(80% 80% at 70% 20%, #000 30%, transparent 75%); }
+  .bs-hero-split .inner { position: relative; display: grid; grid-template-columns: 1.05fr 1fr;
+    gap: 48px; align-items: center; padding-top: 96px; padding-bottom: 88px; }
+  .bs-hero-split h1 { font-size: clamp(38px, 4.8vw, 60px); font-weight: 800; margin: 18px 0 20px; }
+  .bs-hero-split .sub { font-size: 18px; max-width: 46ch; margin-bottom: 30px; }
+  .bs-hero-split .cta { display: flex; gap: 14px; flex-wrap: wrap; }
+  .bs-hero-split .note { margin-top: 14px; font-size: 13.5px; color: var(--fg-muted); }
+
+  /* Produkt-Mockup (reines CSS — durch echten Screenshot ersetzbar) */
+  .bs-hero-split .mockup { position: relative; background: #fff; color: #14101f;
+    border-radius: var(--r-md); box-shadow: 0 30px 70px -24px rgba(0,0,0,.65);
+    font-size: 12px; transform: rotate(1.5deg); }
+  .bs-hero-split .mockup-bar { display: flex; gap: 6px; padding: 12px 14px; border-bottom: 1px solid #e9e7f0; }
+  .bs-hero-split .mockup-bar i { width: 10px; height: 10px; border-radius: 50%; background: #e9e7f0; }
+  .bs-hero-split .mockup-bar i:first-child { background: var(--red); }
+  .bs-hero-split .mockup-body { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 18px; }
+  .bs-hero-split .panel { border: 1px solid #e9e7f0; border-radius: 10px; padding: 12px; }
+  .bs-hero-split .panel b { display: block; font-size: 11px; margin-bottom: 8px; }
+  .bs-hero-split .bars { display: flex; align-items: flex-end; gap: 5px; height: 58px; }
+  .bs-hero-split .bars span { flex: 1; border-radius: 3px 3px 0 0; background: var(--brand); opacity: .85; }
+  .bs-hero-split .bars span:nth-child(2n) { background: var(--violet); }
+  .bs-hero-split .bars span:nth-child(3n) { background: color-mix(in srgb, var(--brand) 45%, var(--violet)); }
+  .bs-hero-split .rows div { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #f1f0f8; color: #4a4658; }
+  .bs-hero-split .badge-float { position: absolute; right: -14px; top: 20%;
+    background: #fff; color: #14101f; font-weight: 700; font-size: 12.5px;
+    border: 1px solid #e9e7f0; border-radius: 999px; padding: 8px 14px;
+    box-shadow: 0 14px 34px -14px rgba(0,0,0,.5); }
+  .bs-hero-split .badge-float i { color: var(--green); font-style: normal; }
+
+  /* Logo-Marquee */
+  .bs-hero-split .trust { position: relative; padding: 0 0 56px; }
+  .bs-hero-split .trust p { font-size: 13px; color: var(--fg-muted); margin-bottom: 16px; }
+  .bs-hero-split .marquee { overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .bs-hero-split .marquee-track { display: flex; gap: 52px; width: max-content; animation: bsMarquee 26s linear infinite; }
+  .bs-hero-split .marquee-track span { font-family: var(--font-display); font-weight: 700; font-size: 19px; color: var(--fg-muted); white-space: nowrap; }
+  @keyframes bsMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  @media (max-width: 900px) {
+    .bs-hero-split .inner { grid-template-columns: 1fr; padding-top: 64px; }
+    .bs-hero-split .mockup { transform: none; }
+    .bs-hero-split .badge-float { right: 8px; }
+  }
+</style>
+<section class="bs-hero-split" data-theme="dark">
+  <div class="bs-dots" aria-hidden="true"></div>
+  <div class="bs-container inner">
+    <div data-stagger>
+      <span class="bs-badge"><i style="width:7px;height:7px;border-radius:50%;background:var(--green)"></i> Neu: Version 3.0 ist da</span>
+      <h1>Verstehe deine Nutzer, ohne zu raten</h1>
+      <p class="sub">Sieh exakt, wie Menschen dein Produkt benutzen. Finde Reibungspunkte, verstehe Verhalten und behebe jedes Problem — schneller.</p>
+      <div class="cta">
+        <a href="#" class="bs-btn bs-btn-primary bs-btn-lg">Kostenlos starten</a>
+        <a href="#" class="bs-btn bs-btn-ghost bs-btn-lg">Live-Demo ansehen</a>
+      </div>
+      <p class="note">Keine Kreditkarte nötig · DSGVO-konform · In 5 Minuten startklar</p>
+    </div>
+    <div data-reveal="right" data-reveal-delay="150">
+      <div class="mockup" data-parallax="40">
+        <div class="mockup-bar" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="mockup-body" aria-hidden="true">
+          <div class="panel"><b>Aktive Nutzer</b>
+            <div class="bars"><span style="height:45%"></span><span style="height:70%"></span><span style="height:55%"></span><span style="height:85%"></span><span style="height:65%"></span><span style="height:95%"></span></div>
+          </div>
+          <div class="panel"><b>Top-Ereignisse</b>
+            <div class="rows"><div><span>Checkout geöffnet</span><b>2.424</b></div><div><span>Suche benutzt</span><b>1.892</b></div><div><span>Filter gesetzt</span><b>986</b></div></div>
+          </div>
+        </div>
+        <span class="badge-float"><i>▲</i> +32 % Conversion</span>
+      </div>
+    </div>
+  </div>
+  <div class="bs-container trust" data-reveal>
+    <p>Im Einsatz bei Teams von</p>
+    <div class="marquee"><div class="marquee-track" data-marquee>
+      <span>NORDLICHT</span><span>kupfer&amp;söhne</span><span>PALETTE</span><span>brandung</span><span>MERIDIAN</span><span>zeltwerk</span>
+    </div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: HERO 2 · Aurora zentriert (dunkel, Verlaufs-Headline)
+     Zentrierte Bühne mit animierten Farbverläufen + Zahlen-Zeile.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Hero 2 · Aurora zentriert <code>.bs-hero-aurora</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-hero-aurora { position: relative; overflow: hidden; text-align: center; }
+  .bs-hero-aurora::before { /* driftende Aurora-Schwaden */
+    content: ""; position: absolute; inset: -25%; pointer-events: none;
+    background:
+      radial-gradient(30% 40% at 30% 35%, rgba(var(--violet-rgb),.4), transparent 70%),
+      radial-gradient(26% 36% at 70% 55%, rgba(var(--brand-rgb),.36), transparent 70%),
+      radial-gradient(22% 32% at 52% 80%, rgba(var(--brand-rgb),.22), transparent 70%),
+      radial-gradient(18% 28% at 80% 25%, rgba(var(--violet-rgb),.16), transparent 70%);
+    filter: blur(46px); animation: bsAurora 20s ease-in-out infinite alternate;
+  }
+  @keyframes bsAurora {
+    from { transform: translate3d(-3%,-2%,0) rotate(0deg) scale(1); }
+    to   { transform: translate3d(3%,3%,0) rotate(5deg) scale(1.07); }
+  }
+  .bs-hero-aurora .inner { position: relative; padding-top: 110px; padding-bottom: 96px; }
+  .bs-hero-aurora h1 { font-size: clamp(42px, 6vw, 76px); font-weight: 800; max-width: 17ch; margin: 0 auto 22px; }
+  .bs-hero-aurora h1 em { font-style: normal;
+    background: linear-gradient(92deg, var(--brand-300), color-mix(in srgb, var(--violet) 55%, #fff) 50%, color-mix(in srgb, var(--brand) 35%, #fff));
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .bs-hero-aurora .sub { font-size: 19px; max-width: 54ch; margin: 0 auto 34px; }
+  .bs-hero-aurora .cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .bs-hero-aurora .stats { display: flex; gap: clamp(28px, 6vw, 72px); justify-content: center; flex-wrap: wrap;
+    margin-top: 64px; padding-top: 34px; border-top: 1px solid var(--line); }
+  .bs-hero-aurora .stats b { display: block; font-family: var(--font-display); font-size: clamp(28px, 3vw, 40px); font-weight: 800; color: var(--fg); }
+  .bs-hero-aurora .stats span { font-size: 14px; color: var(--fg-muted); }
+</style>
+<section class="bs-hero-aurora" data-theme="dark">
+  <div class="bs-container inner">
+    <div data-stagger>
+      <span class="bs-badge">🚀 Über 4.000 Teams sind schon dabei</span>
+      <h1>Deine Landing Page, <em>zehnmal schneller</em> gebaut</h1>
+      <p class="sub">Fertige Bausteine für Hero, Features, Testimonials &amp; Co. Zusammenstecken, Texte tauschen, veröffentlichen — ganz ohne Framework.</p>
+      <div class="cta">
+        <a href="#" class="bs-btn bs-btn-primary bs-btn-lg">Jetzt loslegen</a>
+        <a href="#" class="bs-btn bs-btn-ghost bs-btn-lg">Beispiele ansehen</a>
+      </div>
+    </div>
+    <div class="stats" data-reveal data-reveal-delay="250">
+      <div><b><span data-count-to="4200">0</span>+</b><span>aktive Teams</span></div>
+      <div><b><span data-count-to="98">0</span>%</b><span>Weiterempfehlung</span></div>
+      <div><b><span data-count-to="12">0</span> Min.</b><span>bis zur ersten Seite</span></div>
+      <div><b><span data-count-to="0">0</span> €</b><span>für den Einstieg</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: HERO 3 · Hell & minimal (Typo-Bühne)
+     Reduzierte helle Bühne — die Headline ist das Visual.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Hero 3 · Hell &amp; minimal <code>.bs-hero-minimal</code> <code>data-theme fehlt = hell</code></p>
+<style>
+  .bs-hero-minimal { position: relative; overflow: hidden; }
+  .bs-hero-minimal::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(60% 90% at 80% -20%, rgba(var(--brand-rgb),.08), transparent 60%); }
+  .bs-hero-minimal .inner { position: relative; padding-top: 110px; padding-bottom: 90px; max-width: 880px; }
+  .bs-hero-minimal h1 { font-size: clamp(44px, 6.4vw, 84px); font-weight: 800; letter-spacing: -.03em; margin-bottom: 26px; }
+  .bs-hero-minimal h1 .underline { position: relative; white-space: nowrap; }
+  .bs-hero-minimal h1 .underline svg { position: absolute; left: 0; bottom: -.14em; width: 100%; height: .3em; overflow: visible; }
+  .bs-hero-minimal h1 .underline path { fill: none; stroke: var(--brand); stroke-width: 6; stroke-linecap: round;
+    stroke-dasharray: 420; stroke-dashoffset: 420; animation: bsDraw 1s ease .6s forwards; }
+  @keyframes bsDraw { to { stroke-dashoffset: 0; } }
+  .bs-hero-minimal .sub { font-size: clamp(18px, 2vw, 21px); max-width: 52ch; margin-bottom: 34px; }
+  .bs-hero-minimal .cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .bs-hero-minimal .avatars { display: flex; align-items: center; gap: 12px; margin-top: 40px; }
+  .bs-hero-minimal .avatars .stack { display: flex; }
+  .bs-hero-minimal .avatars .stack i { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--bg);
+    margin-left: -10px; font-style: normal; display: grid; place-items: center;
+    font-size: 12px; font-weight: 700; color: #fff; }
+  .bs-hero-minimal .avatars .stack i:first-child { margin-left: 0; }
+  .bs-hero-minimal .avatars small { font-size: 13.5px; color: var(--fg-muted); }
+</style>
+<section class="bs-hero-minimal">
+  <div class="bs-container inner" data-stagger>
+    <p class="bs-eyebrow">Rechnungen für Freelancer</p>
+    <h1>Schreib Rechnungen in <span class="underline">30 Sekunden<svg viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M3 15 C 60 5, 120 21, 180 12 S 260 6, 297 13"/></svg></span></h1>
+    <p class="sub">Angebot, Rechnung, Mahnung — automatisch nummeriert, GoBD-konform archiviert und in deinem Design verschickt.</p>
+    <div class="cta">
+      <a href="#" class="bs-btn bs-btn-primary bs-btn-lg">30 Tage gratis testen</a>
+      <a href="#" class="bs-btn bs-btn-outline bs-btn-lg">Preise ansehen</a>
+    </div>
+    <div class="avatars">
+      <span class="stack" aria-hidden="true">
+        <i style="background:#6f5bff">AL</i><i style="background:#18b8a6">MK</i><i style="background:#ff8a3d">JS</i><i style="background:#394dfe">+2k</i>
+      </span>
+      <small>★★★★★ 4,9 von 5 — über 2.000 Bewertungen</small>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: HERO 4 · Browser-Mockup zentriert (hell)
+     Copy oben, großes Browser-Fenster darunter (Screenshot-Platzhalter).
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Hero 4 · Browser-Mockup zentriert <code>.bs-hero-browser</code></p>
+<style>
+  .bs-hero-browser { position: relative; overflow: hidden; text-align: center;
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%); }
+  .bs-hero-browser .inner { position: relative; padding-top: 100px; }
+  .bs-hero-browser h1 { font-size: clamp(38px, 5vw, 64px); font-weight: 800; max-width: 20ch; margin: 0 auto 20px; }
+  .bs-hero-browser .sub { font-size: 18.5px; max-width: 52ch; margin: 0 auto 32px; }
+  .bs-hero-browser .cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 64px; }
+  .bs-hero-browser .browser { max-width: 960px; margin: 0 auto; text-align: left;
+    background: #fff; color: #14101f; border: 1px solid var(--line); border-radius: 18px 18px 0 0;
+    box-shadow: 0 -10px 80px -20px rgba(var(--brand-rgb),.35), 0 1px 2px rgba(20,16,31,.06); overflow: hidden; }
+  .bs-hero-browser .browser-bar { display: flex; align-items: center; gap: 8px; padding: 13px 16px; border-bottom: 1px solid #e9e7f0; }
+  .bs-hero-browser .browser-bar i { width: 11px; height: 11px; border-radius: 50%; background: #e9e7f0; }
+  .bs-hero-browser .browser-bar .url { flex: 1; max-width: 380px; margin: 0 auto; text-align: center;
+    background: #f7f6fb; border-radius: 8px; font-size: 12.5px; color: #8b8798; padding: 5px 12px; }
+  .bs-hero-browser .browser-body { display: grid; grid-template-columns: 200px 1fr; min-height: 300px; }
+  .bs-hero-browser .side { border-right: 1px solid #f1f0f8; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .bs-hero-browser .side span { height: 12px; border-radius: 6px; background: #f1f0f8; }
+  .bs-hero-browser .side span.on { background: rgba(var(--brand-rgb),.18); }
+  .bs-hero-browser .canvas { padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .bs-hero-browser .canvas .block { border-radius: 10px; background: #f7f6fb; height: 64px; }
+  .bs-hero-browser .canvas .block.tall { flex: 1; background:
+    radial-gradient(40% 70% at 30% 40%, rgba(var(--brand-rgb),.14), transparent 70%),
+    radial-gradient(35% 60% at 75% 60%, rgba(var(--violet-rgb),.12), transparent 70%), #f7f6fb; }
+  @media (max-width: 720px) { .bs-hero-browser .browser-body { grid-template-columns: 1fr; } .bs-hero-browser .side { display: none; } }
+</style>
+<section class="bs-hero-browser">
+  <div class="bs-container inner">
+    <div data-stagger>
+      <span class="bs-badge">✦ Werkzeuge für moderne Teams</span>
+      <h1 style="margin-top:16px">Das Wissen deines Teams. Ein Ort.</h1>
+      <p class="sub">Notizen, Dokumente und Entscheidungen — durchsuchbar, verknüpft und immer aktuell. Schluss mit der Suche in fünf Tools.</p>
+      <div class="cta">
+        <a href="#" class="bs-btn bs-btn-primary bs-btn-lg">Workspace erstellen</a>
+        <a href="#" class="bs-btn bs-btn-outline bs-btn-lg">▶ 2-Minuten-Tour</a>
+      </div>
+    </div>
+    <div class="browser" data-reveal="zoom" data-reveal-delay="200" aria-hidden="true">
+      <div class="browser-bar"><i style="background:#ef5b6e"></i><i style="background:#ffce4a"></i><i style="background:#25c26e"></i><span class="url">app.deinprodukt.de/workspace</span></div>
+      <div class="browser-body">
+        <div class="side"><span class="on" style="width:80%"></span><span style="width:65%"></span><span style="width:72%"></span><span style="width:55%"></span><span style="width:68%"></span></div>
+        <div class="canvas"><div class="block" style="max-width:46%"></div><div class="block tall"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: HERO 5 · Developer/Terminal (dunkel)
+     Für Dev-Tools: Copy links, Terminal-Fenster mit getippten Zeilen.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Hero 5 · Developer / Terminal <code>.bs-hero-terminal</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-hero-terminal { position: relative; overflow: hidden; }
+  .bs-hero-terminal::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(55% 80% at 90% 10%, rgba(var(--brand-rgb),.16), transparent 60%),
+                radial-gradient(45% 70% at 0% 100%, rgba(var(--brand-rgb),.2), transparent 60%); }
+  .bs-hero-terminal .inner { position: relative; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 56px; align-items: center; padding-top: 96px; padding-bottom: 96px; }
+  .bs-hero-terminal h1 { font-size: clamp(36px, 4.6vw, 58px); font-weight: 800; margin: 16px 0 20px; }
+  .bs-hero-terminal .sub { font-size: 18px; max-width: 44ch; margin-bottom: 30px; }
+  .bs-hero-terminal .cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+  .bs-hero-terminal .install { display: inline-flex; align-items: center; gap: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; color: var(--fg);
+    background: var(--glass); border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; }
+  .bs-hero-terminal .install b { color: var(--brand-300); font-weight: 400; }
+
+  .bs-hero-terminal .term { background: #0a0823; border: 1px solid rgba(255,255,255,.14); border-radius: 14px;
+    box-shadow: 0 30px 70px -24px rgba(0,0,0,.7); overflow: hidden;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; line-height: 1.75; }
+  .bs-hero-terminal .term-bar { display: flex; gap: 6px; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .bs-hero-terminal .term-bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.15); }
+  .bs-hero-terminal .term-body { padding: 18px 20px 24px; color: #b9c2ff; }
+  .bs-hero-terminal .term-body .ln { opacity: 0; animation: bsTermLn .01s forwards; }
+  .bs-hero-terminal .term-body .ln:nth-child(1) { animation-delay: .4s; }
+  .bs-hero-terminal .term-body .ln:nth-child(2) { animation-delay: 1.1s; }
+  .bs-hero-terminal .term-body .ln:nth-child(3) { animation-delay: 1.7s; }
+  .bs-hero-terminal .term-body .ln:nth-child(4) { animation-delay: 2.3s; }
+  .bs-hero-terminal .term-body .ln:nth-child(5) { animation-delay: 3s; }
+  @keyframes bsTermLn { to { opacity: 1; } }
+  .bs-hero-terminal .term-body .p { color: var(--brand-300); }
+  .bs-hero-terminal .term-body .ok { color: #6ee7a8; }
+  .bs-hero-terminal .term-body .dim { color: rgba(185,194,255,.55); }
+  .bs-hero-terminal .cursor { display: inline-block; width: 8px; height: 15px; background: var(--brand-300);
+    vertical-align: -2px; animation: bsBlink 1s steps(1) infinite; }
+  @keyframes bsBlink { 50% { opacity: 0; } }
+  @media (max-width: 900px) { .bs-hero-terminal .inner { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-hero-terminal" data-theme="dark">
+  <div class="bs-container inner">
+    <div data-stagger>
+      <span class="bs-badge">⌘ Open Source · MIT-Lizenz</span>
+      <h1>Deploys, die sich selbst erklären</h1>
+      <p class="sub">Ein Befehl, volle Transparenz: Preview-URLs, Logs und Rollbacks direkt aus deinem Terminal. CI/CD ohne YAML-Schmerzen.</p>
+      <div class="cta">
+        <a href="#" class="bs-btn bs-btn-primary bs-btn-lg">Dokumentation lesen</a>
+        <span class="install">$ <b>npm i -g shipit</b> 📋</span>
+      </div>
+    </div>
+    <div data-reveal="left" data-reveal-delay="150">
+      <div class="term" aria-hidden="true">
+        <div class="term-bar"><i style="background:#ef5b6e"></i><i style="background:#ffce4a"></i><i style="background:#25c26e"></i></div>
+        <div class="term-body">
+          <div class="ln"><span class="p">$</span> shipit deploy --prod</div>
+          <div class="ln"><span class="dim">→ Build erstellt in 8,2 s</span></div>
+          <div class="ln"><span class="dim">→ 42 Assets hochgeladen</span></div>
+          <div class="ln"><span class="ok">✓ Live auf https://app.beispiel.de</span></div>
+          <div class="ln"><span class="p">$</span> <span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

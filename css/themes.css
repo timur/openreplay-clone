@@ -1,0 +1,389 @@
+/* =================================================================
+   OpenReplay-Nachbau — Farbschema-Varianten
+   Umschaltbar via <body data-theme="hell|dunkel|verlauf">.
+   Wird ZUSÄTZLICH zu css/styles.css geladen und überschreibt nur
+   Farben/Flächen — Layout & Verhalten bleiben identisch.
+
+   hell    — Tageslicht: heller Hero, helle Bänder, dunkle Typo
+   dunkel  — Mitternacht: die GESAMTE Seite in Indigo-Dunkel
+   verlauf — Aurora: Original-Layout, aber der Hero (und das CTA-Band)
+             mit deutlich mehr, mehrfarbigen Verläufen
+   ================================================================= */
+
+/* Badge unten links zeigt das aktive Farbschema (analog zum Kurven-Badge) */
+body[data-theme]::after {
+  position: fixed; bottom: 14px; left: 14px; z-index: 90;
+  font-family: var(--font-body); font-size: 12px; font-weight: 700; letter-spacing: .03em;
+  color: #fff; background: rgba(var(--brand-rgb),.9); padding: 6px 12px; border-radius: 999px;
+  box-shadow: 0 6px 16px -6px rgba(var(--brand-rgb),.8); pointer-events: none;
+}
+body:is([data-theme="hell"],[data-theme="weiss"])::after    { content: "Thema · Hell"; }
+body[data-theme="dunkel"]::after  { content: "Thema · Dunkel"; }
+body[data-theme="verlauf"]::after { content: "Thema · Verlauf"; }
+
+/* =================================================================
+   1) HELL — Tageslicht
+   ================================================================= */
+
+body:is([data-theme="hell"],[data-theme="weiss"]) { background: #f4f4fb; }
+
+/* ---- Header ---- */
+body:is([data-theme="hell"],[data-theme="weiss"]) .site-header { background: #fbfbfe; border-bottom: 1px solid var(--line); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .site-header.scrolled { background: rgba(251,251,254,.92); box-shadow: 0 4px 24px rgba(38,34,90,.10); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .brand { color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .nav-list { border-color: var(--line); background: rgba(20,16,31,.03); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .nav-link { color: #46415c; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .nav-link:hover,
+body:is([data-theme="hell"],[data-theme="weiss"]) .nav-link[aria-expanded="true"] { background: rgba(20,16,31,.04); border-color: #b9b4d0; color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .lang-pill { color: var(--body); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .lang-pill:hover { color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .gh-pill { color: var(--body); border-color: var(--line); background: rgba(20,16,31,.03); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .gh-pill:hover { border-color: #b9b4d0; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .nav-text-link { color: var(--body); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .nav-text-link:hover { color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .btn-outline { background: #fff; color: var(--ink); border-color: #d9d6e8; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: #fff; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .burger span { background: var(--ink); }
+
+/* ---- Mega-Menü (hell) ---- */
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega { background: #fff; border-color: var(--line);
+  box-shadow: 0 26px 64px -18px rgba(38,34,90,.28); color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega-head { color: var(--muted); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega-card { background: var(--surface); border-color: var(--line); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega-card:hover { background: #efedfa; border-color: #d9d6e8; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega-card-text b { color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega-card-text small { color: var(--muted); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mc-violet .mega-card-tile { background: rgba(var(--violet-rgb),.12); color: var(--accent-violet); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mc-blue   .mega-card-tile { background: rgba(var(--brand-rgb),.12);  color: var(--primary); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mc-green  .mega-card-tile { background: rgba(37,194,110,.14); color: #149c56; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega-mini { color: #46415c; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega-mini .lic { color: var(--muted); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega-mini:hover { background: var(--surface); color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega-mini:hover .lic { color: var(--primary); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mega-divider { border-top-color: var(--line); }
+
+/* ---- Mobile-Menü (hell) ---- */
+body:is([data-theme="hell"],[data-theme="weiss"]) .mobile-menu { background: #fbfbfe; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .mobile-menu a { color: var(--ink); border-bottom-color: var(--line); }
+
+/* ---- Hero (hell) ---- */
+body:is([data-theme="hell"],[data-theme="weiss"]) .hero {
+  color: var(--ink);
+  background:
+    radial-gradient(80% 100% at 85% -10%, rgba(var(--brand-rgb),.10), transparent 60%),
+    radial-gradient(60% 80% at 5% 100%, rgba(var(--violet-rgb),.08), transparent 60%),
+    linear-gradient(180deg, #fbfbfe 0%, color-mix(in srgb, var(--primary) 8%, #fbfbfe) 100%);
+}
+body:is([data-theme="hell"],[data-theme="weiss"]) .hero-title { color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .hero-sub { color: var(--body); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .trust-label { color: var(--muted); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .ticker-logo { color: #a7a3ba; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .ticker-logo:hover { color: var(--ink); }
+
+body:is([data-theme="hell"],[data-theme="weiss"]) .btn-ghost { background: #fff; color: var(--ink); border-color: #d9d6e8; backdrop-filter: none; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .btn-ghost:hover { background: #f3f2fa; border-color: #b9b4d0; }
+
+/* Montage: weiße Karten brauchen auf Hell Kontur + weicheren Schatten */
+body:is([data-theme="hell"],[data-theme="weiss"]) .mc { border: 1px solid var(--line); box-shadow: 0 12px 34px -12px rgba(38,34,90,.28); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .hero-visual-dots { background-image: radial-gradient(rgba(20,16,31,.13) 1px, transparent 1.4px); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .hero-visual-tint { background: linear-gradient(120deg, rgba(var(--brand-rgb),.10), rgba(var(--violet-rgb),.05) 60%, transparent); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .hero-visual-fade {
+  --hell-veil: color-mix(in srgb, var(--primary) 10%, #fbfbfe);
+  background: linear-gradient(104deg,
+    #fbfbfe 0%,
+    var(--hell-veil) 16%,
+    color-mix(in srgb, var(--hell-veil) 80%, transparent) 30%,
+    color-mix(in srgb, var(--hell-veil) 35%, transparent) 46%,
+    transparent 62%);
+}
+
+/* ---- Dunkle Bänder werden helle Indigo-Flächen ---- */
+body:is([data-theme="hell"],[data-theme="weiss"]) .band-dark { background: color-mix(in srgb, var(--primary) 9%, #fff); color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .band-dark::before { background:
+  radial-gradient(60% 80% at 85% 10%, rgba(var(--brand-rgb),.12), transparent 60%),
+  radial-gradient(50% 70% at 10% 90%, rgba(var(--violet-rgb),.10), transparent 60%); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .security-copy h2 { color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .security-copy p { color: var(--body); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .security-points li { color: #46415c; }
+body:is([data-theme="hell"],[data-theme="weiss"]) .sec-ico { background: #fff; border-color: var(--line); color: var(--primary); box-shadow: var(--shadow-card); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .sec-ico-2 { color: var(--accent-violet); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .cta-inner h2 { color: var(--ink); }
+body:is([data-theme="hell"],[data-theme="weiss"]) .cta-band .hero-visual-dots { background-image: radial-gradient(rgba(20,16,31,.10) 1px, transparent 1.4px); }
+
+/* =================================================================
+   2) DUNKEL — Mitternacht (die gesamte Seite in Indigo)
+   ================================================================= */
+
+body[data-theme="dunkel"] { background: var(--indigo-deep); color: rgba(255,255,255,.72); }
+body[data-theme="dunkel"] main { background: var(--indigo-deep); }
+body[data-theme="dunkel"] .features,
+body[data-theme="dunkel"] .enterprise,
+body[data-theme="dunkel"] .community,
+body[data-theme="dunkel"] .blog { background: transparent; }
+body[data-theme="dunkel"] .features { border-radius: 0; }
+
+/* sanfte Glows, damit die langen dunklen Flächen nicht flach wirken */
+body[data-theme="dunkel"] .features { background:
+  radial-gradient(70% 40% at 80% 0%, rgba(var(--brand-rgb),.10), transparent 60%); }
+body[data-theme="dunkel"] .community { background:
+  radial-gradient(50% 60% at 85% 50%, rgba(var(--violet-rgb),.10), transparent 65%); }
+
+body[data-theme="dunkel"] .section-title { color: #fff; }
+body[data-theme="dunkel"] .split-title { color: #fff; }
+body[data-theme="dunkel"] .eyebrow { color: #fff; }
+
+/* Feature-Splits als Glas-Karten */
+body[data-theme="dunkel"] .split { background: rgba(255,255,255,.045); border-color: rgba(255,255,255,.10); }
+body[data-theme="dunkel"] .split-text { color: rgba(255,255,255,.68); }
+body[data-theme="dunkel"] .pill { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.18); color: rgba(255,255,255,.78); }
+body[data-theme="dunkel"] .pill:hover { border-color: var(--primary-300); color: #cfd6ff; }
+body[data-theme="dunkel"] .pill.is-active { background: #fff; border-color: #fff; color: var(--indigo-deep); }
+
+/* Die Produkt-Mockups bleiben bewusst hell (Produkt-Screenshots),
+   bekommen aber einen kräftigeren Schatten gegen den dunklen Grund */
+body[data-theme="dunkel"] .mock { border-color: rgba(255,255,255,.16);
+  box-shadow: 0 30px 70px -28px rgba(0,0,0,.85), 0 2px 6px rgba(0,0,0,.4); }
+
+/* Security-Band absetzen */
+body[data-theme="dunkel"] .band-dark { border-top: 1px solid rgba(255,255,255,.08); border-bottom: 1px solid rgba(255,255,255,.08); background: color-mix(in srgb, var(--indigo-deep) 78%, black); }
+
+/* Testimonial */
+body[data-theme="dunkel"] .testimonial { background: rgba(255,255,255,.045); border-color: rgba(255,255,255,.10);
+  box-shadow: 0 24px 60px -24px rgba(0,0,0,.7); }
+body[data-theme="dunkel"] .testimonial blockquote { color: #fff; }
+body[data-theme="dunkel"] .quote-mark { color: var(--primary-300); opacity: .35; }
+body[data-theme="dunkel"] .t-logo { color: #fff; border-right-color: rgba(255,255,255,.16); }
+body[data-theme="dunkel"] .t-author strong { color: #fff; }
+body[data-theme="dunkel"] .t-author small { color: rgba(255,255,255,.5); }
+
+/* Community */
+body[data-theme="dunkel"] .community-stats b { color: #fff; }
+body[data-theme="dunkel"] .community-stats span { color: rgba(255,255,255,.5); }
+body[data-theme="dunkel"] .orbit { border-color: rgba(255,255,255,.16);
+  background: radial-gradient(circle, rgba(var(--brand-rgb),.14), transparent 70%); }
+body[data-theme="dunkel"] .orbit::before { border-color: rgba(255,255,255,.16); }
+body[data-theme="dunkel"] .node { background: #160a52; border-color: rgba(255,255,255,.16); color: #fff;
+  box-shadow: 0 12px 30px -12px rgba(0,0,0,.8); }
+
+/* Blog */
+body[data-theme="dunkel"] .blog-card { background: rgba(255,255,255,.045); border-color: rgba(255,255,255,.10); }
+body[data-theme="dunkel"] .blog-card:hover { box-shadow: 0 24px 50px -20px rgba(0,0,0,.8); }
+body[data-theme="dunkel"] .blog-body h3 { color: #fff; }
+body[data-theme="dunkel"] .blog-body p { color: rgba(255,255,255,.5); }
+body[data-theme="dunkel"] .blog-tag { color: var(--primary-300); }
+
+/* Footer */
+body[data-theme="dunkel"] .site-footer { background: color-mix(in srgb, var(--indigo-deep) 78%, black); border-top-color: rgba(255,255,255,.10); }
+body[data-theme="dunkel"] .footer-top { border-bottom-color: rgba(255,255,255,.10); }
+body[data-theme="dunkel"] .brand-dark { color: #fff; }
+body[data-theme="dunkel"] .footer-cols h4 { color: #fff; }
+body[data-theme="dunkel"] .footer-cols a { color: rgba(255,255,255,.58); }
+body[data-theme="dunkel"] .footer-cols a:hover { color: var(--primary-300); }
+body[data-theme="dunkel"] .footer-bottom { border-top-color: rgba(255,255,255,.10); color: rgba(255,255,255,.42); }
+body[data-theme="dunkel"] .gh-stars { color: #fff; }
+body[data-theme="dunkel"] .btn-outline-dark { background: rgba(255,255,255,.05); color: #fff; border-color: rgba(255,255,255,.25); }
+body[data-theme="dunkel"] .btn-outline-dark:hover { border-color: rgba(255,255,255,.6); color: #fff; }
+
+/* =================================================================
+   3) VERLAUF — Aurora (mehr, mehrfarbige Verläufe im Hero)
+   ================================================================= */
+
+body[data-theme="verlauf"] .hero {
+  background:
+    radial-gradient(90% 90% at 95% -10%, rgba(var(--violet-rgb),.42), transparent 55%),
+    radial-gradient(70% 80% at -5% 15%,  rgba(var(--brand-rgb),.36),  transparent 55%),
+    radial-gradient(55% 65% at 15% 110%, rgba(var(--brand-rgb),.20), transparent 60%),
+    radial-gradient(75% 85% at 70% 125%, rgba(var(--violet-rgb),.14), transparent 60%),
+    linear-gradient(160deg, var(--indigo-deep) 0%, var(--indigo-3) 55%, var(--indigo-deep) 100%);
+}
+
+/* langsam driftende Aurora-Schwaden hinter der Montage */
+body[data-theme="verlauf"] .hero::before {
+  content: ""; position: absolute; inset: -22%; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(32% 42% at 30% 32%, rgba(var(--violet-rgb),.36), transparent 70%),
+    radial-gradient(28% 38% at 68% 58%, rgba(var(--brand-rgb),.32),  transparent 70%),
+    radial-gradient(24% 34% at 48% 82%, rgba(var(--brand-rgb),.20), transparent 70%),
+    radial-gradient(20% 30% at 82% 22%, rgba(var(--violet-rgb),.14), transparent 70%);
+  filter: blur(44px);
+  animation: aurora 20s ease-in-out infinite alternate;
+}
+@keyframes aurora {
+  from { transform: translate3d(-3%, -2%, 0) rotate(0deg)   scale(1); }
+  to   { transform: translate3d(3%, 3%, 0)   rotate(5deg)   scale(1.06); }
+}
+
+/* Montage löst sich früher und über eine breitere Zone auf —
+   die Maske erreicht sicher VOR dem linken Elementrand null,
+   dadurch kein harter Saum zwischen Text- und Bildhälfte */
+body[data-theme="verlauf"] .hero-visual {
+  -webkit-mask-image: linear-gradient(102deg, transparent 12%, rgba(0,0,0,.45) 34%, rgba(0,0,0,.85) 50%, #000 62%);
+          mask-image: linear-gradient(102deg, transparent 12%, rgba(0,0,0,.45) 34%, rgba(0,0,0,.85) 50%, #000 62%);
+}
+
+/* Schleier & Tönung der Montage: mehrstufig, halbtransparent —
+   der Aurora-Hintergrund scheint durch, statt eine Kante zu bilden */
+body[data-theme="verlauf"] .hero-visual-tint {
+  background: linear-gradient(120deg,
+    rgba(var(--brand-rgb),.34), rgba(var(--violet-rgb),.22) 45%,
+    rgba(var(--brand-rgb),.12) 75%, rgba(var(--violet-rgb),.08));
+}
+body[data-theme="verlauf"] .hero-visual-fade {
+  background: linear-gradient(104deg,
+    rgba(var(--dark-rgb),.96) 0%,
+    rgba(var(--veil-rgb),.88) 16%,
+    rgba(var(--veil-rgb),.62) 32%,
+    rgba(var(--violet-rgb),.36) 47%,
+    rgba(var(--brand-rgb),.18) 60%,
+    rgba(var(--brand-rgb),.07) 72%,
+    transparent 85%);
+}
+
+/* Headline: "self-host" als Verlaufstext, Squiggle in Violett */
+body[data-theme="verlauf"] .hl {
+  background: linear-gradient(92deg, var(--primary-300) 0%, color-mix(in srgb, var(--accent-violet) 55%, #fff) 50%, color-mix(in srgb, var(--primary) 35%, #fff) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+body[data-theme="verlauf"] .hl-underline { color: var(--accent-violet); }
+
+/* Ghost-Button mit Verlaufs-Rahmen */
+body[data-theme="verlauf"] .btn-ghost {
+  border-color: transparent;
+  background:
+    linear-gradient(rgba(var(--dark-rgb),.62), rgba(var(--dark-rgb),.62)) padding-box,
+    linear-gradient(120deg, var(--primary), var(--accent-violet) 55%, #18b8a6) border-box;
+}
+body[data-theme="verlauf"] .btn-ghost:hover {
+  background:
+    linear-gradient(rgba(var(--dark-rgb),.78), rgba(var(--dark-rgb),.78)) padding-box,
+    linear-gradient(120deg, var(--primary), var(--accent-violet) 55%, #18b8a6) border-box;
+}
+
+/* das CTA-Band spiegelt den Hero — gleiche Aurora-Sprache */
+body[data-theme="verlauf"] .cta-band.band-dark {
+  background:
+    radial-gradient(70% 110% at 50% -20%, rgba(var(--violet-rgb),.38), transparent 60%),
+    radial-gradient(50% 80% at 8% 100%,   rgba(var(--brand-rgb),.16), transparent 60%),
+    radial-gradient(55% 85% at 92% 100%,  rgba(var(--violet-rgb),.14), transparent 60%),
+    linear-gradient(160deg, var(--indigo-deep) 0%, var(--indigo-3) 60%, var(--indigo-deep) 100%);
+}
+body[data-theme="verlauf"] .cta-band.band-dark::before { background:
+  radial-gradient(60% 80% at 85% 10%, rgba(var(--brand-rgb),.30), transparent 60%),
+  radial-gradient(50% 70% at 10% 90%, rgba(var(--violet-rgb),.24), transparent 60%); }
+
+/* =================================================================
+   4) WEISS — sehr helles, weißes Design
+   Erbt alle Hell-Regeln (siehe :is()-Selektoren oben) und reduziert
+   die getönten Flächen auf reines Weiß mit Haarlinien.
+   ================================================================= */
+
+body[data-theme="weiss"] {
+  background: #fff;
+  --page: #fff;          /* Seiten-BG hinter den Sektionen */
+  --surface: #fff;       /* Split-Karten, Testimonial, Suchfeld */
+  --line: #ececf2;
+}
+body[data-theme="weiss"]::after { content: "Thema · Weiß"; }
+
+body[data-theme="weiss"] .site-header { background: rgba(255,255,255,.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+body[data-theme="weiss"] .site-header.scrolled { background: rgba(255,255,255,.94); box-shadow: 0 4px 24px rgba(20,16,31,.07); }
+
+/* Hero: flaches Weiß, nur ein Hauch Markenfarbe oben rechts */
+body[data-theme="weiss"] .hero {
+  background:
+    radial-gradient(70% 90% at 88% -15%, rgba(var(--brand-rgb),.05), transparent 60%),
+    #fff;
+}
+body[data-theme="weiss"] .hero-visual-fade {
+  --hell-veil: #fff;
+  background: linear-gradient(104deg,
+    #fff 0%, #fff 14%,
+    rgba(255,255,255,.85) 30%,
+    rgba(255,255,255,.4) 46%,
+    transparent 62%);
+}
+body[data-theme="weiss"] .hero-visual-tint { background: linear-gradient(120deg, rgba(var(--brand-rgb),.05), transparent 70%); }
+body[data-theme="weiss"] .hero-visual-dots { background-image: radial-gradient(rgba(20,16,31,.08) 1px, transparent 1.4px); }
+body[data-theme="weiss"] .mc { border: 1px solid var(--line); box-shadow: 0 10px 30px -14px rgba(20,16,31,.16); }
+
+/* Bänder & Splits: Weiß mit Haarlinien statt Tönung */
+body[data-theme="weiss"] .band-dark { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+body[data-theme="weiss"] .band-dark::before { background:
+  radial-gradient(60% 80% at 85% 10%, rgba(var(--brand-rgb),.05), transparent 60%); }
+body[data-theme="weiss"] .split { background: #fff; }
+body[data-theme="weiss"] .testimonial { background: #fff; }
+body[data-theme="weiss"] .mobile-menu { background: #fff; }
+body[data-theme="weiss"] .mega { box-shadow: 0 26px 64px -18px rgba(20,16,31,.16); }
+body[data-theme="weiss"] .nav-list { background: #fff; }
+body[data-theme="weiss"] .gh-pill { background: #fff; }
+
+/* =================================================================
+   5) AKZENT — weiße Flächen, Hero & Header in der Markenfarbe
+   Die Mitte der Seite ist weiß; Hero und Header tragen den vollen
+   Farbakzent, der sich als leichte Tönung durch die Sektionen zieht.
+   Folgt dem aktiven Farbschema (Farbkreis-Widget).
+   ================================================================= */
+
+body[data-theme="akzent"] {
+  background: #fff;
+  --page: #fff;
+  --surface: #fbfbfe;
+}
+body[data-theme="akzent"]::after { content: "Thema · Akzent"; }
+
+/* ---- Header & Hero: volle Akzentfarbe ---- */
+body[data-theme="akzent"] .site-header { background: var(--primary-700); }
+body[data-theme="akzent"] .site-header.scrolled {
+  background: color-mix(in srgb, var(--primary-700) 92%, transparent);
+  box-shadow: 0 4px 24px rgba(var(--brand-rgb),.35);
+}
+body[data-theme="akzent"] .mega { background: color-mix(in srgb, var(--primary-700) 82%, black); }
+body[data-theme="akzent"] .mobile-menu { background: var(--primary-700); }
+
+body[data-theme="akzent"] .hero {
+  background:
+    radial-gradient(90% 110% at 92% -15%, rgba(255,255,255,.16), transparent 55%),
+    radial-gradient(60% 80% at 0% 110%, color-mix(in srgb, var(--accent-violet) 45%, transparent), transparent 60%),
+    linear-gradient(160deg, var(--primary-700) 0%, var(--primary) 60%, color-mix(in srgb, var(--primary) 55%, var(--accent-violet)) 100%);
+}
+body[data-theme="akzent"] .hero-visual-tint {
+  background: linear-gradient(120deg, rgba(255,255,255,.06), transparent 70%);
+}
+body[data-theme="akzent"] .hero-visual-fade {
+  background: linear-gradient(104deg,
+    var(--primary-700) 0%,
+    color-mix(in srgb, var(--primary-700) 88%, transparent) 18%,
+    color-mix(in srgb, var(--primary) 55%, transparent) 36%,
+    color-mix(in srgb, var(--primary) 24%, transparent) 50%,
+    transparent 64%);
+}
+body[data-theme="akzent"] .hl-underline { color: #fff; }
+body[data-theme="akzent"] .mc { box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--primary-700) 65%, black); }
+
+/* Buttons auf der Akzentfläche: Primär wird weiß, sonst unsichtbar */
+body[data-theme="akzent"] .hero .btn-primary,
+body[data-theme="akzent"] .site-header .btn-primary {
+  background: #fff; color: var(--primary); border-color: #fff;
+  box-shadow: 0 8px 20px -8px rgba(0,0,0,.35);
+}
+body[data-theme="akzent"] .hero .btn-primary:hover,
+body[data-theme="akzent"] .site-header .btn-primary:hover { background: #eef0ff; color: var(--primary-700); }
+
+/* ---- Mitte: weiß mit leichter Akzent-Tönung ---- */
+body[data-theme="akzent"] .split { background: rgba(var(--brand-rgb),.03); border-color: rgba(var(--brand-rgb),.14); }
+body[data-theme="akzent"] .testimonial { background: rgba(var(--brand-rgb),.03); border-color: rgba(var(--brand-rgb),.14); }
+body[data-theme="akzent"] .blog-card { border-color: rgba(var(--brand-rgb),.14); }
+
+/* Bänder: helle Akzentfläche mit dunkler Typo (wie Thema Hell) */
+body[data-theme="akzent"] .band-dark { background: color-mix(in srgb, var(--primary) 7%, #fff); color: var(--ink); }
+body[data-theme="akzent"] .band-dark::before { background:
+  radial-gradient(60% 80% at 85% 10%, rgba(var(--brand-rgb),.10), transparent 60%); }
+body[data-theme="akzent"] .security-copy h2 { color: var(--ink); }
+body[data-theme="akzent"] .security-copy p { color: var(--body); }
+body[data-theme="akzent"] .security-points li { color: #46415c; }
+body[data-theme="akzent"] .sec-ico { background: #fff; border-color: rgba(var(--brand-rgb),.2); color: var(--primary); box-shadow: var(--shadow-card); }
+body[data-theme="akzent"] .sec-ico-2 { color: var(--accent-violet); }
+body[data-theme="akzent"] .cta-inner h2 { color: var(--ink); }
+body[data-theme="akzent"] .cta-band .hero-visual-dots { background-image: radial-gradient(rgba(var(--brand-rgb),.25) 1px, transparent 1.4px); }
+body[data-theme="akzent"] .band-dark .btn-ghost { background: #fff; color: var(--ink); border-color: rgba(var(--brand-rgb),.25); backdrop-filter: none; }
+body[data-theme="akzent"] .band-dark .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }

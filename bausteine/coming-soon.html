@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Coming Soon</title>
+<meta name="description" content="Coming-Soon-Vorlage — Fullscreen-Split mit Pitch, Warteliste-Formular, Social Proof und Countdown." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: Coming-Soon / Warteliste (.bs-soon) · Fullscreen-Split, dunkel
+     Links Pitch + Countdown + Warteliste-Formular (Formular-Fundament,
+     Honeypot, Erfolgszustand) + Social Proof — rechts geblurrtes
+     Produkt-Mockup als Teaser.
+     Zieldatum: data-target="2026-07-17T09:00:00" auf der <section>
+     setzen — ohne Attribut zählt die Demo ab jetzt + 14 Tage.
+     Weitere Varianten (hier nicht umgesetzt):
+     · Zentriert mit Aurora-Hintergrund, nur Countdown + E-Mail-Feld
+     · Minimal: Logo, ein Satz, ein Eingabefeld
+     · Mit Fortschrittsbalken "Beta-Plätze: 62 von 100 vergeben"
+     ═══════════════════════════════════════════════════════════════ */
+  .bs-soon [hidden] { display: none !important; } /* Sicherheitsnetz: gewinnt gegen display:flex der Success-Box */
+  .bs-soon { position: relative; overflow: hidden; }
+  .bs-soon::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(60% 80% at 90% 10%, rgba(var(--brand-rgb),.26), transparent 60%),
+      radial-gradient(45% 65% at 0% 100%, rgba(var(--violet-rgb),.2), transparent 60%); }
+  .bs-soon .inner { position: relative; display: grid; grid-template-columns: 1.05fr .95fr;
+    gap: 56px; align-items: center; min-height: 100vh; min-height: 100svh;
+    padding-top: 72px; padding-bottom: 72px; }
+  .bs-soon h1 { font-size: clamp(34px, 4.6vw, 54px); font-weight: 800; margin: 18px 0 14px; }
+  .bs-soon .sub { font-size: 18px; max-width: 48ch; color: var(--fg-soft); }
+
+  /* Countdown */
+  .bs-soon .count { display: flex; gap: 8px; margin: 28px 0 30px; }
+  .bs-soon .unit { min-width: 74px; text-align: center; padding: 12px 8px 10px;
+    border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--glass); }
+  .bs-soon .unit b { display: block; font-family: var(--font-display); font-weight: 800;
+    font-size: 28px; line-height: 1.1; color: var(--fg); font-variant-numeric: tabular-nums; }
+  .bs-soon .unit span { font-size: 11.5px; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--fg-muted); }
+
+  /* Warteliste-Formular */
+  .bs-soon .wl { display: flex; flex-direction: column; gap: 14px; max-width: 520px; }
+  .bs-soon .wl .row { display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
+  .bs-soon .wl .grow { flex: 1; min-width: 220px; }
+  .bs-soon .wl .row .bs-btn { margin-top: 27px; } /* auf Höhe des Inputs (Label + Gap) */
+  .bs-soon .success { max-width: 520px; }
+  .bs-soon .proof { display: flex; align-items: center; gap: 12px; margin-top: 26px; }
+  .bs-soon .proof .stack { display: flex; }
+  .bs-soon .proof .stack i { width: 32px; height: 32px; border-radius: 50%; margin-left: -9px;
+    border: 2px solid var(--bg); font-style: normal; display: grid; place-items: center;
+    font-size: 11.5px; font-weight: 700; color: #fff; }
+  .bs-soon .proof .stack i:first-child { margin-left: 0; }
+  .bs-soon .proof small { font-size: 13.5px; color: var(--fg-muted); }
+  .bs-soon .proof small b { color: var(--fg); font-variant-numeric: tabular-nums; }
+
+  /* Teaser: geblurrtes Produkt-Mockup */
+  .bs-soon .teaser { position: relative; }
+  .bs-soon .mock { background: #fff; color: #14101f; border-radius: var(--r-md);
+    box-shadow: 0 30px 70px -24px rgba(0,0,0,.65); overflow: hidden; font-size: 12px;
+    filter: blur(5px) saturate(1.05); transform: rotate(-1.5deg) scale(1.02); }
+  .bs-soon .mock-bar { display: flex; gap: 6px; padding: 12px 14px; border-bottom: 1px solid #e9e7f0; }
+  .bs-soon .mock-bar i { width: 10px; height: 10px; border-radius: 50%; background: #e9e7f0; }
+  .bs-soon .mock-body { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 18px; }
+  .bs-soon .panel { border: 1px solid #e9e7f0; border-radius: 10px; padding: 12px; }
+  .bs-soon .panel b { display: block; font-size: 11px; margin-bottom: 8px; }
+  .bs-soon .bars { display: flex; align-items: flex-end; gap: 5px; height: 64px; }
+  .bs-soon .bars span { flex: 1; border-radius: 3px 3px 0 0; background: var(--brand); opacity: .85; }
+  .bs-soon .bars span:nth-child(2n) { background: var(--violet); }
+  .bs-soon .rows div { display: flex; justify-content: space-between; padding: 5px 0;
+    border-bottom: 1px solid #f1f0f8; color: #4a4658; }
+  .bs-soon .panel.wide { grid-column: 1 / -1; height: 88px;
+    background: radial-gradient(50% 90% at 30% 50%, rgba(var(--brand-rgb),.16), transparent 70%),
+                radial-gradient(40% 80% at 75% 50%, rgba(var(--violet-rgb),.14), transparent 70%); }
+  .bs-soon .peek { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    white-space: nowrap; font-size: 13px; font-weight: 700; color: var(--fg);
+    background: var(--bg-soft); border: 1px solid var(--line); border-radius: 999px;
+    padding: 9px 18px; box-shadow: var(--shadow); }
+
+  @media (max-width: 900px) {
+    .bs-soon .inner { grid-template-columns: 1fr; gap: 44px; align-content: center; }
+    .bs-soon .teaser { max-width: 480px; }
+  }
+  @media (max-width: 560px) {
+    .bs-soon .wl .row .bs-btn { margin-top: 0; width: 100%; } /* Button rutscht unter das Feld */
+  }
+  @media (max-width: 480px) {
+    .bs-soon .unit { min-width: 0; flex: 1; }
+    .bs-soon .count { max-width: 340px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- Zieldatum optional fest setzen: <section class="bs-soon" data-theme="dark" data-target="2026-07-17T09:00:00"> -->
+<section class="bs-soon" data-theme="dark">
+  <div class="bs-container inner">
+    <div data-stagger>
+      <span class="bs-badge"><i style="width:7px;height:7px;border-radius:50%;background:var(--green)" aria-hidden="true"></i> Launch in Kürze</span>
+      <h1>Sieh dein Produkt zum ersten Mal mit den Augen deiner Nutzer.</h1>
+      <p class="sub">Klarblick zeichnet Sessions auf, findet Reibungspunkte automatisch und erklärt sie in verständlichen Berichten — ohne dass du ein Analytics-Studium brauchst.</p>
+
+      <div class="count" role="timer" aria-label="Zeit bis zum Launch">
+        <div class="unit"><b data-cd="d">14</b><span>Tage</span></div>
+        <div class="unit"><b data-cd="h">00</b><span>Std.</span></div>
+        <div class="unit"><b data-cd="m">00</b><span>Min.</span></div>
+        <div class="unit"><b data-cd="s">00</b><span>Sek.</span></div>
+      </div>
+
+      <form class="wl" novalidate>
+        <!-- Honeypot: bleibt für Menschen unsichtbar, Bots füllen es aus -->
+        <div class="bs-hp" aria-hidden="true">
+          <label>Firma (bitte leer lassen)
+            <input type="text" name="firma" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+        <div class="row">
+          <div class="bs-field grow">
+            <label for="soon-mail">E-Mail-Adresse</label>
+            <input class="bs-input" type="email" id="soon-mail" name="email" placeholder="du@firma.de" autocomplete="email" aria-describedby="soon-mail-err" required />
+            <p class="bs-error" id="soon-mail-err" hidden>Bitte gib eine gültige E-Mail-Adresse ein.</p>
+          </div>
+          <button class="bs-btn bs-btn-primary" type="submit">Platz sichern</button>
+        </div>
+        <div class="bs-field">
+          <label class="bs-check">
+            <input type="checkbox" id="soon-dsgvo" aria-describedby="soon-dsgvo-err" required />
+            <span>Ich möchte zum Launch per E-Mail informiert werden und akzeptiere die <a href="datenschutz.html" style="text-decoration:underline">Datenschutzerklärung</a>. Abmeldung jederzeit möglich.</span>
+          </label>
+          <p class="bs-error" id="soon-dsgvo-err" hidden>Bitte bestätige kurz die Einwilligung.</p>
+        </div>
+        <p class="bs-form-note">Kein Spam, keine Weitergabe — nur eine E-Mail zum Launch.</p>
+      </form>
+      <div class="success bs-success-box" role="status" tabindex="-1" hidden>✓ <span>Du stehst auf der Liste! Wir melden uns zum Launch — bis dahin bekommst du höchstens eine kurze Vorab-Mail.</span></div>
+
+      <div class="proof" data-reveal data-reveal-delay="300">
+        <span class="stack" aria-hidden="true">
+          <i style="background:var(--violet)">AL</i><i style="background:var(--teal)">MK</i><i style="background:var(--orange)">JS</i><i style="background:var(--brand)">RB</i>
+        </span>
+        <small><b data-count-to="487">0</b> Personen warten schon auf den Launch</small>
+      </div>
+    </div>
+
+    <!-- Teaser: Platzhalter-Mockup — hier alternativ ein echtes, geblurrtes Produkt-<img> einsetzen -->
+    <div class="teaser" data-reveal="right" data-reveal-delay="200">
+      <div class="mock" aria-hidden="true">
+        <div class="mock-bar"><i style="background:var(--red)"></i><i></i><i></i></div>
+        <div class="mock-body">
+          <div class="panel"><b>Sessions heute</b>
+            <div class="bars"><span style="height:40%"></span><span style="height:68%"></span><span style="height:52%"></span><span style="height:86%"></span><span style="height:60%"></span><span style="height:94%"></span></div>
+          </div>
+          <div class="panel"><b>Reibungspunkte</b>
+            <div class="rows"><div><span>Rage-Clicks</span><b>38</b></div><div><span>Tote Links</span><b>12</b></div><div><span>Abbrüche</span><b>7</b></div></div>
+          </div>
+          <div class="panel wide"></div>
+        </div>
+      </div>
+      <span class="peek">🔒 Sneak Peek — ab Launch für alle</span>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-soon");
+  if (!root) return;
+
+  /* --- Countdown: data-target (ISO-String) oder Demo: jetzt + 14 Tage --- */
+  var target = root.dataset.target
+    ? new Date(root.dataset.target).getTime()
+    : Date.now() + 14 * 24 * 60 * 60 * 1000;
+  var out = {
+    d: root.querySelector('[data-cd="d"]'),
+    h: root.querySelector('[data-cd="h"]'),
+    m: root.querySelector('[data-cd="m"]'),
+    s: root.querySelector('[data-cd="s"]')
+  };
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function tick() {
+    var sec = Math.max(0, Math.floor((target - Date.now()) / 1000));
+    out.d.textContent = String(Math.floor(sec / 86400));
+    out.h.textContent = pad(Math.floor(sec / 3600) % 24);
+    out.m.textContent = pad(Math.floor(sec / 60) % 60);
+    out.s.textContent = pad(sec % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  /* --- Warteliste: Client-Validierung + Erfolgszustand inline --- */
+  var form = root.querySelector(".wl");
+  var mail = root.querySelector("#soon-mail");
+  var mailErr = root.querySelector("#soon-mail-err");
+  var check = root.querySelector("#soon-dsgvo");
+  var checkErr = root.querySelector("#soon-dsgvo-err");
+  var success = root.querySelector(".success");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (form.querySelector(".bs-hp input").value) return; // Honeypot gefüllt → Bot, still ignorieren
+
+    var okMail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail.value.trim());
+    mail.setAttribute("aria-invalid", String(!okMail));
+    mailErr.hidden = okMail;
+
+    var okCheck = check.checked;
+    checkErr.hidden = okCheck;
+
+    if (!okMail) { mail.focus(); return; }
+    if (!okCheck) { check.focus(); return; }
+
+    // Hier würde der Request an das Backend / den Form-Dienst stehen.
+    form.hidden = true;
+    success.hidden = false;
+    success.focus();
+  });
+
+  // Fehlermeldung live zurücknehmen, sobald korrigiert wird
+  mail.addEventListener("input", function () {
+    if (!mailErr.hidden && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail.value.trim())) {
+      mailErr.hidden = true;
+      mail.setAttribute("aria-invalid", "false");
+    }
+  });
+  check.addEventListener("change", function () {
+    if (check.checked) checkErr.hidden = true;
+  });
+})();
+</script>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

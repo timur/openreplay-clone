@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · AGB (Vorlage)</title>
+<meta name="description" content="AGB-Vorlage für SaaS-Angebote — übliche Struktur mit markierten Platzhaltern, keine Rechtsberatung." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+<style>
+  /* ═══ BAUSTEIN: Rechtsseite (.bs-legal) — AGB-Vorlage für SaaS ═══
+     Gleiches Layout und dieselbe Platzhalter-Konvention (mark.ph) wie
+     impressum.html und datenschutz.html.
+     Weitere Varianten (hier nicht umgesetzt):
+     · Kurze Nutzungsbedingungen für kostenlose Tools/Betas (1 Seite)
+     · Rechts-Hub mit Tab-Umschaltung Impressum/Datenschutz/AGB        */
+  .bs-legal { padding: 72px 0 96px; }
+  .bs-legal .inner { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .bs-legal .back { display: inline-flex; align-items: center; gap: 7px;
+    font-size: 14.5px; font-weight: 600; color: var(--brand); margin-bottom: 34px; }
+  .bs-legal .back:hover { text-decoration: underline; }
+  .bs-legal h1 { font-size: clamp(34px, 4.5vw, 46px); font-weight: 800; margin-bottom: 18px; }
+  .bs-legal h2 { font-size: 22px; font-weight: 700; margin: 40px 0 12px; }
+  .bs-legal p, .bs-legal li { font-size: 16px; line-height: 1.75; color: var(--fg-soft); }
+  .bs-legal p { margin-bottom: 12px; }
+  .bs-legal ul { list-style: disc; padding-left: 22px; margin-bottom: 12px; }
+  .bs-legal a:not(.back) { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+  .bs-legal .hinweis { display: flex; gap: 12px; align-items: flex-start;
+    background: rgba(255,206,74,.14); border: 1px solid rgba(214,158,0,.35);
+    border-radius: var(--r-md); padding: 16px 18px; margin: 22px 0 34px;
+    font-size: 14.5px; line-height: 1.6; color: var(--fg-soft); }
+  .bs-legal .hinweis b { color: var(--fg); }
+  mark.ph { background: rgba(255,206,74,.35); color: var(--fg); border-radius: 4px;
+    padding: 1px 5px; font-weight: 600; }
+  .bs-legal .stand { margin-top: 44px; font-size: 14px; color: var(--fg-muted); }
+  /* Inhaltsverzeichnis */
+  .bs-legal .toc { list-style: none; padding: 0; margin: 0 0 8px; columns: 2; column-gap: 32px; }
+  .bs-legal .toc li { font-size: 15px; margin-bottom: 6px; break-inside: avoid; }
+  .bs-legal .toc a { text-decoration: none; }
+  .bs-legal .toc a:hover { text-decoration: underline; }
+  @media (max-width: 560px) { .bs-legal .toc { columns: 1; } }
+</style>
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<section class="bs-legal">
+  <div class="inner">
+    <a class="back" href="index.html">← Zurück zur Startseite</a>
+    <h1>Allgemeine Geschäftsbedingungen</h1>
+
+    <div class="hinweis">⚠️
+      <span><b>Vorlage:</b> Diese AGB sind ein Strukturmuster für SaaS-Angebote. Ersetze alle
+      <mark class="ph">[Platzhalter]</mark> durch deine Angaben und lass die Bedingungen vor
+      Veröffentlichung anwaltlich prüfen — sie sind keine Rechtsberatung und ohne Prüfung
+      nicht einsatzbereit.</span>
+    </div>
+
+    <nav aria-label="Inhaltsverzeichnis">
+      <ol class="toc">
+        <li><a href="#s1">1. Geltungsbereich</a></li>
+        <li><a href="#s2">2. Vertragsgegenstand</a></li>
+        <li><a href="#s3">3. Registrierung und Nutzerkonto</a></li>
+        <li><a href="#s4">4. Preise und Zahlung</a></li>
+        <li><a href="#s5">5. Laufzeit und Kündigung</a></li>
+        <li><a href="#s6">6. Verfügbarkeit</a></li>
+        <li><a href="#s7">7. Pflichten des Kunden</a></li>
+        <li><a href="#s8">8. Datenschutz</a></li>
+        <li><a href="#s9">9. Haftung</a></li>
+        <li><a href="#s10">10. Änderungen dieser AGB</a></li>
+        <li><a href="#s11">11. Schlussbestimmungen</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="s1">1. Geltungsbereich</h2>
+    <p>
+      Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen der
+      <mark class="ph">[Firmenname GmbH]</mark>, <mark class="ph">[Straße Hausnummer, PLZ Ort]</mark>
+      (nachfolgend „Anbieter“) und ihren Kunden über die Nutzung der Software
+      <mark class="ph">[Produktname]</mark> als Cloud-Dienst (Software as a Service).
+    </p>
+    <p>
+      Das Angebot richtet sich ausschließlich an Unternehmen, Selbstständige und öffentliche
+      Einrichtungen, nicht an Verbraucher. Abweichende Bedingungen des Kunden werden nur
+      Vertragsbestandteil, wenn der Anbieter ihnen ausdrücklich in Textform zustimmt.
+    </p>
+
+    <h2 id="s2">2. Vertragsgegenstand</h2>
+    <p>
+      Der Anbieter stellt dem Kunden die Software <mark class="ph">[Produktname]</mark> zur
+      <mark class="ph">[kurze Leistungsbeschreibung, z. B. „Aufzeichnung und Analyse von
+      Nutzersitzungen auf eigenen Websites und Apps“]</mark> über das Internet zur Verfügung.
+      Der jeweils aktuelle Funktionsumfang ergibt sich aus der Leistungsbeschreibung unter
+      <mark class="ph">[URL der Preis-/Produktseite]</mark> zum Zeitpunkt des Vertragsschlusses.
+    </p>
+    <p>
+      Der Kunde erhält für die Dauer des Vertrags ein einfaches, nicht übertragbares und nicht
+      unterlizenzierbares Recht, die Software im vereinbarten Umfang für eigene Zwecke zu nutzen.
+      Eine Überlassung des Quellcodes ist nicht geschuldet.
+    </p>
+
+    <h2 id="s3">3. Registrierung und Nutzerkonto</h2>
+    <p>
+      Die Nutzung setzt die Einrichtung eines Nutzerkontos voraus. Der Kunde versichert, dass
+      alle bei der Registrierung gemachten Angaben zutreffend sind, und hält sie aktuell.
+    </p>
+    <ul>
+      <li>Zugangsdaten sind geheim zu halten und vor dem Zugriff Dritter zu schützen.</li>
+      <li>Der Kunde ist für alle Aktivitäten verantwortlich, die über sein Konto erfolgen.</li>
+      <li>Bei Verdacht auf Missbrauch des Kontos ist der Anbieter unverzüglich zu informieren.</li>
+    </ul>
+
+    <h2 id="s4">4. Preise und Zahlung</h2>
+    <p>
+      Es gelten die zum Zeitpunkt der Bestellung ausgewiesenen Preise gemäß der Preisliste unter
+      <mark class="ph">[URL der Preisseite]</mark>, jeweils zuzüglich der gesetzlichen Umsatzsteuer.
+      Die Abrechnung erfolgt <mark class="ph">[monatlich/jährlich]</mark> im Voraus per
+      <mark class="ph">[Zahlungsarten, z. B. Kreditkarte, SEPA-Lastschrift, Rechnung]</mark>.
+    </p>
+    <p>
+      Gerät der Kunde mit der Zahlung in Verzug, kann der Anbieter den Zugang nach vorheriger
+      Ankündigung mit angemessener Frist sperren, bis die offenen Beträge beglichen sind. Der
+      Anspruch auf die vereinbarte Vergütung bleibt von der Sperrung unberührt.
+    </p>
+
+    <h2 id="s5">5. Laufzeit und Kündigung</h2>
+    <p>
+      Der Vertrag hat eine Laufzeit von <mark class="ph">[einem Monat / zwölf Monaten]</mark> und
+      verlängert sich jeweils um dieselbe Laufzeit, wenn er nicht mit einer Frist von
+      <mark class="ph">[14 Tagen / drei Monaten]</mark> zum Ende der Laufzeit gekündigt wird.
+      Die Kündigung kann in Textform oder direkt über die Kontoeinstellungen erfolgen.
+    </p>
+    <p>
+      Das Recht beider Parteien zur außerordentlichen Kündigung aus wichtigem Grund bleibt
+      unberührt. Nach Vertragsende stellt der Anbieter die Kundendaten noch
+      <mark class="ph">[30 Tage]</mark> zum Export bereit; danach werden sie gelöscht, soweit
+      keine gesetzlichen Aufbewahrungspflichten entgegenstehen.
+    </p>
+
+    <h2 id="s6">6. Verfügbarkeit</h2>
+    <p>
+      Der Anbieter erbringt den Dienst mit einer Verfügbarkeit von
+      <mark class="ph">[99,5 %]</mark> im Jahresmittel. Ausgenommen sind angekündigte
+      Wartungsfenster sowie Störungen, die außerhalb des Einflussbereichs des Anbieters liegen
+      (z. B. höhere Gewalt, Ausfälle von Netzbetreibern). Über geplante Wartungen informiert der
+      Anbieter rechtzeitig; den aktuellen Betriebszustand zeigt die Status-Seite unter
+      <mark class="ph">[URL der Status-Seite]</mark>.
+    </p>
+
+    <h2 id="s7">7. Pflichten des Kunden</h2>
+    <p>Der Kunde verpflichtet sich,</p>
+    <ul>
+      <li>den Dienst nicht für rechtswidrige Inhalte oder Zwecke zu nutzen und keine Rechte
+        Dritter zu verletzen,</li>
+      <li>die Funktionsfähigkeit des Dienstes nicht zu beeinträchtigen — insbesondere keine
+        Zugangsbeschränkungen zu umgehen, den Dienst nicht zurückzuentwickeln und keine
+        übermäßige Last zu erzeugen,</li>
+      <li>beim Einsatz des Dienstes gegenüber eigenen Endnutzern alle einschlägigen Vorschriften
+        einzuhalten, insbesondere erforderliche Einwilligungen einzuholen und Informationspflichten
+        zu erfüllen,</li>
+      <li>exportierte Daten regelmäßig eigenständig zu sichern.</li>
+    </ul>
+
+    <h2 id="s8">8. Datenschutz</h2>
+    <p>
+      Der Anbieter verarbeitet personenbezogene Daten gemäß seiner
+      <a href="datenschutz.html">Datenschutzerklärung</a>. Soweit der Kunde über den Dienst
+      personenbezogene Daten seiner Endnutzer verarbeiten lässt, schließen die Parteien einen
+      Vertrag zur Auftragsverarbeitung; die Vorlage stellt der Anbieter unter
+      <mark class="ph">[URL/Bezugsquelle des AV-Vertrags]</mark> bereit.
+    </p>
+
+    <h2 id="s9">9. Haftung</h2>
+    <p>
+      Der Anbieter haftet unbeschränkt bei Vorsatz und grober Fahrlässigkeit sowie für Schäden
+      aus der Verletzung von Leben, Körper oder Gesundheit.
+    </p>
+    <p>
+      Bei leichter Fahrlässigkeit haftet der Anbieter nur für die Verletzung wesentlicher
+      Vertragspflichten — also solcher Pflichten, deren Erfüllung die ordnungsgemäße Durchführung
+      des Vertrags erst ermöglicht und auf deren Einhaltung der Kunde regelmäßig vertrauen darf.
+      In diesem Fall ist die Haftung auf den vertragstypischen, vorhersehbaren Schaden begrenzt,
+      höchstens jedoch auf <mark class="ph">[Betrag / die Summe der in den letzten zwölf Monaten
+      gezahlten Entgelte]</mark>.
+    </p>
+    <p>
+      Für den Verlust von Daten haftet der Anbieter nicht, soweit der Schaden durch eine
+      regelmäßige und vollständige Sicherung der Daten durch den Kunden vermeidbar gewesen wäre.
+      Ansprüche nach dem Produkthaftungsgesetz bleiben unberührt.
+    </p>
+
+    <h2 id="s10">10. Änderungen dieser AGB</h2>
+    <p>
+      Der Anbieter kann diese AGB mit Wirkung für die Zukunft anpassen, wenn dies aus triftigen
+      Gründen erforderlich ist (z. B. geänderte Rechtslage, Weiterentwicklung des Dienstes) und
+      den Kunden nicht unangemessen benachteiligt. Änderungen werden mindestens
+      <mark class="ph">[sechs Wochen]</mark> vor Wirksamwerden in Textform angekündigt.
+    </p>
+    <p>
+      Widerspricht der Kunde nicht bis zum Wirksamwerden, gelten die geänderten AGB als
+      angenommen; auf diese Folge weist der Anbieter in der Ankündigung gesondert hin.
+      Widerspricht der Kunde, kann jede Partei den Vertrag zum Zeitpunkt des Wirksamwerdens
+      der Änderung kündigen.
+    </p>
+
+    <h2 id="s11">11. Schlussbestimmungen</h2>
+    <p>
+      Es gilt das Recht der Bundesrepublik Deutschland. Ist der Kunde Kaufmann, juristische
+      Person des öffentlichen Rechts oder öffentlich-rechtliches Sondervermögen, ist
+      ausschließlicher Gerichtsstand <mark class="ph">[Ort]</mark>.
+    </p>
+    <p>
+      Sollten einzelne Bestimmungen dieser AGB ganz oder teilweise unwirksam sein oder werden,
+      bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.
+    </p>
+
+    <p class="stand">Stand: <mark class="ph">[Monat JJJJ]</mark></p>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

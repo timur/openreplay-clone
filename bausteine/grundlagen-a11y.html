@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Grundlagen: Barrierefreiheit</title>
+<meta name="description" content="Barrierefreiheit-Grundlagen für den Landing-Page-Baukasten: Skip-Link, Fokus-Stile, ARIA-Spickzettel, Reduced Motion, Kontrast, Formular-A11y und Launch-Checkliste — BFSG-relevant." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     LIVE EINGEBAUT: Skip-Link — MUSS das erste Element im <body> sein.
+     Neu laden, einmal Tab drücken → der Link erscheint oben links,
+     Enter springt zu <main id="inhalt">. Stil siehe Grundlage 1 unten.
+     ═══════════════════════════════════════════════════════════════ -->
+<a class="bs-skip" href="#inhalt">Zum Inhalt springen</a>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGE 1 · Skip-Link (auf dieser Seite LIVE eingebaut)
+     Tastatur-Nutzer überspringen Navigation & Kopfbereich mit einem
+     Tastendruck. Sichtbar wird der Link nur bei :focus-visible.
+     Kopieren: <style>-Block + das <a class="bs-skip">-Markup ganz oben.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Grundlage 1 · Skip-Link <code>.bs-skip</code> <code>live auf dieser Seite</code> <code>data-theme="dark"</code></p></div>
+<style>
+  /* Skip-Link: unsichtbar geparkt, erscheint nur bei Tastatur-Fokus */
+  .bs-skip { position: fixed; top: 16px; left: 16px; z-index: 1000;
+    display: inline-block; padding: 13px 22px; border-radius: 999px;
+    font: 700 15px/1 var(--font-body); color: #fff; background: var(--brand);
+    box-shadow: 0 12px 30px -10px rgba(var(--brand-rgb),.7);
+    transform: translateY(calc(-100% - 24px)); transition: transform .18s ease; }
+  .bs-skip:focus-visible { transform: translateY(0); outline: 2px solid #fff; outline-offset: 3px; }
+  /* Sprungziel ist ein Container, kein Bedienelement → Outline hier ausnahmsweise aus */
+  main#inhalt:focus-visible { outline: none; }
+
+  .bs-a11y-skip { position: relative; overflow: hidden; }
+  .bs-a11y-skip::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(60% 80% at 85% 0%, rgba(var(--brand-rgb),.25), transparent 60%),
+                radial-gradient(45% 65% at 0% 100%, rgba(var(--violet-rgb),.18), transparent 60%); }
+  .bs-a11y-skip .inner { position: relative; padding-top: 88px; padding-bottom: 72px; }
+  .bs-a11y-skip h1 { font-size: clamp(34px, 4.6vw, 54px); font-weight: 800; max-width: 22ch; margin-bottom: 18px; }
+  .bs-a11y-skip .sub { font-size: 18px; max-width: 62ch; margin-bottom: 34px; }
+  .bs-a11y-skip .grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: start; }
+  .bs-a11y-skip .how { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 22px 24px; }
+  .bs-a11y-skip .how h3 { font-size: 18px; margin-bottom: 12px; }
+  .bs-a11y-skip .how ol { margin: 0; padding-left: 20px; list-style: decimal; display: grid; gap: 8px; font-size: 15.5px; }
+  .bs-a11y-skip .how kbd { font: 600 12.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--fg); background: var(--glass); border: 1px solid var(--line);
+    border-bottom-width: 2.5px; border-radius: 6px; padding: 3px 8px; }
+  @media (max-width: 860px) { .bs-a11y-skip .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-a11y-skip" data-theme="dark">
+  <div class="bs-container inner">
+    <div data-stagger>
+      <p class="bs-eyebrow">Grundlagen · Barrierefreiheit</p>
+      <h1>Barrierefrei ist Pflicht — und guter Stil</h1>
+      <p class="sub">Seit dem 28. Juni 2025 gilt das Barrierefreiheitsstärkungsgesetz (BFSG): Wer online verkauft, bucht oder Termine vergibt, muss barrierefrei sein. Diese Seite bündelt die Muster, die im Baukasten bereits stecken — zum Nachschlagen und Kopieren. Erster Baustein: der Skip-Link, hier live eingebaut.</p>
+    </div>
+    <div class="grid">
+      <div class="how" data-reveal>
+        <h3>Probier es auf dieser Seite aus</h3>
+        <ol>
+          <li>Seite neu laden, dann einmal <kbd>Tab</kbd> drücken.</li>
+          <li>Oben links erscheint <b>„Zum Inhalt springen“</b> — der erste fokussierbare Punkt der Seite.</li>
+          <li><kbd>Enter</kbd> springt direkt zu <code>&lt;main id="inhalt"&gt;</code> und überspringt Kopfbereich samt Navigation.</li>
+        </ol>
+      </div>
+      <div class="bs-snippet" data-reveal data-reveal-delay="120">
+        <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">&lt;!-- Erstes Element im &lt;body&gt; — vor Nav und allem anderen: --&gt;</span>
+&lt;a class="bs-skip" <span class="hl">href="#inhalt"</span>&gt;Zum Inhalt springen&lt;/a&gt;
+
+<span class="cm">&lt;!-- … Navigation, Header … --&gt;</span>
+
+<span class="cm">&lt;!-- tabindex="-1": das Ziel kann den Fokus wirklich übernehmen --&gt;</span>
+&lt;main <span class="hl">id="inhalt" tabindex="-1"</span>&gt; … &lt;/main&gt;
+
+&lt;style&gt;
+  /* Unsichtbar geparkt — display:none wäre falsch,
+     denn dann wäre der Link nicht mehr fokussierbar. */
+  .bs-skip { position: fixed; top: 16px; left: 16px; z-index: 1000;
+    padding: 13px 22px; border-radius: 999px;
+    font: 700 15px/1 var(--font-body); color: #fff; background: var(--brand);
+    <span class="hl">transform: translateY(calc(-100% - 24px));</span> transition: transform .18s ease; }
+  <span class="hl">.bs-skip:focus-visible</span> { transform: translateY(0);
+    outline: 2px solid #fff; outline-offset: 3px; }
+  /* Sprungziel = Container, kein Bedienelement → Ausnahme erlaubt */
+  main#inhalt:focus-visible { outline: none; }
+&lt;/style&gt;</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sprungziel des Skip-Links: umschließt den gesamten Seiteninhalt -->
+<main id="inhalt" tabindex="-1">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGE 2 · Fokus sichtbar machen
+     Demo-Reihe mit echten, fokussierbaren Elementen + Snippet.
+     Regel: outline nie ersatzlos entfernen (WCAG 2.4.7).
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlage 2 · Fokus sichtbar machen <code>:focus-visible</code></p>
+<style>
+  .bs-a11y-focus .inner { padding-top: 72px; padding-bottom: 76px; }
+  .bs-a11y-focus .grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: start; }
+  .bs-a11y-focus .stage { background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-md); box-shadow: var(--shadow); padding: 26px; }
+  .bs-a11y-focus .stage p.hint { font-size: 13.5px; color: var(--fg-muted); margin-bottom: 18px; }
+  .bs-a11y-focus .row { display: flex; flex-wrap: wrap; gap: 18px 22px; align-items: center; }
+  .bs-a11y-focus .row .bs-input { max-width: 220px; }
+  .bs-a11y-focus .textlink { font-weight: 600; color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+  /* Custom-Checkbox: echtes Input bleibt fokussierbar, nur optisch versteckt */
+  .bs-a11y-focus .democheck { position: relative; display: inline-flex; gap: 10px; align-items: center;
+    font-size: 15px; font-weight: 600; color: var(--fg); cursor: pointer; }
+  .bs-a11y-focus .democheck input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .bs-a11y-focus .democheck .box { width: 22px; height: 22px; flex: none; border-radius: 7px;
+    border: 1.5px solid var(--line); background: var(--card); display: grid; place-items: center;
+    transition: background-color .15s, border-color .15s; }
+  .bs-a11y-focus .democheck .box::after { content: "✓"; font-size: 13px; font-weight: 800; color: #fff; opacity: 0; }
+  .bs-a11y-focus .democheck input:checked + .box { background: var(--brand); border-color: var(--brand); }
+  .bs-a11y-focus .democheck input:checked + .box::after { opacity: 1; }
+  /* Fokus des versteckten Inputs auf die sichtbare Box legen */
+  .bs-a11y-focus .democheck input:focus-visible + .box { outline: 2px solid var(--brand-300); outline-offset: 3px; }
+  .bs-a11y-focus .warn { display: flex; gap: 12px; align-items: flex-start; margin-top: 22px;
+    background: rgba(239,91,110,.09); border: 1px solid rgba(239,91,110,.35);
+    border-radius: var(--r-md); padding: 14px 16px; font-size: 14.5px; }
+  .bs-a11y-focus .warn b { color: var(--fg); }
+  @media (max-width: 860px) { .bs-a11y-focus .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-a11y-focus">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <h2>Fokus sichtbar machen</h2>
+      <p>Wer mit der Tastatur navigiert, sieht nur am Fokus-Ring, wo er gerade steht. <code>base.css</code> bringt dafür einen globalen <code>:focus-visible</code>-Stil mit — Maus-Klicks bleiben davon unberührt.</p>
+    </div>
+    <div class="grid">
+      <div class="stage" data-reveal>
+        <p class="hint">Demo: Mit <b>Tab</b> durch die vier Elemente wandern — jedes zeigt einen deutlichen Fokus-Ring. (Demo-Füller: NICHT mitkopieren.)</p>
+        <div class="row">
+          <button type="button" class="bs-btn bs-btn-primary bs-btn-sm">Button</button>
+          <a class="textlink" href="#inhalt">Ein Textlink</a>
+          <label class="bs-field" style="margin:0">
+            <span style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">E-Mail (Demo)</span>
+            <input class="bs-input" type="email" placeholder="Input-Feld" autocomplete="off" />
+          </label>
+          <label class="democheck">
+            <input type="checkbox" />
+            <span class="box" aria-hidden="true"></span>
+            Custom-Checkbox
+          </label>
+        </div>
+        <div class="warn">
+          <span aria-hidden="true">⚠️</span>
+          <p><b><code>outline: none</code> ist verboten,</b> solange kein gleichwertiger Ersatz folgt: Ohne sichtbaren Fokus verlieren Tastatur-Nutzer sofort die Orientierung — Verstoß gegen WCAG 2.4.7 („Focus Visible“).</p>
+        </div>
+      </div>
+      <div class="bs-snippet" data-reveal data-reveal-delay="120">
+        <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">/* Fundament (steht so in base.css) — EIN Ring für alles Fokussierbare.
+   :focus-visible statt :focus → erscheint bei Tastatur, nicht bei Maus. */</span>
+<span class="hl">:focus-visible</span> { outline: 2px solid var(--brand-300); outline-offset: 3px; }
+
+<span class="cm">/* Eigener Fokus-Stil? Immer ERSETZEN, nie entfernen: */</span>
+.bs-input:focus-visible {
+  outline: none;                <span class="cm">/* nur ok, weil direkt Ersatz folgt: */</span>
+  border-color: var(--brand);
+  <span class="hl">box-shadow: 0 0 0 3px rgba(var(--brand-rgb),.18);</span>
+}
+
+<span class="cm">/* Custom-Checkbox: Input ist unsichtbar, aber fokussierbar —
+   der Ring wandert auf die sichtbare Box daneben. */</span>
+.democheck input:focus-visible + .box {
+  outline: 2px solid var(--brand-300); outline-offset: 3px;
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGE 3 · ARIA-Muster-Spickzettel
+     Welches Muster ist wo im Baukasten schon korrekt umgesetzt?
+     Faustregel: erst natives HTML, ARIA nur wo nötig.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlage 3 · ARIA-Spickzettel <code>5 Muster, fertig im Baukasten</code></p>
+<style>
+  .bs-a11y-aria .inner { padding-top: 72px; padding-bottom: 76px; }
+  .bs-a11y-aria .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .bs-a11y-aria .card { background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .bs-a11y-aria .card h3 { font-size: 17.5px; display: flex; align-items: center; gap: 10px; }
+  .bs-a11y-aria .card h3 .ico { width: 34px; height: 34px; flex: none; display: grid; place-items: center;
+    border-radius: 10px; background: rgba(var(--brand-rgb),.1); border: 1px solid rgba(var(--brand-rgb),.22); font-size: 16px; }
+  .bs-a11y-aria .card p { font-size: 14.5px; }
+  .bs-a11y-aria .card .wo { font-size: 12.5px; color: var(--fg-muted); }
+  .bs-a11y-aria .card .wo code { color: var(--fg-soft); background: var(--glass); border: 1px solid var(--line);
+    border-radius: 5px; padding: 1px 7px; font-size: 11.5px; }
+  .bs-a11y-aria .card .bs-snippet { margin-top: auto; }
+  .bs-a11y-aria .card .bs-snippet pre { font-size: 12px; padding: 30px 14px 14px; }
+</style>
+<section class="bs-a11y-aria">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Spickzettel</p>
+      <h2>ARIA-Muster im Baukasten</h2>
+      <p>Erste Regel von ARIA: kein ARIA, wenn natives HTML reicht. So sind die fünf häufigsten Muster hier gelöst — mit dem jeweiligen Kern-Attribut zum Kopieren.</p>
+    </div>
+    <div class="cards" data-stagger>
+      <article class="card">
+        <h3><span class="ico" aria-hidden="true">▾</span>Akkordeon</h3>
+        <p>Natives <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code> — Tastaturbedienung, Semantik und Auf/Zu-Zustand liefert der Browser, null eigenes ARIA nötig.</p>
+        <p class="wo">Im Baukasten: <code>faq.html</code> · <code>interaktiv.html</code></p>
+        <div class="bs-snippet"><button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>&lt;details class="bs-faq-item"&gt;
+  &lt;summary&gt;Was kostet der Tarif?&lt;/summary&gt;
+  &lt;p&gt;Antwort …&lt;/p&gt;
+&lt;/details&gt;</pre></div>
+      </article>
+      <article class="card">
+        <h3><span class="ico" aria-hidden="true">⊟</span>Tabs</h3>
+        <p>Rollen-Trio <code>tablist</code> / <code>tab</code> / <code>tabpanel</code>; <code>aria-selected</code> markiert den aktiven Reiter, <code>aria-controls</code> verweist aufs Panel.</p>
+        <p class="wo">Im Baukasten: <code>interaktiv.html</code> · <code>medien.html</code></p>
+        <div class="bs-snippet"><button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>&lt;div <span class="hl">role="tablist"</span> aria-label="Ansichten"&gt;
+  &lt;button role="tab" id="tab-1"
+    <span class="hl">aria-selected="true"</span> aria-controls="panel-1"&gt;…&lt;/button&gt;
+&lt;/div&gt;
+&lt;div <span class="hl">role="tabpanel"</span> id="panel-1"
+  aria-labelledby="tab-1"&gt;…&lt;/div&gt;</pre></div>
+      </article>
+      <article class="card">
+        <h3><span class="ico" aria-hidden="true">▣</span>Dialog / Modal</h3>
+        <p>Natives <code>&lt;dialog&gt;</code> mit <code>showModal()</code>: Fokus-Falle, <kbd>Esc</kbd> zum Schließen und Hintergrund-Sperre gibt es geschenkt.</p>
+        <p class="wo">Im Baukasten: <code>interaktiv.html</code> · <code>medien.html</code> · <code>leadgen.html</code></p>
+        <div class="bs-snippet"><button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>&lt;dialog id="dlg" <span class="hl">aria-labelledby="dlg-titel"</span>&gt;
+  &lt;h2 id="dlg-titel"&gt;Demo buchen&lt;/h2&gt; …
+&lt;/dialog&gt;
+&lt;script&gt;
+  document.getElementById("dlg")<span class="hl">.showModal()</span>;
+  <span class="cm">// Fokus-Falle + Esc kommen vom Browser</span>
+&lt;/script&gt;</pre></div>
+      </article>
+      <article class="card">
+        <h3><span class="ico" aria-hidden="true">⇄</span>Toggle-Button</h3>
+        <p>Ein echter <code>&lt;button&gt;</code> mit <code>aria-pressed</code> — Screenreader lesen „gedrückt / nicht gedrückt“ vor. Der Wert wird bei jedem Klick umgeschaltet.</p>
+        <p class="wo">Im Baukasten: <code>leadgen.html</code> · <code>social-proof.html</code></p>
+        <div class="bs-snippet"><button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>&lt;button type="button" <span class="hl">aria-pressed="false"</span>&gt;
+  Jährlich zahlen
+&lt;/button&gt;
+<span class="cm">// im Klick-Handler:</span>
+btn.setAttribute("aria-pressed",
+  String(btn.getAttribute("aria-pressed") !== "true"));</pre></div>
+      </article>
+      <article class="card">
+        <h3><span class="ico" aria-hidden="true">📣</span>Live-Region</h3>
+        <p>Statusmeldungen (z.&nbsp;B. „Formular gesendet“) werden nur vorgelesen, wenn der Container <em>vor</em> der Änderung schon als Live-Region im DOM steht.</p>
+        <p class="wo">Im Baukasten: <code>leadgen.html</code> · <code>danke.html</code> · <code>utility.html</code></p>
+        <div class="bs-snippet"><button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">&lt;!-- role="status" wirkt wie aria-live="polite" --&gt;</span>
+&lt;p class="bs-success-box" <span class="hl">role="status"</span>&gt;
+  Danke! Deine Anfrage ist angekommen.
+&lt;/p&gt;</pre></div>
+      </article>
+      <article class="card">
+        <h3><span class="ico" aria-hidden="true">✓</span>Merksatz</h3>
+        <p><b style="color:var(--fg)">Natives HTML zuerst.</b> <code>&lt;button&gt;</code> statt klickbarem <code>&lt;div&gt;</code>, <code>&lt;details&gt;</code> statt Akkordeon-Skript, <code>&lt;dialog&gt;</code> statt Overlay-Eigenbau. ARIA repariert kein kaputtes Markup — es ergänzt nur, was HTML nicht ausdrücken kann.</p>
+        <p class="wo">Referenz: „ARIA Authoring Practices Guide“ (APG) des W3C</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGE 4 · prefers-reduced-motion
+     Nutzer mit Bewegungsempfindlichkeit (Vestibulär-Störungen) haben
+     "Bewegung reduzieren" im System aktiv. Regel: Endzustand statt
+     Animation — Inhalte erscheinen sofort, nichts driftet oder blinkt.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlage 4 · Reduced Motion <code>@media (prefers-reduced-motion: reduce)</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-a11y-motion { position: relative; overflow: hidden; }
+  .bs-a11y-motion::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(50% 70% at 10% 0%, rgba(var(--violet-rgb),.2), transparent 60%); }
+  .bs-a11y-motion .inner { position: relative; padding-top: 72px; padding-bottom: 76px; }
+  .bs-a11y-motion .grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 32px; align-items: start; }
+  .bs-a11y-motion .rule { background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 22px 24px; margin-top: 20px; }
+  .bs-a11y-motion .rule b { display: block; font-family: var(--font-display); font-size: 19px; color: var(--fg); margin-bottom: 8px; }
+  .bs-a11y-motion .rule p { font-size: 15px; }
+  .bs-a11y-motion ul.pts { display: grid; gap: 10px; margin-top: 20px; font-size: 15px; }
+  .bs-a11y-motion ul.pts li { display: flex; gap: 10px; }
+  .bs-a11y-motion ul.pts li::before { content: "→"; color: var(--brand-300); font-weight: 700; flex: none; }
+  @media (max-width: 860px) { .bs-a11y-motion .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-a11y-motion" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="grid">
+      <div data-reveal>
+        <p class="bs-eyebrow">Bewegung</p>
+        <h2 style="font-size:clamp(26px,3.2vw,38px);font-weight:800;margin-bottom:14px">Reduced Motion respektieren</h2>
+        <p>Für Menschen mit vestibulären Störungen sind Parallax, Auto-Marquees und große Einflug-Animationen nicht lästig, sondern körperlich unangenehm. Die Systemeinstellung „Bewegung reduzieren“ meldet das per Media Query — der Baukasten reagiert global darauf.</p>
+        <div class="rule">
+          <b>Regel: Endzustand statt Animation</b>
+          <p>Nichts ausblenden, nichts weglassen — jedes animierte Element zeigt sofort seinen fertigen Zustand. Reveals stehen auf <code>opacity:&nbsp;1</code>, Zähler zeigen direkt den Zielwert, Marquees stehen still.</p>
+        </div>
+        <ul class="pts">
+          <li>Gilt automatisch für alle Bausteine — der Block steht einmal in <code>base.css</code>.</li>
+          <li>Auch das JS prüft die Einstellung: <code>base.js</code> überspringt Reveal-Observer und Zähler-Animation.</li>
+          <li>Zum Testen: macOS „Bewegung reduzieren“ bzw. in den DevTools „Emulate CSS prefers-reduced-motion“.</li>
+        </ul>
+      </div>
+      <div class="bs-snippet" data-reveal data-reveal-delay="120">
+        <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">/* Globales Muster (steht so in base.css) —
+   einmal einbinden, wirkt auf alle Bausteine: */</span>
+<span class="hl">@media (prefers-reduced-motion: reduce)</span> {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  <span class="cm">/* Endzustand statt Animation: Reveals sofort sichtbar */</span>
+  html.js [data-reveal] { <span class="hl">opacity: 1; transform: none;</span> }
+}
+
+<span class="cm">/* Und im JS (base.js): Einstellung einmal lesen … */</span>
+const reduceMotion =
+  matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+<span class="cm">/* … und z. B. beim Zähler den Zielwert direkt setzen: */</span>
+if (reduceMotion) {
+  el.textContent = zielwert.toLocaleString("de-DE");
+} <span class="cm">// sonst: requestAnimationFrame-Animation</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGE 5 · Kontrast
+     Demo-Kacheln gut/schlecht mit gemessenen Kontrastwerten
+     (Standard-Palette, helle Fläche) + Faustregeln + Prüf-Tools.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlage 5 · Kontrast <code>4,5:1 Fließtext</code> <code>3:1 groß &amp; UI</code></p>
+<style>
+  .bs-a11y-kontrast .inner { padding-top: 72px; padding-bottom: 76px; }
+  .bs-a11y-kontrast .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-bottom: 14px; }
+  .bs-a11y-kontrast .tile { border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px; min-height: 150px;
+    display: flex; flex-direction: column; gap: 6px; }
+  .bs-a11y-kontrast .tile .sample { font-family: var(--font-display); font-size: 21px; font-weight: 700; }
+  .bs-a11y-kontrast .tile .body { font-size: 14px; }
+  .bs-a11y-kontrast .tile .verdict { margin-top: auto; padding-top: 12px; font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
+  .bs-a11y-kontrast .tile .verdict.ok { color: var(--green); }
+  .bs-a11y-kontrast .tile .verdict.bad { color: var(--red); }
+  .bs-a11y-kontrast .measured { font-size: 12.5px; color: var(--fg-muted); margin-bottom: 40px; }
+  .bs-a11y-kontrast .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .bs-a11y-kontrast .rulecard { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px; }
+  .bs-a11y-kontrast .rulecard b { display: block; font-family: var(--font-display); font-size: 26px; color: var(--fg); margin-bottom: 6px; }
+  .bs-a11y-kontrast .rulecard p { font-size: 14.5px; }
+</style>
+<section class="bs-a11y-kontrast">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Farbe &amp; Lesbarkeit</p>
+      <h2>Kontrast: die zwei Faustregeln</h2>
+      <p>Hübsch-dezent ist oft schlicht unlesbar. Vier Kacheln aus den Tokens des Baukastens — zwei bestehen, zwei fallen durch.</p>
+    </div>
+    <div class="tiles" data-stagger>
+      <div class="tile" style="background:var(--card)">
+        <span class="sample" style="color:var(--fg)">Klare Sache</span>
+        <span class="body" style="color:var(--fg)">--fg auf --card</span>
+        <span class="verdict ok">≈ 18,1:1 · AA + AAA bestanden</span>
+      </div>
+      <div class="tile" style="background:var(--brand);border-color:transparent">
+        <span class="sample" style="color:#fff">Klare Sache</span>
+        <span class="body" style="color:#fff">Weiß auf --brand (CTA-Button)</span>
+        <span class="verdict ok" style="color:#fff">≈ 5,8:1 · AA bestanden</span>
+      </div>
+      <div class="tile" style="background:var(--bg)">
+        <span class="sample" style="color:var(--fg-muted)">Wird knapp</span>
+        <span class="body" style="color:var(--fg-muted)">--fg-muted auf --bg</span>
+        <span class="verdict bad">≈ 3,4:1 · fällt bei Fließtext durch — nur für großen Text ok</span>
+      </div>
+      <div class="tile" style="background:var(--bg)">
+        <span class="sample" style="color:rgba(var(--brand-rgb),.35)">Unlesbar</span>
+        <span class="body" style="color:rgba(var(--brand-rgb),.35)">Marke mit 35 % Deckkraft</span>
+        <span class="verdict bad">≈ 1,7:1 · fällt überall durch</span>
+      </div>
+    </div>
+    <p class="measured" data-reveal>Werte gemessen mit der Standard-Palette auf heller Fläche — nach jedem Farbschema-Wechsel neu prüfen.</p>
+    <div class="rules" data-stagger>
+      <div class="rulecard">
+        <b>4,5:1</b>
+        <p>Mindestkontrast für <b>Fließtext</b> und alles unter 24&nbsp;px (bzw. 18,7&nbsp;px fett) — WCAG-Stufe AA.</p>
+      </div>
+      <div class="rulecard">
+        <b>3:1</b>
+        <p>Reicht für <b>großen Text</b> (ab 24&nbsp;px / 18,7&nbsp;px fett) sowie für <b>UI-Elemente</b> wie Icons, Rahmen von Eingabefeldern und Fokus-Ringe.</p>
+      </div>
+      <div class="rulecard">
+        <b>Prüfen</b>
+        <p>Werkzeuge: <b>WebAIM Contrast Checker</b>, <b>Chrome DevTools</b> (Farb-Picker zeigt das Kontrastverhältnis), <b>Firefox Barrierefreiheit-Inspektor</b>, <b>WAVE</b>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGE 6 · Formular-Barrierefreiheit
+     label/for, aria-describedby für Fehler, aria-invalid — aufbauend
+     auf dem Formular-Fundament (.bs-field/.bs-input/.bs-error).
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlage 6 · Formular-A11y <code>label/for</code> <code>aria-describedby</code> <code>aria-invalid</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-a11y-form .inner { padding-top: 72px; padding-bottom: 76px; }
+  .bs-a11y-form .grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 32px; align-items: start; }
+  .bs-a11y-form .stage { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 24px; display: grid; gap: 18px; }
+  .bs-a11y-form .stage .hint { font-size: 13px; color: var(--fg-muted); }
+  @media (max-width: 860px) { .bs-a11y-form .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-a11y-form" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <p class="bs-eyebrow">Formulare</p>
+      <h2>Fehler, die man hören kann</h2>
+      <p>Drei Attribute machen aus dem Formular-Fundament ein barrierefreies Formular: <code>label/for</code> benennt das Feld, <code>aria-describedby</code> verknüpft die Fehlermeldung, <code>aria-invalid</code> markiert den Zustand.</p>
+    </div>
+    <div class="grid">
+      <div class="stage" data-reveal>
+        <p class="hint">Live-Demo: So klingt und aussieht der Fehlerfall. (Der Fehlerzustand ist hier zur Ansicht fest gesetzt — Demo-Füller, NICHT mitkopieren.)</p>
+        <div class="bs-field">
+          <label for="a11y-demo-email">E-Mail *</label>
+          <input class="bs-input" type="email" id="a11y-demo-email" name="email"
+                 autocomplete="email" value="max@beispiel"
+                 aria-describedby="a11y-demo-email-err" aria-invalid="true" />
+          <p class="bs-error" id="a11y-demo-email-err">Bitte gib eine vollständige E-Mail-Adresse an, z. B. max@beispiel.de.</p>
+        </div>
+        <div class="bs-field">
+          <label for="a11y-demo-name">Name *</label>
+          <input class="bs-input" type="text" id="a11y-demo-name" name="name" autocomplete="name" value="Max Muster" />
+        </div>
+        <p class="bs-success-box" role="status"><span aria-hidden="true">✓</span> Nach dem Absenden landet die Bestätigung in so einer Live-Region.</p>
+      </div>
+      <div class="bs-snippet" data-reveal data-reveal-delay="120">
+        <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">&lt;!-- novalidate: eigene Fehlertexte statt Browser-Blasen --&gt;</span>
+&lt;form novalidate&gt;
+  &lt;div class="bs-field"&gt;
+
+    <span class="cm">&lt;!-- 1) label ↔ for="id": Screenreader-Name + große Klickfläche --&gt;</span>
+    &lt;label <span class="hl">for="anfrage-email"</span>&gt;E-Mail *&lt;/label&gt;
+
+    <span class="cm">&lt;!-- 2) aria-describedby verknüpft die Fehlermeldung: sie wird
+         beim Fokussieren des Feldes mit vorgelesen.
+         3) aria-invalid erst per JS auf "true" setzen, wenn die
+         Prüfung fehlschlägt — sonst das Attribut entfernen. --&gt;</span>
+    &lt;input class="bs-input" type="email"
+           <span class="hl">id="anfrage-email"</span> name="email"
+           required autocomplete="email"
+           <span class="hl">aria-describedby="anfrage-email-err"</span>
+           <span class="hl">aria-invalid="true"</span> /&gt;
+
+    <span class="cm">&lt;!-- Fehlertext: konkret sagen, WAS zu tun ist --&gt;</span>
+    &lt;p class="bs-error" <span class="hl">id="anfrage-email-err"</span>&gt;
+      Bitte gib eine vollständige E-Mail-Adresse an.
+    &lt;/p&gt;
+  &lt;/div&gt;
+
+  <span class="cm">&lt;!-- Erfolgsmeldung als Live-Region: steht LEER schon im DOM,
+       role="status" liest den später eingesetzten Text vor --&gt;</span>
+  &lt;p class="bs-success-box" <span class="hl">role="status"</span> hidden&gt;&lt;/p&gt;
+&lt;/form&gt;</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGE 7 · Checkliste "Vor dem Launch" (12 Punkte)
+     Interaktive Häkchen — Stand wird nicht gespeichert (bewusst:
+     die Liste ist pro Projekt einmal durchzugehen).
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlage 7 · Launch-Checkliste <code>12 Punkte</code></p>
+<style>
+  .bs-a11y-check .inner { padding-top: 72px; padding-bottom: 88px; }
+  .bs-a11y-check .list { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; counter-reset: pkt; }
+  .bs-a11y-check .list li { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); }
+  .bs-a11y-check .list .bs-check { padding: 14px 16px; cursor: pointer; align-items: center; font-size: 14.5px; }
+  .bs-a11y-check .list .bs-check input { width: 19px; height: 19px; margin-top: 0; }
+  .bs-a11y-check .list .bs-check b { color: var(--fg); }
+  .bs-a11y-check .list .bs-check input:checked ~ span { text-decoration: line-through; text-decoration-color: rgba(var(--brand-rgb),.5); opacity: .65; }
+  .bs-a11y-check .note { margin-top: 24px; font-size: 13.5px; color: var(--fg-muted); text-align: center; }
+  @media (max-width: 760px) { .bs-a11y-check .list { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-a11y-check">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Vor dem Launch</p>
+      <h2>Die 12-Punkte-Checkliste</h2>
+      <p>Einmal komplett durchgehen, bevor die Seite live geht — jeder Punkt kostet Minuten, keiner Tage.</p>
+    </div>
+    <ul class="list" data-stagger>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b>Genau ein <code>&lt;h1&gt;</code> pro Seite</b> — Überschriften ohne Ebenen-Sprünge (h2 → h3, nie h2 → h4).</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b>Skip-Link vorhanden</b> und springt wirklich zu <code>&lt;main id="inhalt"&gt;</code>.</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b>Alles nur mit Tastatur bedienbar</b> — inklusive Menü, Dialoge und Akkordeons.</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b>Fokus immer sichtbar</b>, Reihenfolge folgt der Lesereihenfolge — kein <code>outline: none</code> ohne Ersatz.</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b>Jedes Bild hat <code>alt</code></b> — leer (<code>alt=""</code>) bei reiner Dekoration, CSS-Deko mit <code>aria-hidden="true"</code>.</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b>Kontraste geprüft:</b> 4,5:1 für Fließtext, 3:1 für großen Text und UI-Elemente.</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b>Formulare:</b> jedes Feld hat ein <code>label</code>, Fehler mit <code>aria-describedby</code> + <code>aria-invalid</code>.</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b>Sprechende Link- und Button-Texte</b> — kein „hier klicken“ oder „mehr“.</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b><code>lang="de"</code></b> im <code>&lt;html&gt;</code>, jede Seite mit eindeutigem <code>&lt;title&gt;</code>.</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b><code>prefers-reduced-motion</code> respektiert</b> — Endzustand statt Animation, keine Auto-Marquees.</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b>200 % Zoom ohne Verlust</b> — Layout hält bis 360 px Breite, nichts überlappt oder wird abgeschnitten.</span></label></li>
+      <li><label class="bs-check"><input type="checkbox" /> <span><b>Einmal mit Screenreader durchgetestet</b> — VoiceOver (macOS/iOS) oder NVDA (Windows).</span></label></li>
+    </ul>
+    <p class="note" data-reveal>Die Häkchen sind nur für diese Sitzung — beim Neuladen startet die Liste frisch. Für jedes neue Projekt einmal komplett abhaken.</p>
+  </div>
+</section>
+
+</main>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

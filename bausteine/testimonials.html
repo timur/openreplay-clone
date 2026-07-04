@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Testimonials</title>
+<meta name="description" content="4 wiederverwendbare Testimonial-Bausteine für Landing Pages — Plain HTML/CSS/JS, hell & dunkel." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: TESTIMONIALS 1 · Großes Einzelzitat (hell)
+     Zentriertes Zitat in Bricolage, dekoratives „ als Wasserzeichen,
+     darunter Initialen-Avatar, Name, Rolle und Firmen-Wortmarke.
+     Kopieren: diesen <style>-Block + die <section> darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Testimonials 1 · Großes Einzelzitat <code>.bs-testi-single</code></p></div>
+<style>
+  .bs-testi-single .inner { position: relative; padding-top: 110px; padding-bottom: 96px; max-width: 860px; text-align: center; }
+  .bs-testi-single .mark { position: absolute; top: 34px; left: 50%; transform: translateX(-50%);
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(140px, 20vw, 220px);
+    line-height: 1; color: var(--fg); opacity: .06; pointer-events: none; user-select: none; }
+  .bs-testi-single blockquote { position: relative; margin: 0; font-family: var(--font-display);
+    font-size: clamp(24px, 3.4vw, 34px); font-weight: 700; line-height: 1.35; letter-spacing: -.015em;
+    color: var(--fg); }
+  .bs-testi-single blockquote em { font-style: normal; color: var(--brand); }
+  .bs-testi-single .who { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 34px; }
+  .bs-testi-single .avatar { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--violet); color: #fff; font-weight: 700; font-size: 18px; margin-bottom: 8px; }
+  .bs-testi-single .who b { font-size: 16px; color: var(--fg); }
+  .bs-testi-single .who span { font-size: 14px; color: var(--fg-muted); }
+  .bs-testi-single .who .wordmark { margin-top: 10px; font-family: var(--font-display); font-weight: 800;
+    font-size: 17px; letter-spacing: .08em; color: var(--fg-soft); }
+</style>
+<section class="bs-testi-single">
+  <div class="bs-container inner" data-reveal>
+    <span class="mark" aria-hidden="true">„</span>
+    <blockquote>„Früher haben wir über Nutzerverhalten spekuliert. Heute schauen wir einfach nach — und liefern <em>doppelt so schnell</em> die richtigen Verbesserungen."</blockquote>
+    <div class="who">
+      <span class="avatar" aria-hidden="true">LH</span>
+      <b>Lena Hartmann</b>
+      <span>Head of Product, Nordlicht GmbH</span>
+      <span class="wordmark" aria-hidden="true">NORDLICHT</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: TESTIMONIALS 2 · Wall of Love (hell)
+     6 Karten im Masonry-Stil (CSS columns), ★★★★★, Zitate
+     unterschiedlicher Länge, Initialen-Avatar + Name.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Testimonials 2 · Wall of Love <code>.bs-testi-grid</code></p>
+<style>
+  .bs-testi-grid .inner { padding-top: 96px; padding-bottom: 96px; }
+  .bs-testi-grid .wall { columns: 3; column-gap: 20px; }
+  .bs-testi-grid .card { break-inside: avoid; margin-bottom: 20px;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 24px; transition: transform .2s ease, box-shadow .25s ease; }
+  .bs-testi-grid .card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .bs-testi-grid .stars { color: var(--orange); font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
+  .bs-testi-grid blockquote { margin: 0 0 18px; font-size: 15.5px; line-height: 1.6; color: var(--fg-soft); }
+  .bs-testi-grid .who { display: flex; align-items: center; gap: 11px; }
+  .bs-testi-grid .avatar { width: 36px; height: 36px; flex: none; border-radius: 50%; display: grid; place-items: center;
+    color: #fff; font-weight: 700; font-size: 12.5px; }
+  .bs-testi-grid .who b { display: block; font-size: 14px; color: var(--fg); line-height: 1.3; }
+  .bs-testi-grid .who span { font-size: 12.5px; color: var(--fg-muted); }
+  @media (max-width: 900px) { .bs-testi-grid .wall { columns: 2; } }
+  @media (max-width: 620px) { .bs-testi-grid .wall { columns: 1; } }
+</style>
+<section class="bs-testi-grid">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow" style="justify-content:center">Wall of Love</p>
+      <h2>Teams, die nicht mehr zurückwollen</h2>
+      <p>Über 2.000 Bewertungen — im Schnitt 4,9 von 5 Sternen.</p>
+    </div>
+    <div class="wall" data-stagger>
+      <div class="card">
+        <p class="stars" aria-label="5 von 5 Sternen">★★★★★</p>
+        <blockquote>„Der erste Replay hat uns einen Bug gezeigt, den wir seit drei Wochen gesucht haben. Nach zehn Minuten war klar, woran es lag."</blockquote>
+        <div class="who"><span class="avatar" style="background:var(--brand)" aria-hidden="true">JW</span><span><b>Jonas Weber</b><span>CTO, zeltwerk</span></span></div>
+      </div>
+      <div class="card">
+        <p class="stars" aria-label="5 von 5 Sternen">★★★★★</p>
+        <blockquote>„Endlich Analytics, die das ganze Team versteht."</blockquote>
+        <div class="who"><span class="avatar" style="background:var(--teal)" aria-hidden="true">MS</span><span><b>Miriam Schuster</b><span>Product Lead, Palette</span></span></div>
+      </div>
+      <div class="card">
+        <p class="stars" aria-label="5 von 5 Sternen">★★★★★</p>
+        <blockquote>„Wir haben unseren Onboarding-Funnel komplett umgebaut, nachdem wir gesehen haben, wo Nutzer wirklich aussteigen. Die Aktivierungsrate ist seitdem um ein Drittel gestiegen — und das Support-Postfach spürbar leerer."</blockquote>
+        <div class="who"><span class="avatar" style="background:var(--violet)" aria-hidden="true">TK</span><span><b>Tobias Krüger</b><span>Growth, brandung</span></span></div>
+      </div>
+      <div class="card">
+        <p class="stars" aria-label="5 von 5 Sternen">★★★★★</p>
+        <blockquote>„Setup in einer Mittagspause erledigt. DSGVO-Freigabe von unserer Rechtsabteilung kam ohne eine einzige Rückfrage."</blockquote>
+        <div class="who"><span class="avatar" style="background:var(--orange)" aria-hidden="true">AL</span><span><b>Anna Lindner</b><span>Engineering Manager, MERIDIAN</span></span></div>
+      </div>
+      <div class="card">
+        <p class="stars" aria-label="5 von 5 Sternen">★★★★★</p>
+        <blockquote>„Die KI-Zusammenfassungen sparen mir jede Woche Stunden. Ich lese drei Sätze statt vierzig Replays zu schauen."</blockquote>
+        <div class="who"><span class="avatar" style="background:var(--green)" aria-hidden="true">DR</span><span><b>David Roth</b><span>UX Research, Nordlicht GmbH</span></span></div>
+      </div>
+      <div class="card">
+        <p class="stars" aria-label="5 von 5 Sternen">★★★★★</p>
+        <blockquote>„Unser Standup beginnt inzwischen mit dem Dashboard. Ehrlichere Diskussionen hatten wir nie."</blockquote>
+        <div class="who"><span class="avatar" style="background:var(--red)" aria-hidden="true">SB</span><span><b>Sophie Brandt</b><span>Co-Founderin, kupfer&amp;söhne</span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: TESTIMONIALS 3 · Logo-Leiste + Zitat (dunkel)
+     Wortmarken-Marquee ([data-marquee]) und darunter EIN hervor-
+     gehobenes Zitat mit großer Kennzahl daneben.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Testimonials 3 · Logo-Leiste + Zitat <code>.bs-testi-logos</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-testi-logos .inner { padding-top: 80px; padding-bottom: 88px; }
+  .bs-testi-logos .lead { text-align: center; font-size: 13px; color: var(--fg-muted); margin-bottom: 20px; }
+  .bs-testi-logos .marquee { overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+  .bs-testi-logos .marquee-track { display: flex; gap: 56px; width: max-content; animation: bsTestiMarquee 28s linear infinite; }
+  .bs-testi-logos .marquee-track span { font-family: var(--font-display); font-weight: 700; font-size: 19px;
+    color: var(--fg-muted); white-space: nowrap; }
+  @keyframes bsTestiMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .bs-testi-logos .feature { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center;
+    margin-top: 64px; padding: 40px 44px; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); }
+  .bs-testi-logos blockquote { margin: 0; font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(19px, 2.4vw, 25px); line-height: 1.4; letter-spacing: -.01em; color: var(--fg); }
+  .bs-testi-logos .who { display: flex; align-items: center; gap: 12px; margin-top: 20px; }
+  .bs-testi-logos .avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--teal); color: #fff; font-weight: 700; font-size: 14px; }
+  .bs-testi-logos .who b { display: block; font-size: 15px; color: var(--fg); line-height: 1.3; }
+  .bs-testi-logos .who span { font-size: 13px; color: var(--fg-muted); }
+  .bs-testi-logos .metric { text-align: center; padding-left: 44px; border-left: 1px solid var(--line); }
+  .bs-testi-logos .metric b { display: block; font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(38px, 5vw, 56px); letter-spacing: -.02em; color: var(--fg); white-space: nowrap; }
+  .bs-testi-logos .metric span { font-size: 14px; color: var(--fg-muted); }
+  @media (max-width: 780px) {
+    .bs-testi-logos .feature { grid-template-columns: 1fr; gap: 28px; padding: 28px 24px; }
+    .bs-testi-logos .metric { border-left: none; border-top: 1px solid var(--line); padding: 24px 0 0; }
+  }
+</style>
+<section class="bs-testi-logos" data-theme="dark">
+  <div class="bs-container inner">
+    <p class="lead" data-reveal>Im Einsatz bei Produkt-Teams von</p>
+    <div class="marquee" data-reveal>
+      <div class="marquee-track" data-marquee>
+        <span>NORDLICHT</span><span>kupfer&amp;söhne</span><span>PALETTE</span><span>brandung</span><span>MERIDIAN</span><span>zeltwerk</span>
+      </div>
+    </div>
+    <div class="feature" data-reveal data-reveal-delay="150">
+      <div>
+        <blockquote>„Seit wir jede Support-Anfrage mit dem passenden Replay öffnen, lösen wir Tickets beim ersten Kontakt. Die Warteschlange ist so kurz wie nie."</blockquote>
+        <div class="who">
+          <span class="avatar" aria-hidden="true">FN</span>
+          <span><b>Felix Neumann</b><span>Head of Support, MERIDIAN</span></span>
+        </div>
+      </div>
+      <div class="metric">
+        <b>−63&nbsp;%</b>
+        <span>Support-Tickets<br />in sechs Monaten</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: TESTIMONIALS 4 · Case-Study-Karte (hell)
+     Links Verlaufs-Fläche mit großer Kennzahl, rechts Zitat,
+     Person und „Case Study lesen →"-Link.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Testimonials 4 · Case-Study-Karte <code>.bs-testi-case</code></p>
+<style>
+  .bs-testi-case .inner { padding-top: 96px; padding-bottom: 96px; }
+  .bs-testi-case .case { display: grid; grid-template-columns: 0.9fr 1.1fr; overflow: hidden;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow); }
+  .bs-testi-case .visual { position: relative; display: flex; flex-direction: column; justify-content: center;
+    gap: 6px; padding: 48px 40px; color: #fff;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--violet) 55%, var(--indigo-2) 100%); }
+  .bs-testi-case .visual::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(70% 60% at 80% 15%, rgba(255,255,255,.18), transparent 60%); }
+  .bs-testi-case .visual small { position: relative; font-size: 12.5px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
+  .bs-testi-case .visual b { position: relative; font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(52px, 7vw, 84px); line-height: 1; letter-spacing: -.03em; }
+  .bs-testi-case .visual span { position: relative; font-size: 15px; opacity: .88; max-width: 26ch; }
+  .bs-testi-case .content { padding: 48px 44px; display: flex; flex-direction: column; }
+  .bs-testi-case blockquote { margin: 0; font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(19px, 2.2vw, 24px); line-height: 1.45; letter-spacing: -.01em; color: var(--fg); }
+  .bs-testi-case .who { display: flex; align-items: center; gap: 12px; margin-top: 24px; }
+  .bs-testi-case .avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--orange); color: #fff; font-weight: 700; font-size: 14px; }
+  .bs-testi-case .who b { display: block; font-size: 15px; color: var(--fg); line-height: 1.3; }
+  .bs-testi-case .who span { font-size: 13px; color: var(--fg-muted); }
+  .bs-testi-case .more { margin-top: auto; padding-top: 28px; align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-weight: 700; font-size: 15.5px; color: var(--brand); }
+  .bs-testi-case .more:hover { gap: 11px; }
+  .bs-testi-case .more { transition: gap .2s ease; }
+  @media (max-width: 780px) {
+    .bs-testi-case .case { grid-template-columns: 1fr; }
+    .bs-testi-case .visual { padding: 36px 28px; }
+    .bs-testi-case .content { padding: 32px 28px; }
+    .bs-testi-case .more { padding-top: 24px; }
+  }
+</style>
+<section class="bs-testi-case">
+  <div class="bs-container inner">
+    <div class="case" data-reveal="zoom">
+      <div class="visual">
+        <small>Case Study · Palette</small>
+        <b>+218&nbsp;%</b>
+        <span>mehr abgeschlossene Onboardings in nur einem Quartal</span>
+      </div>
+      <div class="content">
+        <blockquote>„Wir haben in den Replays gesehen, dass Nutzer an Schritt 3 unseres Onboardings scheitern — nicht an unserem Pricing. Ein Nachmittag Umbau hat mehr gebracht als drei Monate A/B-Tests."</blockquote>
+        <div class="who">
+          <span class="avatar" aria-hidden="true">CV</span>
+          <span><b>Clara Vogel</b><span>VP Product, Palette</span></span>
+        </div>
+        <a class="more" href="#">Case Study lesen <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Grundlagen: Performance &amp; Medien</title>
+<meta name="description" content="Performance-Grundlagen für Landing Pages: responsive Bilder, Hero-Preload, Font-Loading, Video-Facade, content-visibility, Core Web Vitals — mit kopierbaren Snippets." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGEN 1 · Responsive Bilder (AVIF/WebP/JPG-Kaskade)
+     Das eine Bild-Muster, das auf jede Landing Page gehört:
+     <picture> + srcset/sizes + lazy + width/height gegen CLS.
+     Kopieren: das Snippet — die Erklärspalte ist Doku.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Grundlagen 1 · Responsive Bilder <code>.bs-perf-img</code> <code>data-theme="dark"</code></p></div>
+<style>
+  .bs-perf-img { position: relative; overflow: hidden; }
+  .bs-perf-img::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(55% 75% at 90% 0%, rgba(var(--brand-rgb),.18), transparent 60%); }
+  .bs-perf-img .inner { position: relative; padding-top: 84px; padding-bottom: 84px; }
+  .bs-perf-img .grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 44px; align-items: start; }
+  .bs-perf-img .why { display: grid; gap: 14px; }
+  .bs-perf-img .why li { display: flex; gap: 12px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 16px; }
+  .bs-perf-img .why code { font: 600 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--brand-300); white-space: nowrap; }
+  .bs-perf-img .why i { flex: none; width: 26px; height: 26px; border-radius: 8px; font-style: normal;
+    display: grid; place-items: center; font-size: 13px; font-weight: 800; color: var(--fg);
+    background: rgba(var(--brand-rgb),.22); border: 1px solid rgba(var(--brand-rgb),.4); }
+  .bs-perf-img .why p { font-size: 14.5px; line-height: 1.55; }
+  .bs-perf-img .why b { color: var(--fg); }
+  @media (max-width: 900px) { .bs-perf-img .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-perf-img" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <p class="bs-eyebrow">Grundlagen · Performance</p>
+      <h2>Responsive Bilder: ein Muster für alle Fälle</h2>
+      <p>Bilder sind auf den meisten Landing Pages der größte Ballast. Diese Kaskade liefert jedem Browser das kleinste Format und jedem Gerät die passende Größe — ohne Layout-Sprünge.</p>
+    </div>
+    <div class="grid">
+      <ul class="why" data-stagger>
+        <li><i>1</i><p><b>Format-Kaskade:</b> Der Browser nimmt die <em>erste</em> <code>&lt;source&gt;</code>, die er dekodieren kann — AVIF spart gegenüber JPG oft 50&nbsp;%+, WebP ist der breite Mittelweg.</p></li>
+        <li><i>2</i><p><b><code>srcset</code> + <code>sizes</code>:</b> Der Browser rechnet selbst aus, welche Auflösung er braucht. Ein Smartphone lädt so nie das 1440-px-Desktop-Bild.</p></li>
+        <li><i>3</i><p><b><code>width</code>/<code>height</code>:</b> Reserviert den Platz, bevor das Bild da ist — der Inhalt springt nicht (CLS = 0). CSS darf die Anzeigegröße trotzdem ändern.</p></li>
+        <li><i>4</i><p><b><code>loading="lazy"</code>:</b> Bilder unterhalb des sichtbaren Bereichs werden erst beim Scrollen geladen. <code>decoding="async"</code> hält das Dekodieren aus dem kritischen Pfad.</p></li>
+      </ul>
+      <div class="bs-snippet" data-reveal="right">
+        <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">&lt;!-- Format-Kaskade: Der Browser nimmt die ERSTE &lt;source&gt;,
+     deren type er unterstützt. Reihenfolge = Priorität:
+     AVIF (kleinste Dateien) → WebP → JPG-Fallback im &lt;img&gt;. --&gt;</span>
+&lt;picture&gt;
+  &lt;source <span class="hl">type="image/avif"</span>
+          srcset="team-480.avif  480w,
+                  team-960.avif  960w,
+                  team-1440.avif 1440w"
+          sizes="(max-width: 700px) 100vw, 50vw"&gt;
+  &lt;source <span class="hl">type="image/webp"</span>
+          srcset="team-480.webp  480w,
+                  team-960.webp  960w,
+                  team-1440.webp 1440w"
+          sizes="(max-width: 700px) 100vw, 50vw"&gt;
+
+  <span class="cm">&lt;!-- Fallback + alle Bild-Attribute gehören ans &lt;img&gt;:
+       · srcset/sizes  → Browser wählt die passende Auflösung
+         („bis 700px Viewport bin ich 100vw breit, sonst 50vw")
+       · width/height  → Seitenverhältnis bekannt = kein CLS,
+         auch wenn CSS das Bild später anders skaliert
+       · loading="lazy" NUR unterhalb des Folds (Hero: s. unten!)
+       · alt beschreibt den Inhalt — leer nur bei reiner Deko --&gt;</span>
+  &lt;img src="team-960.jpg"
+       srcset="team-480.jpg  480w,
+               team-960.jpg  960w,
+               team-1440.jpg 1440w"
+       sizes="(max-width: 700px) 100vw, 50vw"
+       alt="Das Team bespricht Wireframes am Whiteboard"
+       <span class="hl">width="1440" height="960"</span>
+       <span class="hl">loading="lazy" decoding="async"</span>&gt;
+&lt;/picture&gt;</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGEN 2 · Hero-Bild-Sonderfall (LCP)
+     Das größte Bild above the fold ist fast immer das LCP-Element:
+     NIE lazy laden, stattdessen preload + fetchpriority="high".
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlagen 2 · Hero-Bild &amp; LCP <code>.bs-perf-hero</code> <code>hell</code></p>
+<style>
+  .bs-perf-hero .inner { padding-top: 84px; padding-bottom: 84px; }
+  .bs-perf-hero .grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 44px; align-items: start; }
+  .bs-perf-hero .rule { display: flex; gap: 12px; align-items: flex-start;
+    border: 1px solid var(--line); background: var(--card); border-radius: var(--r-md);
+    padding: 14px 16px; margin-bottom: 14px; font-size: 14.5px; box-shadow: var(--shadow); }
+  .bs-perf-hero .rule b { color: var(--fg); }
+  .bs-perf-hero .rule .mark { flex: none; width: 26px; height: 26px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 13px; font-weight: 800; }
+  .bs-perf-hero .rule.do .mark { color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
+  .bs-perf-hero .rule.dont .mark { color: var(--red); background: color-mix(in srgb, var(--red) 12%, transparent); }
+  @media (max-width: 900px) { .bs-perf-hero .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-perf-hero">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <p class="bs-eyebrow">Grundlagen · Performance</p>
+      <h2>Sonderfall Hero-Bild: das LCP-Element</h2>
+      <p>Das große Bild ganz oben entscheidet über deinen LCP-Wert. Für dieses eine Bild gelten andere Regeln als für den Rest der Seite.</p>
+    </div>
+    <div class="grid">
+      <div data-stagger>
+        <div class="rule dont"><span class="mark" aria-hidden="true">✕</span><p><b>Kein <code>loading="lazy"</code> above the fold.</b> Lazy Loading verzögert genau das Bild, das am schnellsten da sein muss — der häufigste LCP-Fehler überhaupt.</p></div>
+        <div class="rule do"><span class="mark" aria-hidden="true">✓</span><p><b><code>fetchpriority="high"</code> setzen.</b> Hebt das Hero-Bild in der Download-Warteschlange über Skripte und andere Bilder.</p></div>
+        <div class="rule do"><span class="mark" aria-hidden="true">✓</span><p><b>Per <code>&lt;link rel="preload"&gt;</code> vorladen.</b> Der Browser startet den Download schon beim Parsen des <code>&lt;head&gt;</code> — bevor er das <code>&lt;img&gt;</code> überhaupt gesehen hat.</p></div>
+        <div class="rule do"><span class="mark" aria-hidden="true">✓</span><p><b>Format konsistent halten.</b> Preload und <code>&lt;img&gt;</code> müssen auf dieselbe Datei zeigen, sonst lädt der Browser doppelt. Bei einer AVIF-Kaskade also das AVIF vorladen.</p></div>
+      </div>
+      <div class="bs-snippet" data-reveal="right">
+        <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">&lt;!-- 1) Im &lt;head&gt;: LCP-Bild vorladen. imagesrcset/imagesizes
+     spiegeln das &lt;img&gt;, damit exakt EINE Datei geladen wird. --&gt;</span>
+&lt;link rel="preload" as="image"
+      href="hero-1200.webp"
+      <span class="hl">imagesrcset</span>="hero-800.webp   800w,
+                   hero-1200.webp 1200w,
+                   hero-1600.webp 1600w"
+      <span class="hl">imagesizes</span>="100vw"
+      <span class="hl">fetchpriority="high"</span>&gt;
+
+<span class="cm">&lt;!-- 2) Das Hero-Bild im &lt;body&gt;:
+     · KEIN loading="lazy" — es ist sofort sichtbar
+     · fetchpriority="high" auch hier
+     · width/height gegen Layout-Sprünge --&gt;</span>
+&lt;img src="hero-1200.webp"
+     srcset="hero-800.webp   800w,
+             hero-1200.webp 1200w,
+             hero-1600.webp 1600w"
+     sizes="100vw"
+     alt="Dashboard mit Wochenauswertung und Live-Zahlen"
+     width="1600" height="900"
+     <span class="hl">fetchpriority="high"</span> decoding="async"&gt;</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGEN 3 · Font-Loading
+     preconnect + display=swap (das Muster dieses Projekts) und die
+     selbst gehostete Variante mit @font-face + unicode-range.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlagen 3 · Font-Loading <code>.bs-perf-fonts</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-perf-fonts { position: relative; overflow: hidden; }
+  .bs-perf-fonts::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(50% 70% at 5% 100%, rgba(var(--violet-rgb),.18), transparent 60%); }
+  .bs-perf-fonts .inner { position: relative; padding-top: 84px; padding-bottom: 84px; }
+  .bs-perf-fonts .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  .bs-perf-fonts h3 { font-size: 19px; margin-bottom: 12px; }
+  .bs-perf-fonts .hint { margin-top: 16px; display: flex; gap: 10px; align-items: flex-start;
+    font-size: 14px; border: 1px solid color-mix(in srgb, var(--orange) 45%, transparent);
+    background: color-mix(in srgb, var(--orange) 10%, transparent);
+    border-radius: var(--r-md); padding: 12px 14px; }
+  .bs-perf-fonts .hint b { color: var(--fg); }
+  @media (max-width: 900px) { .bs-perf-fonts .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-perf-fonts" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <p class="bs-eyebrow">Grundlagen · Performance</p>
+      <h2>Fonts laden, ohne Text zu blockieren</h2>
+      <p>Webfonts sind schön — aber unsichtbarer Text (FOIT) ist der schlechteste Deal. <code>display=swap</code> zeigt sofort die Systemschrift und tauscht, sobald die Webfont da ist.</p>
+    </div>
+    <div class="grid">
+      <div data-reveal>
+        <h3>Google Fonts (Muster dieses Projekts)</h3>
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">&lt;!-- 1) Früh verbinden: DNS + TLS zu beiden Hosts schon im
+     &lt;head&gt; aufbauen. crossorigin ist für den Font-Host
+     (fonts.gstatic.com) Pflicht, sonst doppelte Verbindung. --&gt;</span>
+&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com"
+      <span class="hl">crossorigin</span>&gt;
+
+<span class="cm">&lt;!-- 2) display=swap: Text erscheint sofort in der
+     Fallback-Schrift, kein unsichtbarer Text (FOIT). --&gt;</span>
+&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Figtree:ital,wght@0,300..900;1,300..700&amp;<span class="hl">display=swap</span>"&gt;</pre>
+        </div>
+        <p class="hint"><span aria-hidden="true">⚠</span><span><b>Subset-Hinweis:</b> Google liefert automatisch nach <code>unicode-range</code> gesplittete Subsets — der Browser lädt nur die Zeichenbereiche, die die Seite braucht. Für Einzeltexte (z.&nbsp;B. eine Logo-Wortmarke) geht noch weniger: <code>&amp;text=Firmenname</code> an die URL hängen lädt nur exakt diese Glyphen.</span></p>
+      </div>
+      <div data-reveal data-reveal-delay="120">
+        <h3>Selbst gehostet (DSGVO-freundlich)</h3>
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">/* Variable Font, ein einziges WOFF2 für alle Gewichte.
+   font-display: swap = sofort lesbarer Text.            */</span>
+@font-face {
+  font-family: "Figtree";
+  src: url("/fonts/figtree-latin.woff2") format("woff2");
+  font-weight: 300 900;      <span class="cm">/* variabler Gewichtsbereich */</span>
+  font-style: normal;
+  <span class="hl">font-display: swap;</span>
+  <span class="cm">/* Subset: Datei enthält nur Latin — der Browser lädt
+     sie gar nicht erst, wenn kein Zeichen daraus vorkommt. */</span>
+  <span class="hl">unicode-range: U+0000-00FF, U+2013-2014, U+20AC, U+201C-201E;</span>
+}
+
+<span class="cm">/* Im &lt;head&gt; zusätzlich vorladen — Fonts entdeckt der
+   Browser sonst erst NACH dem CSS-Download:
+   &lt;link rel="preload" as="font" type="font/woff2"
+         href="/fonts/figtree-latin.woff2" crossorigin&gt; */</span></pre>
+        </div>
+        <p class="hint"><span aria-hidden="true">⚠</span><span><b>Weniger ist mehr:</b> Maximal zwei Familien, nur die Schnitte, die wirklich im Design vorkommen. Jede weitere Variante ist ein zusätzlicher Download vor dem ersten sauberen Rendern.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGEN 4 · Video-Facade (LIVE-Baustein)
+     Statt ein YouTube-iframe (≈ 1 MB JS + Tracking) sofort zu laden:
+     gestaltetes Poster + Play-Button, das echte iframe kommt erst
+     bei Klick. Links die Live-Demo (Nachladen simuliert), rechts
+     die echten, kopierbaren Snippets.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlagen 4 · Video-Facade (live) <code>.bs-video-facade</code> <code>hell</code></p>
+<style>
+  .bs-video-facade .inner { padding-top: 84px; padding-bottom: 84px; }
+  .bs-video-facade .grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: start; }
+  .bs-video-facade h3 { font-size: 17px; margin: 22px 0 10px; }
+  .bs-video-facade .grid h3:first-child { margin-top: 0; }
+
+  /* Facade: Wrapper reserviert 16:9 (kein CLS), Button ist das Poster */
+  .bs-video-facade .facade-wrap { aspect-ratio: 16 / 9; border-radius: var(--r-md);
+    overflow: hidden; box-shadow: var(--shadow); }
+  .bs-video-facade .facade { position: relative; width: 100%; height: 100%;
+    display: block; padding: 0; border: 1px solid var(--line); border-radius: inherit;
+    cursor: pointer; overflow: hidden; text-align: left;
+    background:
+      radial-gradient(60% 80% at 75% 20%, rgba(var(--violet-rgb),.5), transparent 65%),
+      radial-gradient(70% 90% at 15% 90%, rgba(var(--brand-rgb),.55), transparent 65%),
+      var(--indigo-deep); }
+  .bs-video-facade .facade:hover .play { transform: scale(1.08); }
+  /* Demo-Poster: angedeutetes App-Fenster (in echt: WebP-Poster < 50 KB) */
+  .bs-video-facade .poster-ui { position: absolute; left: 8%; right: 8%; top: 14%; bottom: -6%;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16);
+    border-radius: 12px 12px 0 0; backdrop-filter: blur(2px); }
+  .bs-video-facade .poster-ui i { position: absolute; left: 6%; border-radius: 6px;
+    background: rgba(255,255,255,.14); height: 9%; }
+  .bs-video-facade .poster-ui i:nth-child(1) { top: 10%; width: 34%; }
+  .bs-video-facade .poster-ui i:nth-child(2) { top: 26%; width: 56%; opacity: .7; }
+  .bs-video-facade .poster-ui i:nth-child(3) { top: 42%; width: 44%; opacity: .45; }
+  .bs-video-facade .play { position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+    width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--brand); color: #fff; font-size: 26px;
+    box-shadow: 0 12px 34px -8px rgba(var(--brand-rgb),.8), 0 0 0 10px rgba(var(--brand-rgb),.18);
+    transition: transform .2s ease; }
+  .bs-video-facade .play svg { margin-left: 5px; }
+  .bs-video-facade .meta { position: absolute; left: 16px; bottom: 14px; right: 16px;
+    display: flex; align-items: center; gap: 10px; color: #fff; font-size: 14px; }
+  .bs-video-facade .meta b { font-family: var(--font-display); font-size: 16px; }
+  .bs-video-facade .meta .dur { margin-left: auto; font-size: 12.5px; font-weight: 700;
+    background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.25);
+    padding: 3px 10px; border-radius: 999px; }
+
+  /* Simulierter Player nach Klick (nur Demo) */
+  .bs-video-facade .facade-sim { width: 100%; height: 100%; display: grid; place-items: center;
+    gap: 0; text-align: center; background: var(--indigo-deep); color: rgba(255,255,255,.85);
+    font-size: 15px; padding: 24px; }
+  .bs-video-facade .facade-sim small { color: rgba(255,255,255,.55); }
+  .bs-video-facade .sim-spin { width: 34px; height: 34px; margin: 0 auto 14px;
+    border-radius: 50%; border: 3px solid rgba(255,255,255,.2); border-top-color: var(--brand-300);
+    animation: bsSimSpin 1s linear infinite; }
+  @keyframes bsSimSpin { to { transform: rotate(360deg); } }
+
+  .bs-video-facade .demo-note { margin-top: 12px; font-size: 13px; color: var(--fg-muted); }
+  .bs-video-facade .gain { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  @media (max-width: 900px) { .bs-video-facade .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-video-facade">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <p class="bs-eyebrow">Grundlagen · Medien</p>
+      <h2>Video-Facade: der Player kommt erst bei Klick</h2>
+      <p>Ein eingebettetes YouTube-iframe lädt sofort rund ein Megabyte JavaScript plus Tracking — auch wenn niemand auf Play drückt. Die Facade zeigt nur ein Poster; das echte iframe wird erst beim Klick nachgeladen.</p>
+    </div>
+    <div class="grid">
+      <div data-reveal>
+        <!-- LIVE-DEMO: Klick ersetzt die Facade durch einen simulierten Player.
+             Das Poster ist hier reines CSS (keine externen Assets) —
+             auf echten Seiten: komprimiertes WebP/JPG-Poster < 50 KB. -->
+        <div class="facade-wrap">
+          <button class="facade" type="button" id="bs-demo-facade"
+                  aria-label="Video abspielen: Produkt-Tour, 2 Minuten 34 Sekunden">
+            <span class="poster-ui" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="play" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.6v14.8c0 .9 1 1.5 1.8 1L20.6 13c.8-.5.8-1.6 0-2.1L8.8 3.6C8 3.1 7 3.7 7 4.6z"/></svg></span>
+            <span class="meta" aria-hidden="true"><b>Produkt-Tour</b><span class="dur">2:34</span></span>
+          </button>
+        </div>
+        <p class="demo-note">Live-Demo: Der Klick simuliert das Nachladen. Auf echten Seiten übernimmt das JS-Snippet rechts und lädt das echte iframe.</p>
+        <div class="gain">
+          <span class="bs-badge">✓ 0 KB Video-JS beim Seitenaufruf</span>
+          <span class="bs-badge">✓ Kein Tracking vor dem Klick</span>
+          <span class="bs-badge">✓ Kein CLS dank aspect-ratio</span>
+        </div>
+      </div>
+      <div data-reveal data-reveal-delay="120">
+        <h3>1 · Markup (Poster + Button)</h3>
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">&lt;!-- Wrapper hält 16:9 → reserviert Platz, kein CLS --&gt;</span>
+&lt;div class="video-facade-wrap"&gt;
+  &lt;button class="video-facade" type="button"
+          <span class="hl">data-video-id="AbC123xYz45"</span>
+          data-video-title="Produkt-Tour"
+          aria-label="Video abspielen: Produkt-Tour (2:34)"&gt;
+    &lt;img src="video-poster.webp" alt=""
+         width="1280" height="720"
+         loading="lazy" decoding="async"&gt;
+    &lt;span class="play" aria-hidden="true"&gt;▶&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;noscript&gt;&lt;a href="https://www.youtube.com/watch?v=AbC123xYz45"&gt;
+    Video auf YouTube ansehen&lt;/a&gt;&lt;/noscript&gt;
+&lt;/div&gt;</pre>
+        </div>
+        <h3>2 · CSS (Platz reservieren)</h3>
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>.video-facade-wrap { <span class="hl">aspect-ratio: 16 / 9;</span> }
+.video-facade-wrap iframe,
+.video-facade { width: 100%; height: 100%; border: 0; }</pre>
+        </div>
+        <h3>3 · JavaScript (iframe erst bei Klick)</h3>
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">// Facade: das schwere iframe erst bei Klick erzeugen.
+// youtube-nocookie.com = Embed ohne Cookies vor dem Abspielen.</span>
+document.querySelectorAll(".video-facade").forEach((btn) =&gt; {
+  btn.addEventListener("click", () =&gt; {
+    const iframe = document.createElement("iframe");
+    iframe.src = "https://www.youtube-nocookie.com/embed/"
+      + encodeURIComponent(btn.dataset.videoId) + <span class="hl">"?autoplay=1"</span>;
+    iframe.title = btn.dataset.videoTitle || "Video";
+    iframe.allow =
+      "autoplay; encrypted-media; picture-in-picture";
+    iframe.allowFullscreen = true;
+    <span class="hl">btn.replaceWith(iframe);</span> <span class="cm">// Wrapper hält weiter 16:9</span>
+  }, <span class="hl">{ once: true }</span>);
+});</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+/* NUR DEMO — NICHT mitkopieren: simuliert das Nachladen der Facade,
+   damit die Beispielseite offline/ohne externe iframes funktioniert.
+   Auf echten Seiten stattdessen das JS-Snippet aus dem Baustein nutzen. */
+(function () {
+  "use strict";
+  var btn = document.getElementById("bs-demo-facade");
+  if (!btn) return;
+  btn.addEventListener("click", function () {
+    var sim = document.createElement("div");
+    sim.className = "facade-sim";
+    sim.setAttribute("tabindex", "-1");
+    sim.innerHTML =
+      '<div><span class="sim-spin" aria-hidden="true"></span>' +
+      '<p>Player nachgeladen — hier liefe jetzt das echte Video.<br>' +
+      '<small>(Demo-Simulation: kein externes iframe auf dieser Beispielseite)</small></p></div>';
+    btn.replaceWith(sim);
+    sim.focus();
+  }, { once: true });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGEN 5 · Lazy-Sektionen mit content-visibility
+     Rendering-Kosten langer Seiten senken: Sektionen unterhalb des
+     Folds erst rendern, wenn sie in Viewport-Nähe kommen.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlagen 5 · Lazy-Sektionen <code>.bs-perf-cv</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-perf-cv { position: relative; overflow: hidden; }
+  .bs-perf-cv::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(50% 70% at 95% 100%, rgba(var(--brand-rgb),.16), transparent 60%); }
+  .bs-perf-cv .inner { position: relative; padding-top: 84px; padding-bottom: 84px; }
+  .bs-perf-cv .grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: start; }
+  .bs-perf-cv .warn { display: grid; gap: 12px; }
+  .bs-perf-cv .warn li { display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px;
+    border: 1px solid color-mix(in srgb, var(--orange) 45%, transparent);
+    background: color-mix(in srgb, var(--orange) 9%, transparent);
+    border-radius: var(--r-md); padding: 13px 15px; }
+  .bs-perf-cv .warn b { color: var(--fg); }
+  .bs-perf-cv .warn .w { flex: none; color: var(--orange); font-weight: 800; }
+  @media (max-width: 900px) { .bs-perf-cv .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-perf-cv" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <p class="bs-eyebrow">Grundlagen · Performance</p>
+      <h2>Lange Seiten: Sektionen lazy rendern</h2>
+      <p>Der Browser layoutet und malt normalerweise die <em>ganze</em> Seite beim Start — auch die zehnte Sektion, die niemand sieht. <code>content-visibility:&nbsp;auto</code> verschiebt diese Arbeit, bis die Sektion in Viewport-Nähe scrollt.</p>
+    </div>
+    <div class="grid">
+      <div class="bs-snippet" data-reveal>
+        <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">/* Auf Sektionen UNTERHALB des Folds legen — der Browser
+   überspringt Layout & Paint, bis die Sektion beim Scrollen
+   in die Nähe des Viewports kommt.                          */</span>
+.lazy-section {
+  <span class="hl">content-visibility: auto;</span>
+
+  <span class="cm">/* Pflicht-Begleiter: Platzhalter-Größe für den noch nicht
+     gerenderten Inhalt. „auto 640px" heißt:
+     · 640px  = Schätzung fürs allererste Layout
+     · auto   = nach dem ersten Rendern merkt sich der
+                Browser die ECHTE Höhe → kein Springen mehr  */</span>
+  <span class="hl">contain-intrinsic-size: auto 640px;</span>
+}
+
+<span class="cm">/* Einsatz im Markup — jede große Sektion unterhalb
+   des sichtbaren Starts bekommt die Klasse:
+   &lt;section class="features lazy-section"&gt;…&lt;/section&gt;
+   &lt;section class="pricing  lazy-section"&gt;…&lt;/section&gt;  */</span></pre>
+      </div>
+      <ul class="warn" data-stagger>
+        <li><span class="w" aria-hidden="true">⚠</span><p><b>Nie above the fold.</b> Auf sichtbare Start-Sektionen oder das LCP-Element angewendet verschlechtert es den Start, statt zu helfen.</p></li>
+        <li><span class="w" aria-hidden="true">⚠</span><p><b>Schätzung realistisch wählen.</b> Liegt <code>contain-intrinsic-size</code> weit daneben, springt die Scrollleiste beim ersten Durchscrollen — grob die typische Sektionshöhe messen und eintragen.</p></li>
+        <li><span class="w" aria-hidden="true">⚠</span><p><b>Anker &amp; Seiten-Suche testen.</b> Sprungziele (<code>#preise</code>) und Strg+F funktionieren, aber die Scroll-Position kann bei schlechter Schätzung korrigieren — nach dem Einbau einmal alle Anker-Links durchklicken.</p></li>
+        <li><span class="w" aria-hidden="true">⚠</span><p><b>Kein Ersatz für leichte Seiten.</b> Es spart Rendering-Zeit, keine Downloads — riesige Bilder bleiben riesig. Erst Medien optimieren, dann lazy rendern.</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGEN 6 · Core Web Vitals in Kürze
+     LCP / INP / CLS als drei Karten: was wird gemessen, Zielwert,
+     je zwei typische Fixes.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlagen 6 · Core Web Vitals <code>.bs-perf-cwv</code> <code>hell</code></p>
+<style>
+  .bs-perf-cwv .inner { padding-top: 84px; padding-bottom: 84px; }
+  .bs-perf-cwv .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .bs-perf-cwv .card { background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 26px 24px; box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: 14px; }
+  .bs-perf-cwv .card header { display: flex; align-items: center; gap: 12px; }
+  .bs-perf-cwv .card .abbr { font-family: var(--font-display); font-weight: 800; font-size: 24px;
+    color: var(--fg); letter-spacing: -.01em; }
+  .bs-perf-cwv .card .target { margin-left: auto; font-size: 12.5px; font-weight: 800;
+    color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--green) 40%, transparent);
+    padding: 4px 11px; border-radius: 999px; white-space: nowrap; }
+  .bs-perf-cwv .card .long { font-size: 12.5px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--fg-muted); }
+  .bs-perf-cwv .card > p { font-size: 15px; }
+  .bs-perf-cwv .fixes { margin-top: auto; display: grid; gap: 8px; border-top: 1px dashed var(--line); padding-top: 14px; }
+  .bs-perf-cwv .fixes li { display: flex; gap: 9px; align-items: flex-start; font-size: 14px; }
+  .bs-perf-cwv .fixes .tick { flex: none; color: var(--brand); font-weight: 800; }
+  [data-theme="dark"] .bs-perf-cwv .fixes .tick { color: var(--brand-300); }
+  .bs-perf-cwv .fixes b { color: var(--fg); }
+  @media (max-width: 900px) { .bs-perf-cwv .cards { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-perf-cwv">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Grundlagen · Messen</p>
+      <h2>Core Web Vitals: die drei Zahlen, die zählen</h2>
+      <p>Google bewertet jede Seite mit drei Nutzer-Metriken — sie fließen ins Ranking ein und beschreiben genau das, was Besucher fühlen: Ladezeit, Reaktion, Stabilität.</p>
+    </div>
+    <div class="cards" data-stagger="zoom">
+      <article class="card">
+        <header>
+          <span class="abbr">LCP</span>
+          <span class="target">gut: &lt; 2,5 s</span>
+        </header>
+        <span class="long">Largest Contentful Paint</span>
+        <p>Misst, wann das größte Element im sichtbaren Bereich fertig gerendert ist — auf Landing Pages fast immer das Hero-Bild oder die Headline. Erst dann wirkt die Seite für Besucher „da".</p>
+        <ul class="fixes">
+          <li><span class="tick" aria-hidden="true">✓</span><p><b>Hero-Bild priorisieren:</b> <code>preload</code> + <code>fetchpriority="high"</code>, niemals lazy.</p></li>
+          <li><span class="tick" aria-hidden="true">✓</span><p><b>Serverzeit senken:</b> Caching/CDN aktivieren und Render-blockierendes CSS/JS ausmisten.</p></li>
+        </ul>
+      </article>
+      <article class="card">
+        <header>
+          <span class="abbr">INP</span>
+          <span class="target">gut: &lt; 200 ms</span>
+        </header>
+        <span class="long">Interaction to Next Paint</span>
+        <p>Misst über den gesamten Besuch, wie lange die Seite nach einem Klick, Tap oder Tastendruck bis zur sichtbaren Reaktion braucht. Ein einziger zäher Handler auf dem CTA-Button reicht für einen schlechten Wert.</p>
+        <ul class="fixes">
+          <li><span class="tick" aria-hidden="true">✓</span><p><b>Lange JS-Tasks aufteilen:</b> Alles über ~50 ms blockiert den Hauptthread — Arbeit stückeln oder verschieben.</p></li>
+          <li><span class="tick" aria-hidden="true">✓</span><p><b>Handler entschlacken:</b> Erst das sichtbare Feedback rendern, teure Berechnungen danach ausführen.</p></li>
+        </ul>
+      </article>
+      <article class="card">
+        <header>
+          <span class="abbr">CLS</span>
+          <span class="target">gut: &lt; 0,1</span>
+        </header>
+        <span class="long">Cumulative Layout Shift</span>
+        <p>Summiert alle unerwarteten Layout-Sprünge während des Besuchs — etwa wenn ein spät geladenes Bild den Text nach unten schiebt. Nichts frustriert mehr als ein Button, der im Klick-Moment wegspringt.</p>
+        <ul class="fixes">
+          <li><span class="tick" aria-hidden="true">✓</span><p><b>Maße deklarieren:</b> <code>width</code>/<code>height</code> auf jedem Bild, Video und iframe.</p></li>
+          <li><span class="tick" aria-hidden="true">✓</span><p><b>Platz reservieren:</b> Feste Flächen (<code>min-height</code>, <code>aspect-ratio</code>) für Embeds, Banner und Webfonts (<code>font-display: swap</code>).</p></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGEN 7 · Performance-Checkliste (10 Punkte)
+     Vor jedem Launch einmal durchgehen — deckt Bilder, Fonts,
+     Video, Rendering und Messung ab.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Grundlagen 7 · Checkliste <code>.bs-perf-check</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-perf-check { position: relative; overflow: hidden; }
+  .bs-perf-check::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(60% 80% at 50% 120%, rgba(var(--brand-rgb),.2), transparent 65%); }
+  .bs-perf-check .inner { position: relative; padding-top: 84px; padding-bottom: 92px; }
+  .bs-perf-check ol { counter-reset: bs-check; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; max-width: 980px; margin: 0 auto; list-style: none; padding: 0; }
+  .bs-perf-check li { counter-increment: bs-check; display: flex; gap: 14px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 16px 18px; font-size: 14.5px; }
+  .bs-perf-check li::before { content: counter(bs-check, decimal-leading-zero); flex: none;
+    font-family: var(--font-display); font-weight: 800; font-size: 15px; line-height: 1;
+    color: var(--brand-300); padding-top: 3px; min-width: 26px; }
+  .bs-perf-check li b { display: block; color: var(--fg); margin-bottom: 2px; }
+  @media (max-width: 720px) { .bs-perf-check ol { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-perf-check" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Grundlagen · Checkliste</p>
+      <h2>10 Punkte vor jedem Launch</h2>
+      <p>Einmal durchgehen, bevor die Seite live geht — jeder Punkt verweist auf ein Muster von dieser Seite.</p>
+    </div>
+    <ol data-stagger>
+      <li><p><b>Moderne Bildformate</b> AVIF/WebP mit JPG-Fallback über die <code>&lt;picture&gt;</code>-Kaskade ausliefern.</p></li>
+      <li><p><b>Maße gegen CLS</b> <code>width</code>/<code>height</code> auf jedem <code>&lt;img&gt;</code>, <code>&lt;video&gt;</code> und <code>&lt;iframe&gt;</code> gesetzt.</p></li>
+      <li><p><b>Lazy nur below the fold</b> <code>loading="lazy"</code> niemals auf dem Hero-Bild oder anderen sofort sichtbaren Bildern.</p></li>
+      <li><p><b>LCP-Bild priorisiert</b> <code>&lt;link rel="preload"&gt;</code> + <code>fetchpriority="high"</code> fürs größte Bild oben.</p></li>
+      <li><p><b>srcset/sizes überall</b> Kein Smartphone lädt ein 1600-px-Desktop-Bild — Stichprobe im Netzwerk-Tab machen.</p></li>
+      <li><p><b>Fonts gezähmt</b> <code>preconnect</code> + <code>display=swap</code>, maximal zwei Familien, Subsets geprüft.</p></li>
+      <li><p><b>Video als Facade</b> Poster statt iframe — der Player lädt erst bei Klick, Poster unter 50 KB.</p></li>
+      <li><p><b>Lange Seiten entlastet</b> <code>content-visibility: auto</code> + <code>contain-intrinsic-size</code> auf Sektionen unterhalb des Folds.</p></li>
+      <li><p><b>Budget eingehalten</b> Startansicht unter ~500 KB Transfergewicht; das schwerste Asset kennen und begründen können.</p></li>
+      <li><p><b>Gemessen, nicht geraten</b> PageSpeed Insights mit Felddaten (CrUX) nach jedem Release — LCP, INP und CLS gegen die Zielwerte prüfen.</p></li>
+    </ol>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Navigation</title>
+<meta name="description" content="8 wiederverwendbare Sticky-Navigation-Bausteine für Landing Pages — Plain HTML/CSS/JS, hell & dunkel." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- Demo-Füller (NUR Beispielseite, NICHT mitkopieren):
+     Jede Nav steckt in einem neutralen <div>-Wrapper mit ~140vh Inhalt,
+     damit man Sticky- und Scroll-Verhalten isoliert sehen kann. -->
+<style>
+  .demo-fill { min-height: 140vh; padding: 12vh 24px 0; text-align: center; background: var(--bg-soft); }
+  .demo-fill .bs-badge { background: var(--card); box-shadow: var(--shadow); }
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: NAV 1 · Solide Leiste (dunkel)
+     Logo links, Links mittig, CTAs rechts, Burger-Menü für Mobile.
+     Beim Scrollen (.scrolled via js/base.js): Blur + Schatten.
+     Kopieren: diesen <style>-Block + den <header> darunter
+     (den .demo-fill-Wrapper NICHT mitkopieren).
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Nav 1 · Solide Leiste <code>.bs-nav-solid</code> <code>data-theme="dark"</code></p></div>
+<style>
+  header.bs-nav-solid { position: sticky; top: 0; z-index: 60;
+    border-bottom: 1px solid transparent;
+    transition: background-color .25s, border-color .25s, box-shadow .25s; }
+  header.bs-nav-solid.scrolled { background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--line); box-shadow: 0 12px 34px -18px rgba(0,0,0,.55); }
+  .bs-nav-solid .inner { display: flex; align-items: center; gap: 28px; height: 68px; }
+  .bs-nav-solid .logo { display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--fg); }
+  .bs-nav-solid .logo svg { color: var(--brand-300); }
+  .bs-nav-solid .links { display: flex; gap: 26px; margin: 0 auto; }
+  .bs-nav-solid .links a { font-size: 15px; font-weight: 600; color: var(--fg-soft); transition: color .2s; }
+  .bs-nav-solid .links a:hover { color: var(--fg); }
+  .bs-nav-solid .actions { display: flex; gap: 10px; }
+  .bs-nav-solid .bs-nav-burger { display: none; margin-left: auto; padding: 8px;
+    background: none; border: 0; color: var(--fg); cursor: pointer; }
+  .bs-nav-solid .bs-nav-mobile { display: none; padding: 6px 24px 22px;
+    border-top: 1px solid var(--line); background: var(--bg); }
+  .bs-nav-solid .bs-nav-mobile.open { display: flex; flex-direction: column; }
+  .bs-nav-solid .bs-nav-mobile a { padding: 11px 0; font-weight: 600; color: var(--fg);
+    border-bottom: 1px solid var(--line); }
+  .bs-nav-solid .bs-nav-mobile .bs-btn { margin-top: 16px; border-bottom: 0; }
+  @media (max-width: 860px) {
+    .bs-nav-solid .links, .bs-nav-solid .actions { display: none; }
+    .bs-nav-solid .bs-nav-burger { display: inline-flex; }
+  }
+</style>
+<div><!-- Demo-Wrapper: begrenzt das Sticky-Verhalten auf diesen Abschnitt -->
+<header class="bs-nav bs-nav-solid" data-theme="dark">
+  <div class="bs-container inner">
+    <a class="logo" href="#">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+      Klarwerk
+    </a>
+    <nav class="links" aria-label="Hauptnavigation">
+      <a href="#">Produkt</a><a href="#">Funktionen</a><a href="#">Preise</a><a href="#">Docs</a><a href="#">Blog</a>
+    </nav>
+    <div class="actions">
+      <a href="#" class="bs-btn bs-btn-ghost bs-btn-sm">Anmelden</a>
+      <a href="#" class="bs-btn bs-btn-primary bs-btn-sm">Kostenlos testen</a>
+    </div>
+    <button class="bs-nav-burger" aria-label="Menü öffnen" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+  </div>
+  <div class="bs-nav-mobile">
+    <a href="#">Produkt</a><a href="#">Funktionen</a><a href="#">Preise</a><a href="#">Docs</a><a href="#">Blog</a>
+    <a href="#" class="bs-btn bs-btn-primary">Kostenlos testen</a>
+  </div>
+</header>
+<!-- Demo-Füller — NICHT mitkopieren -->
+<div class="demo-fill bs-dots"><span class="bs-badge" data-reveal>↓ Scrolle, um das Verhalten der Navigation zu sehen</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: NAV 2 · Schwebende Pill (hell)
+     Zentrierte, abgerundete Kapsel mit Blur. Beim Scrollen wird sie
+     kompakter (.scrolled: weniger Padding, mehr Schatten).
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Nav 2 · Schwebende Pill <code>.bs-nav-pill</code> <code>hell</code></p>
+<style>
+  header.bs-nav-pill { position: sticky; top: 0; z-index: 60; background: transparent;
+    display: flex; justify-content: center; padding: 14px 16px 0; }
+  .bs-nav-pill .wrap { position: relative; width: min(860px, 100%); }
+  .bs-nav-pill .pill { display: flex; align-items: center; gap: 20px;
+    padding: 11px 11px 11px 22px; border-radius: 999px;
+    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--card) 78%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--shadow);
+    transition: padding .25s ease, box-shadow .25s ease; }
+  header.bs-nav-pill.scrolled .pill { padding: 6px 6px 6px 18px;
+    box-shadow: 0 4px 10px rgba(20,16,31,.06), 0 24px 54px -18px rgba(20,16,31,.28); }
+  .bs-nav-pill .logo { display: inline-flex; align-items: center; gap: 9px;
+    font-family: var(--font-display); font-weight: 800; font-size: 18px; color: var(--fg); }
+  .bs-nav-pill .logo svg { color: var(--teal); }
+  .bs-nav-pill .links { display: flex; gap: 22px; margin: 0 auto; }
+  .bs-nav-pill .links a { font-size: 14.5px; font-weight: 600; color: var(--fg-soft); transition: color .2s; }
+  .bs-nav-pill .links a:hover { color: var(--brand); }
+  .bs-nav-pill .bs-nav-burger { display: none; margin-left: auto; padding: 8px;
+    background: none; border: 0; color: var(--fg); cursor: pointer; }
+  .bs-nav-pill .bs-nav-mobile { display: none; position: absolute; top: calc(100% + 10px); left: 0; right: 0;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    box-shadow: var(--shadow); padding: 8px 20px 20px; }
+  .bs-nav-pill .bs-nav-mobile.open { display: flex; flex-direction: column; }
+  .bs-nav-pill .bs-nav-mobile a { padding: 11px 0; font-weight: 600; color: var(--fg); border-bottom: 1px solid var(--line); }
+  .bs-nav-pill .bs-nav-mobile .bs-btn { margin-top: 16px; border-bottom: 0; }
+  @media (max-width: 760px) {
+    .bs-nav-pill .links, .bs-nav-pill .pill > .bs-btn { display: none; }
+    .bs-nav-pill .bs-nav-burger { display: inline-flex; }
+  }
+</style>
+<div><!-- Demo-Wrapper: begrenzt das Sticky-Verhalten auf diesen Abschnitt -->
+<header class="bs-nav bs-nav-pill">
+  <div class="wrap">
+    <div class="pill">
+      <a class="logo" href="#">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0 3.5 2 5 0"/><path d="M2 16c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0 3.5 2 5 0"/></svg>
+        wellenpost
+      </a>
+      <nav class="links" aria-label="Hauptnavigation">
+        <a href="#">Warum wellenpost</a><a href="#">Vorlagen</a><a href="#">Preise</a><a href="#">Hilfe</a>
+      </nav>
+      <a href="#" class="bs-btn bs-btn-primary bs-btn-sm">Newsletter starten</a>
+      <button class="bs-nav-burger" aria-label="Menü öffnen" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </div>
+    <div class="bs-nav-mobile">
+      <a href="#">Warum wellenpost</a><a href="#">Vorlagen</a><a href="#">Preise</a><a href="#">Hilfe</a>
+      <a href="#" class="bs-btn bs-btn-primary">Newsletter starten</a>
+    </div>
+  </div>
+</header>
+<!-- Demo-Füller — NICHT mitkopieren -->
+<div class="demo-fill bs-dots" style="margin-top:-74px; padding-top:22vh"><span class="bs-badge" data-reveal>↓ Scrolle, um das Verhalten der Navigation zu sehen</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: NAV 3 · Leiste mit Announcement-Banner (hell)
+     Schmaler Banner über der Nav ("Version 3.0 ist live"), per × schließbar
+     (1 Zeile Inline-JS am Button). Nav wird beim Scrollen geblurrt.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Nav 3 · Mit Announcement-Banner <code>.bs-nav-banner</code> <code>hell</code></p>
+<style>
+  header.bs-nav-banner { position: sticky; top: 0; z-index: 60;
+    transition: background-color .25s, box-shadow .25s; }
+  header.bs-nav-banner.scrolled { background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 12px 34px -20px rgba(20,16,31,.35); }
+  .bs-nav-banner .banner { display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 8px 44px 8px 16px; position: relative; font-size: 14px; font-weight: 600; color: #fff;
+    background: linear-gradient(92deg, var(--brand), var(--violet)); }
+  .bs-nav-banner .banner a { text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+  .bs-nav-banner .banner .close { position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+    display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px;
+    background: none; border: 0; color: #fff; cursor: pointer; opacity: .8; }
+  .bs-nav-banner .banner .close:hover { opacity: 1; background: rgba(255,255,255,.15); }
+  .bs-nav-banner .bar { display: flex; align-items: center; gap: 28px; height: 66px;
+    border-bottom: 1px solid var(--line); }
+  .bs-nav-banner .logo { display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--fg); }
+  .bs-nav-banner .logo svg { color: var(--brand); }
+  .bs-nav-banner .links { display: flex; gap: 26px; margin: 0 auto; }
+  .bs-nav-banner .links a { font-size: 15px; font-weight: 600; color: var(--fg-soft); transition: color .2s; }
+  .bs-nav-banner .links a:hover { color: var(--fg); }
+  .bs-nav-banner .bs-nav-burger { display: none; margin-left: auto; padding: 8px;
+    background: none; border: 0; color: var(--fg); cursor: pointer; }
+  .bs-nav-banner .bs-nav-mobile { display: none; padding: 6px 24px 22px;
+    border-bottom: 1px solid var(--line); background: var(--bg); }
+  .bs-nav-banner .bs-nav-mobile.open { display: flex; flex-direction: column; }
+  .bs-nav-banner .bs-nav-mobile a { padding: 11px 0; font-weight: 600; color: var(--fg); border-bottom: 1px solid var(--line); }
+  .bs-nav-banner .bs-nav-mobile .bs-btn { margin-top: 16px; border-bottom: 0; }
+  @media (max-width: 860px) {
+    .bs-nav-banner .links, .bs-nav-banner .bar > .bs-btn { display: none; }
+    .bs-nav-banner .bs-nav-burger { display: inline-flex; }
+  }
+</style>
+<div><!-- Demo-Wrapper: begrenzt das Sticky-Verhalten auf diesen Abschnitt -->
+<header class="bs-nav bs-nav-banner">
+  <div class="banner">
+    <span>🎉 Version 3.0 ist live</span><a href="#">jetzt entdecken →</a>
+    <button class="close" aria-label="Banner schließen" onclick="this.closest('.banner').remove()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="bs-container bar">
+    <a class="logo" href="#">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16 8-2.5 5.5L8 16l2.5-5.5L16 8z"/></svg>
+      nordstern
+    </a>
+    <nav class="links" aria-label="Hauptnavigation">
+      <a href="#">Analysen</a><a href="#">Integrationen</a><a href="#">Preise</a><a href="#">Änderungen</a>
+    </nav>
+    <a href="#" class="bs-btn bs-btn-primary bs-btn-sm">Demo buchen</a>
+    <button class="bs-nav-burger" aria-label="Menü öffnen" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+  </div>
+  <div class="bs-nav-mobile">
+    <a href="#">Analysen</a><a href="#">Integrationen</a><a href="#">Preise</a><a href="#">Änderungen</a>
+    <a href="#" class="bs-btn bs-btn-primary">Demo buchen</a>
+  </div>
+</header>
+<!-- Demo-Füller — NICHT mitkopieren -->
+<div class="demo-fill bs-dots"><span class="bs-badge" data-reveal>↓ Scrolle, um das Verhalten der Navigation zu sehen</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: NAV 4 · Mega-Dropdown (hell)
+     Sticky-Leiste; der Punkt "Produkt" öffnet per Hover ODER Klick ein
+     Mega-Panel als Karte unter der Leiste (3 Icon-Karten + 6 Mini-Links).
+     Inline-JS (~15 Zeilen): aria-expanded, Escape schließt, kleine
+     Verzögerung beim Verlassen. Mobile: Links flach im Burger-Menü.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Nav 4 · Mega-Dropdown <code>.bs-nav-mega</code> <code>hell</code></p>
+<style>
+  header.bs-nav-mega { position: sticky; top: 0; z-index: 60;
+    border-bottom: 1px solid transparent;
+    transition: background-color .25s, border-color .25s, box-shadow .25s; }
+  header.bs-nav-mega.scrolled { background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--line); box-shadow: 0 12px 34px -20px rgba(20,16,31,.35); }
+  .bs-nav-mega .inner { display: flex; align-items: center; gap: 28px; height: 68px; }
+  .bs-nav-mega .logo { display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--fg); }
+  .bs-nav-mega .logo svg { color: var(--brand); }
+  .bs-nav-mega .links { display: flex; align-items: center; gap: 26px; margin: 0 auto; }
+  .bs-nav-mega .links a { font-size: 15px; font-weight: 600; color: var(--fg-soft); transition: color .2s; }
+  .bs-nav-mega .links a:hover { color: var(--fg); }
+  .bs-nav-mega .mega-trigger { display: inline-flex; align-items: center; gap: 6px;
+    font: inherit; font-size: 15px; font-weight: 600; color: var(--fg-soft);
+    background: none; border: 0; padding: 0; cursor: pointer; transition: color .2s; }
+  .bs-nav-mega .mega-trigger:hover, .bs-nav-mega .mega-trigger[aria-expanded="true"] { color: var(--fg); }
+  .bs-nav-mega .mega-trigger svg { transition: transform .2s; }
+  .bs-nav-mega .mega-trigger[aria-expanded="true"] svg { transform: rotate(180deg); }
+  /* Panel: Karte unter der Leiste (Header ist sticky = positioniert) */
+  .bs-nav-mega .mega-panel { position: absolute; top: calc(100% + 8px); left: 50%;
+    width: min(720px, calc(100vw - 32px));
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    box-shadow: var(--shadow); padding: 18px;
+    opacity: 0; visibility: hidden; transform: translateX(-50%) translateY(8px);
+    transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s; }
+  .bs-nav-mega .mega-panel.open { opacity: 1; visibility: visible;
+    transform: translateX(-50%); transition: opacity .22s ease, transform .22s ease; }
+  .bs-nav-mega .mega-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; }
+  .bs-nav-mega .mega-cards { display: grid; gap: 6px; align-content: start; }
+  .bs-nav-mega .mega-card { display: flex; gap: 14px; padding: 12px; border-radius: var(--r-sm);
+    transition: background-color .15s; }
+  .bs-nav-mega .mega-card:hover { background: var(--glass); }
+  .bs-nav-mega .mega-card .ico { flex: none; display: grid; place-items: center; width: 42px; height: 42px;
+    border-radius: 12px; color: var(--brand); background: rgba(var(--brand-rgb), .1); }
+  .bs-nav-mega .mega-card:nth-child(2) .ico { color: var(--violet); background: rgba(var(--violet-rgb), .1); }
+  .bs-nav-mega .mega-card:nth-child(3) .ico { color: var(--teal); background: color-mix(in srgb, var(--teal) 12%, transparent); }
+  .bs-nav-mega .mega-card strong { display: block; font-size: 15px; color: var(--fg); }
+  .bs-nav-mega .mega-card small { display: block; font-size: 13.5px; line-height: 1.45; color: var(--fg-muted); }
+  .bs-nav-mega .mega-side { border-left: 1px solid var(--line); padding-left: 18px; }
+  .bs-nav-mega .mega-head { font-size: 11.5px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--fg-muted); margin: 6px 0 8px; }
+  .bs-nav-mega .mega-side a { display: flex; align-items: center; gap: 8px; padding: 7px 0;
+    font-size: 14.5px; font-weight: 600; color: var(--fg-soft); transition: color .15s; }
+  .bs-nav-mega .mega-side a:hover { color: var(--brand); }
+  .bs-nav-mega .mega-side a svg { color: var(--fg-muted); }
+  .bs-nav-mega .bs-nav-burger { display: none; margin-left: auto; padding: 8px;
+    background: none; border: 0; color: var(--fg); cursor: pointer; }
+  .bs-nav-mega .bs-nav-mobile { display: none; padding: 6px 24px 22px;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); }
+  .bs-nav-mega .bs-nav-mobile.open { display: flex; flex-direction: column; }
+  .bs-nav-mega .bs-nav-mobile a { padding: 11px 0; font-weight: 600; color: var(--fg);
+    border-bottom: 1px solid var(--line); }
+  .bs-nav-mega .bs-nav-mobile .bs-btn { margin-top: 16px; border-bottom: 0; }
+  @media (max-width: 860px) {
+    .bs-nav-mega .links, .bs-nav-mega .inner > .bs-btn, .bs-nav-mega .mega-panel { display: none; }
+    .bs-nav-mega .bs-nav-burger { display: inline-flex; }
+  }
+</style>
+<div><!-- Demo-Wrapper: begrenzt das Sticky-Verhalten auf diesen Abschnitt -->
+<header class="bs-nav bs-nav-mega">
+  <div class="bs-container inner">
+    <a class="logo" href="#">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.7 3.9a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3.1l-8-14z"/></svg>
+      spektral
+    </a>
+    <nav class="links" aria-label="Hauptnavigation">
+      <button class="mega-trigger" aria-expanded="false" aria-controls="mega-produkt" aria-haspopup="true">
+        Produkt
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <a href="#">Preise</a><a href="#">Kunden</a><a href="#">Blog</a>
+    </nav>
+    <a href="#" class="bs-btn bs-btn-primary bs-btn-sm">Kostenlos starten</a>
+    <button class="bs-nav-burger" aria-label="Menü öffnen" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+  </div>
+  <div class="mega-panel" id="mega-produkt">
+    <div class="mega-grid">
+      <div class="mega-cards">
+        <a class="mega-card" href="#">
+          <span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></span>
+          <span><strong>Session-Replay</strong><small>Jede Sitzung als Film — Klicks, Wut-Klicks, Konsole.</small></span>
+        </a>
+        <a class="mega-card" href="#">
+          <span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+          <span><strong>Fehler-Radar</strong><small>Crashes und JS-Fehler automatisch gebündelt.</small></span>
+        </a>
+        <a class="mega-card" href="#">
+          <span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></span>
+          <span><strong>Trichter-Analyse</strong><small>Abbrüche im Funnel finden, bevor Umsatz fehlt.</small></span>
+        </a>
+      </div>
+      <div class="mega-side">
+        <p class="mega-head">Ressourcen</p>
+        <a href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>Integrationen</a>
+        <a href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>Self-Hosting</a>
+        <a href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>Datenschutz</a>
+        <a href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>Changelog</a>
+        <a href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>Roadmap</a>
+        <a href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>API-Referenz</a>
+      </div>
+    </div>
+  </div>
+  <div class="bs-nav-mobile">
+    <a href="#">Produkt</a><a href="#">Preise</a><a href="#">Kunden</a><a href="#">Blog</a>
+    <a href="#" class="bs-btn bs-btn-primary">Kostenlos starten</a>
+  </div>
+</header>
+<script>
+  (function () {
+    var scope = document.currentScript.parentElement;
+    var trigger = scope.querySelector(".mega-trigger");
+    var panel = scope.querySelector(".mega-panel");
+    var timer;
+    function set(open) {
+      clearTimeout(timer);
+      panel.classList.toggle("open", open);
+      trigger.setAttribute("aria-expanded", String(open));
+    }
+    trigger.addEventListener("click", function () { set(!panel.classList.contains("open")); });
+    if (matchMedia("(hover: hover)").matches) [trigger, panel].forEach(function (el) {
+      el.addEventListener("mouseenter", function () { set(true); });
+      el.addEventListener("mouseleave", function () { timer = setTimeout(function () { set(false); }, 260); });
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") set(false); });
+  })();
+</script>
+<!-- Demo-Füller — NICHT mitkopieren -->
+<div class="demo-fill bs-dots"><span class="bs-badge" data-reveal>↓ Scrolle — und öffne oben das Mega-Dropdown „Produkt“</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: NAV 5 · Transparent → fest (dunkel)
+     Startet komplett transparent über dem dunklen Hero; mit .scrolled
+     (via js/base.js) bekommt die Leiste Fläche, Blur und Border.
+     Der Hero darunter ist nur Demo-Füller.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Nav 5 · Transparent → fest <code>.bs-nav-transparent</code> <code>data-theme="dark"</code></p>
+<style>
+  header.bs-nav-transparent { position: sticky; top: 0; z-index: 60;
+    background: transparent; border-bottom: 1px solid transparent;
+    transition: background-color .3s, border-color .3s, box-shadow .3s; }
+  header.bs-nav-transparent.scrolled { background: color-mix(in srgb, var(--bg) 76%, transparent);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border-bottom-color: var(--line); box-shadow: 0 14px 40px -20px rgba(0,0,0,.6); }
+  .bs-nav-transparent .inner { display: flex; align-items: center; gap: 28px; height: 68px; }
+  .bs-nav-transparent .logo { display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--fg); }
+  .bs-nav-transparent .logo svg { color: var(--orange); }
+  .bs-nav-transparent .links { display: flex; gap: 26px; margin: 0 auto; }
+  .bs-nav-transparent .links a { font-size: 15px; font-weight: 600; color: var(--fg-soft); transition: color .2s; }
+  .bs-nav-transparent .links a:hover { color: var(--fg); }
+  .bs-nav-transparent .bs-nav-burger { display: none; margin-left: auto; padding: 8px;
+    background: none; border: 0; color: var(--fg); cursor: pointer; }
+  .bs-nav-transparent .bs-nav-mobile { display: none; padding: 6px 24px 22px;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg); }
+  .bs-nav-transparent .bs-nav-mobile.open { display: flex; flex-direction: column; }
+  .bs-nav-transparent .bs-nav-mobile a { padding: 11px 0; font-weight: 600; color: var(--fg);
+    border-bottom: 1px solid var(--line); }
+  .bs-nav-transparent .bs-nav-mobile .bs-btn { margin-top: 16px; border-bottom: 0; }
+  @media (max-width: 860px) {
+    .bs-nav-transparent .links, .bs-nav-transparent .inner > .bs-btn { display: none; }
+    .bs-nav-transparent .bs-nav-burger { display: inline-flex; }
+  }
+  /* Demo-Hero (NUR Beispielseite, NICHT mitkopieren): dunkle Verlaufs-
+     Fläche, die per negativem Margin hinter die transparente Nav rutscht */
+  .demo-hero { min-height: 140vh; margin-top: -68px; padding: 26vh 24px 0;
+    text-align: center; color: var(--fg-soft);
+    background: radial-gradient(700px 340px at 50% 6%, rgba(var(--brand-rgb), .38), transparent 70%),
+      linear-gradient(180deg, var(--indigo-2), var(--indigo-deep) 60%); }
+  .demo-hero h2 { font-size: clamp(30px, 5vw, 54px); font-weight: 800; }
+  .demo-hero p { max-width: 520px; margin: 16px auto 0; }
+</style>
+<div><!-- Demo-Wrapper: begrenzt das Sticky-Verhalten auf diesen Abschnitt -->
+<header class="bs-nav bs-nav-transparent" data-theme="dark">
+  <div class="bs-container inner">
+    <a class="logo" href="#">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      nachtwerk
+    </a>
+    <nav class="links" aria-label="Hauptnavigation">
+      <a href="#">Funktionen</a><a href="#">Referenzen</a><a href="#">Preise</a><a href="#">Kontakt</a>
+    </nav>
+    <a href="#" class="bs-btn bs-btn-primary bs-btn-sm">Loslegen</a>
+    <button class="bs-nav-burger" aria-label="Menü öffnen" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+  </div>
+  <div class="bs-nav-mobile">
+    <a href="#">Funktionen</a><a href="#">Referenzen</a><a href="#">Preise</a><a href="#">Kontakt</a>
+    <a href="#" class="bs-btn bs-btn-primary">Loslegen</a>
+  </div>
+</header>
+<!-- Demo-Hero — NICHT mitkopieren -->
+<div class="demo-hero" data-theme="dark">
+  <h2>Nachtwerk misst,<br>was tagsüber zählt.</h2>
+  <p>Ganz oben ist die Leiste komplett transparent — beim Scrollen bekommt sie Fläche, Blur und eine feine Kante.</p>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: NAV 6 · Zentriertes Logo (hell)
+     Editorial-Stil: Logo exakt mittig (Grid 1fr/auto/1fr), je drei
+     Links links und rechts, dünne Doppellinie unten (Border + ::after
+     mit 1px Abstand). Beim Scrollen (.scrolled) schrumpft das Padding.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Nav 6 · Zentriertes Logo <code>.bs-nav-center</code> <code>hell</code></p>
+<style>
+  header.bs-nav-center { position: sticky; top: 0; z-index: 60;
+    background: var(--bg); border-bottom: 1px solid var(--line); }
+  /* zweite Linie der Doppellinie: 1px Abstand unter dem Border */
+  header.bs-nav-center::after { content: ""; position: absolute; left: 0; right: 0;
+    bottom: -3px; height: 1px; background: var(--line); }
+  .bs-nav-center .inner { display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; column-gap: 34px; padding-block: 26px;
+    transition: padding .3s ease; }
+  header.bs-nav-center.scrolled .inner { padding-block: 10px; }
+  .bs-nav-center .brand { font-family: var(--font-display); font-weight: 800;
+    font-size: 24px; letter-spacing: .16em; text-transform: uppercase;
+    text-align: center; color: var(--fg); transition: font-size .3s ease; }
+  header.bs-nav-center.scrolled .brand { font-size: 19px; }
+  .bs-nav-center .side { display: flex; gap: 26px; }
+  .bs-nav-center .side.left { justify-content: flex-end; }
+  .bs-nav-center .side a { font-size: 13px; font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--fg-soft); transition: color .2s; }
+  .bs-nav-center .side a:hover { color: var(--fg); }
+  .bs-nav-center .bs-nav-burger { position: absolute; right: 14px; top: 50%;
+    transform: translateY(-50%); display: none; padding: 8px;
+    background: none; border: 0; color: var(--fg); cursor: pointer; }
+  .bs-nav-center .bs-nav-mobile { display: none; padding: 6px 24px 22px;
+    border-top: 1px solid var(--line); background: var(--bg); }
+  .bs-nav-center .bs-nav-mobile.open { display: flex; flex-direction: column; }
+  .bs-nav-center .bs-nav-mobile a { padding: 11px 0; font-weight: 600; color: var(--fg);
+    border-bottom: 1px solid var(--line); }
+  @media (max-width: 760px) {
+    .bs-nav-center .side { display: none; }
+    .bs-nav-center .inner { grid-template-columns: 1fr; padding-block: 18px; }
+    .bs-nav-center .brand { font-size: 20px; }
+    .bs-nav-center .bs-nav-burger { display: inline-flex; }
+  }
+</style>
+<div><!-- Demo-Wrapper: begrenzt das Sticky-Verhalten auf diesen Abschnitt -->
+<header class="bs-nav bs-nav-center">
+  <div class="bs-container inner">
+    <nav class="side left" aria-label="Ressorts links">
+      <a href="#">Essays</a><a href="#">Interviews</a><a href="#">Kolumnen</a>
+    </nav>
+    <a class="brand" href="#">Meridian</a>
+    <nav class="side right" aria-label="Ressorts rechts">
+      <a href="#">Podcast</a><a href="#">Archiv</a><a href="#">Abo</a>
+    </nav>
+    <button class="bs-nav-burger" aria-label="Menü öffnen" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+  </div>
+  <div class="bs-nav-mobile">
+    <a href="#">Essays</a><a href="#">Interviews</a><a href="#">Kolumnen</a>
+    <a href="#">Podcast</a><a href="#">Archiv</a><a href="#">Abo</a>
+  </div>
+</header>
+<!-- Demo-Füller — NICHT mitkopieren -->
+<div class="demo-fill bs-dots"><span class="bs-badge" data-reveal>↓ Scrolle — das Padding der Leiste schrumpft sichtbar</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: NAV 7 · Fullscreen-Overlay (dunkel)
+     Minimal-Leiste (Wortmarke + CTA + Burger). Der Burger öffnet ein
+     Fullscreen-Overlay mit fünf sehr großen, gestaffelt einfliegenden
+     Links (CSS transition-delay) und einer Social-Zeile. Schließen per
+     ×-Button oder Escape; Body-Scroll wird gesperrt, solange offen.
+     Achtung: bewusst KEIN backdrop-filter auf der Leiste — der würde
+     das position:fixed-Overlay im Header einsperren.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Nav 7 · Fullscreen-Overlay <code>.bs-nav-overlay</code> <code>data-theme="dark"</code></p>
+<style>
+  header.bs-nav-overlay { position: sticky; top: 0; z-index: 60;
+    background: var(--bg); border-bottom: 1px solid transparent;
+    transition: border-color .25s, box-shadow .25s; }
+  header.bs-nav-overlay.scrolled { border-bottom-color: var(--line);
+    box-shadow: 0 12px 34px -18px rgba(0,0,0,.55); }
+  .bs-nav-overlay .inner { display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; height: 64px; }
+  .bs-nav-overlay .brand { font-family: var(--font-display); font-weight: 800;
+    font-size: 19px; color: var(--fg); }
+  .bs-nav-overlay .brand em { font-style: normal; color: var(--brand-300); }
+  .bs-nav-overlay .right { display: flex; align-items: center; gap: 12px; }
+  .bs-nav-overlay .ov-open, .bs-nav-overlay .ov-close { display: grid; place-items: center;
+    width: 42px; height: 42px; border-radius: 12px; background: var(--glass);
+    border: 1px solid var(--line); color: var(--fg); cursor: pointer; transition: border-color .2s; }
+  .bs-nav-overlay .ov-open:hover, .bs-nav-overlay .ov-close:hover { border-color: var(--fg-muted); }
+  .bs-nav-overlay .ov-panel { position: fixed; inset: 0; z-index: 90;
+    display: flex; flex-direction: column; padding: 11px 0 30px; background: var(--bg);
+    opacity: 0; visibility: hidden;
+    transition: opacity .3s ease, visibility 0s linear .45s; }
+  .bs-nav-overlay .ov-panel.open { opacity: 1; visibility: visible; transition: opacity .3s ease; }
+  .bs-nav-overlay .ov-top { display: flex; align-items: center; justify-content: space-between;
+    min-height: 42px; }
+  .bs-nav-overlay .menu { margin-block: auto; display: flex; flex-direction: column; }
+  .bs-nav-overlay .menu a { display: flex; align-items: baseline; gap: 18px; padding: 9px 0;
+    font-family: var(--font-display); font-weight: 800; letter-spacing: -.02em; line-height: 1.05;
+    font-size: clamp(34px, 6.5vw, 56px); color: var(--fg);
+    opacity: 0; transform: translateY(38px);
+    transition: opacity .5s ease, transform .5s cubic-bezier(.2,.7,.3,1), color .2s; }
+  .bs-nav-overlay .menu a small { font-family: var(--font-body); font-size: 13px; font-weight: 700;
+    letter-spacing: .1em; color: var(--fg-muted); }
+  .bs-nav-overlay .menu a:hover { color: var(--brand-300); }
+  .bs-nav-overlay .ov-panel.open .menu a { opacity: 1; transform: none; }
+  .bs-nav-overlay .ov-panel.open .menu a:nth-child(1) { transition-delay: .05s; }
+  .bs-nav-overlay .ov-panel.open .menu a:nth-child(2) { transition-delay: .11s; }
+  .bs-nav-overlay .ov-panel.open .menu a:nth-child(3) { transition-delay: .17s; }
+  .bs-nav-overlay .ov-panel.open .menu a:nth-child(4) { transition-delay: .23s; }
+  .bs-nav-overlay .ov-panel.open .menu a:nth-child(5) { transition-delay: .29s; }
+  .bs-nav-overlay .ov-social { display: flex; flex-wrap: wrap; gap: 22px;
+    border-top: 1px solid var(--line); padding-top: 18px; }
+  .bs-nav-overlay .ov-social a { font-size: 13px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--fg-muted); transition: color .2s; }
+  .bs-nav-overlay .ov-social a:hover { color: var(--fg); }
+  @media (max-width: 480px) { .bs-nav-overlay .right .bs-btn { display: none; } }
+</style>
+<div><!-- Demo-Wrapper: begrenzt das Sticky-Verhalten auf diesen Abschnitt -->
+<header class="bs-nav bs-nav-overlay" data-theme="dark">
+  <div class="bs-container inner">
+    <a class="brand" href="#">studio<em>anders</em></a>
+    <div class="right">
+      <a href="#" class="bs-btn bs-btn-outline bs-btn-sm">Projekt anfragen</a>
+      <button class="ov-open" aria-label="Menü öffnen" aria-expanded="false" aria-controls="ov-panel">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="16" x2="20" y2="16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="ov-panel" id="ov-panel" aria-hidden="true">
+    <div class="bs-container ov-top">
+      <span class="brand">studio<em>anders</em></span>
+      <button class="ov-close" aria-label="Menü schließen">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+    </div>
+    <nav class="bs-container menu" aria-label="Overlay-Navigation">
+      <a href="#">Arbeiten <small>01</small></a>
+      <a href="#">Studio <small>02</small></a>
+      <a href="#">Leistungen <small>03</small></a>
+      <a href="#">Journal <small>04</small></a>
+      <a href="#">Kontakt <small>05</small></a>
+    </nav>
+    <div class="bs-container">
+      <div class="ov-social">
+        <a href="#">Instagram</a><a href="#">Behance</a><a href="#">LinkedIn</a><a href="#">Vimeo</a>
+      </div>
+    </div>
+  </div>
+</header>
+<script>
+  (function () {
+    var scope = document.currentScript.parentElement;
+    var burger = scope.querySelector(".ov-open");
+    var panel = scope.querySelector(".ov-panel");
+    var close = scope.querySelector(".ov-close");
+    function set(open) {
+      panel.classList.toggle("open", open);
+      panel.setAttribute("aria-hidden", String(!open));
+      burger.setAttribute("aria-expanded", String(open));
+      document.documentElement.style.overflow = open ? "hidden" : ""; /* html statt body: body hat overflow-x:clip, das Hidden wuerde sonst nicht zum Viewport propagieren */
+    }
+    burger.addEventListener("click", function () { set(true); });
+    close.addEventListener("click", function () { set(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && panel.classList.contains("open")) set(false); });
+  })();
+</script>
+<!-- Demo-Füller — NICHT mitkopieren -->
+<div class="demo-fill bs-dots"><span class="bs-badge" data-reveal>↓ Scrolle — oder öffne oben das Fullscreen-Menü</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: NAV 8 · Scroll-Progress + Scrollspy (hell)
+     Sticky-Leiste mit 3px-Fortschrittsbalken an der Unterkante
+     (Breite = Scrollposition der Seite) und drei Anker-Links, die
+     sich aktiv einfärben, sobald ihre Sektion die Viewport-Mitte
+     berührt (IntersectionObserver). Die drei ~90vh-Sektionen darunter
+     sind nur Demo-Füller.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Nav 8 · Scroll-Progress + Scrollspy <code>.bs-nav-progress</code> <code>hell</code></p>
+<style>
+  header.bs-nav-progress { position: sticky; top: 0; z-index: 60;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+    transition: box-shadow .25s; }
+  header.bs-nav-progress.scrolled { box-shadow: 0 12px 34px -20px rgba(20,16,31,.35); }
+  .bs-nav-progress .inner { display: flex; align-items: center; gap: 28px; height: 64px; }
+  .bs-nav-progress .logo { display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--fg); }
+  .bs-nav-progress .logo svg { color: var(--green); }
+  .bs-nav-progress .links { display: flex; gap: 24px; margin-left: auto; }
+  .bs-nav-progress .links a { font-size: 15px; font-weight: 600; color: var(--fg-soft);
+    padding: 4px 0; border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s; }
+  .bs-nav-progress .links a:hover { color: var(--fg); }
+  .bs-nav-progress .links a.active { color: var(--brand); border-bottom-color: var(--brand); }
+  /* Fortschrittsbalken an der Unterkante (überdeckt den Border) */
+  .bs-nav-progress .progress { position: absolute; left: 0; bottom: -1px;
+    width: 0; height: 3px; background: var(--brand); border-radius: 0 2px 2px 0; }
+  @media (max-width: 640px) {
+    .bs-nav-progress .inner { gap: 14px; }
+    .bs-nav-progress .links { gap: 14px; }
+    .bs-nav-progress .links a { font-size: 13.5px; }
+    .bs-nav-progress .logo { font-size: 17px; }
+  }
+  /* Demo-Sektionen (NUR Beispielseite, NICHT mitkopieren) */
+  .demo-sektion { min-height: 90vh; display: grid; place-content: center; gap: 10px;
+    padding: 40px 24px; text-align: center; scroll-margin-top: 76px; background: var(--bg); }
+  .demo-sektion.alt { background: var(--bg-soft); }
+  .demo-sektion .kicker { font-size: 13px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--brand); }
+  .demo-sektion h3 { font-size: clamp(26px, 3.4vw, 40px); }
+</style>
+<div><!-- Demo-Wrapper: begrenzt das Sticky-Verhalten auf diesen Abschnitt -->
+<header class="bs-nav bs-nav-progress">
+  <div class="bs-container inner">
+    <a class="logo" href="#">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      leseweite
+    </a>
+    <nav class="links" aria-label="Kapitelnavigation">
+      <a href="#lw-ueberblick">Überblick</a>
+      <a href="#lw-methode">Methode</a>
+      <a href="#lw-preise">Preise</a>
+    </nav>
+  </div>
+  <div class="progress" aria-hidden="true"></div>
+</header>
+<!-- Demo-Sektionen — NICHT mitkopieren (nur damit Scrollspy & Balken etwas zu tun haben) -->
+<section class="demo-sektion" id="lw-ueberblick">
+  <p class="kicker">Kapitel 1</p>
+  <h3>Überblick</h3>
+  <p>Der Balken unten in der Leiste wächst mit der Scrollposition.</p>
+</section>
+<section class="demo-sektion alt" id="lw-methode">
+  <p class="kicker">Kapitel 2</p>
+  <h3>Methode</h3>
+  <p>Sobald diese Sektion die Viewport-Mitte berührt, wird „Methode“ aktiv.</p>
+</section>
+<section class="demo-sektion" id="lw-preise">
+  <p class="kicker">Kapitel 3</p>
+  <h3>Preise</h3>
+  <p>Und hier springt der aktive Zustand auf „Preise“ um.</p>
+</section>
+<script>
+  (function () {
+    var scope = document.currentScript.parentElement;
+    /* Progress: Balkenbreite = Scrollposition der Seite */
+    var bar = scope.querySelector(".progress");
+    var onScroll = function () {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + "%";
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    /* Scrollspy: Link aktiv, wenn seine Sektion die Viewport-Mitte berührt */
+    var links = scope.querySelectorAll(".links a");
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { a.classList.toggle("active", a.hash === "#" + e.target.id); });
+      });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    scope.querySelectorAll(".demo-sektion").forEach(function (s) { spy.observe(s); });
+  })();
+</script>
+</div>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

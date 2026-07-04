@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Landing-Page-Bausteine · Übersicht</title>
+<meta name="description" content="Wiederverwendbare Landing-Page-Bausteine in Plain HTML/CSS/JS: Heroes, Navigationen, Features, Testimonials, Preise, FAQ, CTA, Footer, Scroll-Animationen und Rechtsseiten." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<style>
+  /* ===== Baukasten-Übersicht (eigenständige Seite) ===== */
+  .kit-hero { position: relative; overflow: hidden; }
+  .kit-hero::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(70% 90% at 85% -10%, rgba(var(--brand-rgb),.30), transparent 60%),
+      radial-gradient(50% 70% at 0% 110%, rgba(var(--violet-rgb),.22), transparent 60%); }
+  .kit-hero .inner { position: relative; padding-top: 84px; padding-bottom: 64px; }
+  .kit-hero h1 { font-size: clamp(38px, 5vw, 62px); font-weight: 800; max-width: 16ch; margin: 18px 0 20px; }
+  .kit-hero .sub { font-size: 18.5px; max-width: 56ch; margin-bottom: 28px; }
+  .kit-hero .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .kit-hero .back { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600;
+    color: var(--fg-muted); margin-bottom: 26px; }
+  .kit-hero .back:hover { color: var(--fg); }
+
+  .kit-how { border-top: 1px solid var(--line); }
+  .kit-how .inner { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; padding: 40px 24px; }
+  .kit-how .step { display: flex; gap: 14px; align-items: flex-start; }
+  .kit-how .num { flex: none; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 16px; color: #fff;
+    background: linear-gradient(135deg, var(--brand), var(--violet)); }
+  .kit-how b { display: block; color: var(--fg); font-family: var(--font-display); font-size: 16.5px; margin-bottom: 3px; }
+  .kit-how span { font-size: 14px; color: var(--fg-muted); }
+  .kit-how code { font-size: 12.5px; background: rgba(var(--brand-rgb),.1); color: var(--brand);
+    border: 1px solid rgba(var(--brand-rgb),.3); border-radius: 5px; padding: 1px 6px; }
+
+  .kit-grid-wrap { padding: 56px 0 90px; }
+  .kit-label { display: flex; align-items: center; gap: 14px; font-size: 13px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--fg-muted); margin: 34px 0 18px; }
+  .kit-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .kit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+  .kit-card { position: relative; display: flex; flex-direction: column; gap: 10px;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 24px 24px 22px; isolation: isolate;
+    transition: transform .25s cubic-bezier(.2,.7,.3,1), border-color .25s, box-shadow .25s; }
+  .kit-card:hover { transform: translateY(-5px); border-color: rgba(var(--brand-rgb),.55);
+    box-shadow: 0 24px 60px -28px rgba(0,0,0,.65), 0 0 0 1px rgba(var(--brand-rgb),.35); }
+  .kit-card .ic { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+    background: rgba(var(--brand-rgb),.14); border: 1px solid rgba(var(--brand-rgb),.3); color: var(--brand); }
+  body[data-theme="dark"] .kit-card .ic { color: var(--brand-300); }
+  .kit-card .ic svg { width: 20px; height: 20px; }
+  .kit-card h3 { font-size: 20px; font-weight: 700; }
+  .kit-card p { font-size: 14px; line-height: 1.55; color: var(--fg-muted); flex: 1; }
+  .kit-card .count { position: absolute; top: 20px; right: 20px; font-size: 12px; font-weight: 700;
+    color: var(--fg-soft); border: 1px solid var(--line); background: var(--glass);
+    padding: 4px 10px; border-radius: 999px; }
+  .kit-card .go { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700; color: var(--brand); }
+  body[data-theme="dark"] .kit-card .go { color: var(--brand-300); }
+  .kit-card .go i { font-style: normal; transition: transform .25s; }
+  .kit-card:hover .go i { transform: translateX(5px); }
+  .kit-card:hover .go { color: var(--fg); }
+
+  @media (max-width: 940px) { .kit-grid { grid-template-columns: 1fr 1fr; } .kit-how .inner { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .kit-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-theme="dark">
+
+<header class="kit-hero">
+  <div class="bs-container inner" data-stagger>
+    <a class="back" href="../index.html">← Zurück zur Projekt-Übersicht</a>
+    <div><span class="bs-badge">🧱 Baukasten · Plain HTML / CSS / JS + Motion</span></div>
+    <h1>Landing-Page-Bausteine zum Zusammenstellen</h1>
+    <p class="sub">
+      Jeder Baustein ist eine fertige Sektion: Markup plus zugehörigen
+      <code style="font-size:15px">&lt;style&gt;</code>-Block kopieren, Texte tauschen, fertig.
+      Alle Blöcke funktionieren hell <b style="color:var(--fg)">und</b> dunkel und bringen
+      ihre Scroll-Animationen mit.
+    </p>
+    <div class="chips">
+      <span class="bs-badge">83 Bausteine</span>
+      <span class="bs-badge">29 Beispielseiten</span>
+      <span class="bs-badge">9 Scroll-Muster</span>
+      <span class="bs-badge">hell / dunkel je Sektion</span>
+      <span class="bs-badge">0 Frameworks</span>
+    </div>
+  </div>
+  <div class="kit-how">
+    <div class="bs-container inner">
+      <div class="step"><span class="num">1</span><div><b>Baustein aussuchen</b><span>Beispielseite öffnen, Variante wählen — jeder Block ist im Quelltext mit einem Kommentar-Banner markiert.</span></div></div>
+      <div class="step"><span class="num">2</span><div><b>Markup + Style kopieren</b><span>Die <code>&lt;section&gt;</code> und ihren <code>&lt;style&gt;</code>-Block in deine Seite übernehmen; dazu einmalig <code>base.css</code> + <code>base.js</code> einbinden.</span></div></div>
+      <div class="step"><span class="num">3</span><div><b>Thema & Animation setzen</b><span>Fläche per <code>data-theme="dark"</code> kippen, Effekte per <code>data-reveal</code>, <code>data-stagger</code>, <code>data-parallax</code> steuern.</span></div></div>
+    </div>
+  </div>
+</header>
+
+<main class="kit-grid-wrap">
+  <div class="bs-container">
+
+    <p class="kit-label">Sektionen</p>
+    <div class="kit-grid" data-stagger>
+
+      <a class="kit-card" href="hero.html">
+        <span class="count">5 Varianten</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h6M7 13h4"/><circle cx="17" cy="13" r="2.2"/></svg></span>
+        <h3>Hero-Designs</h3>
+        <p>Split mit Produkt-Visual, Aurora zentriert, hell &amp; minimal, Browser-Mockup, Developer-Terminal.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="navigation.html">
+        <span class="count">8 Varianten</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="2.5"/><path d="M6 6.5h.01M9.5 6.5h5M17 6.5h1"/><path d="M3 14h18M3 18h12"/></svg></span>
+        <h3>Sticky-Navigation</h3>
+        <p>Klassische Leiste, Pill-Nav, Announcement-Banner, Mega-Dropdown, transparent über Hero, zentriertes Logo, Fullscreen-Overlay und Scrollspy mit Fortschrittsbalken.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="features.html">
+        <span class="count">4 Varianten</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></span>
+        <h3>Feature-Sektionen</h3>
+        <p>Icon-Grid, abwechselnde Splits mit Produkt-Panels, dunkles Bento-Grid und Zahlen-Band mit Countern.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="testimonials.html">
+        <span class="count">4 Varianten</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2Z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></span>
+        <h3>Testimonials</h3>
+        <p>Großes Einzelzitat, „Wall of Love"-Masonry, Logo-Marquee mit Kennzahl und Case-Study-Karte.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="preise.html">
+        <span class="count">2 Varianten</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+        <h3>Preise</h3>
+        <p>Drei Preiskarten mit Monatlich/Jährlich-Umschalter und schlanke Vergleichstabelle.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="faq.html">
+        <span class="count">2 Varianten</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
+        <h3>FAQ</h3>
+        <p>Akkordeon-Liste (nur eine Frage offen) und zweispaltige Variante mit sticky Intro-Spalte.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="cta.html">
+        <span class="count">3 Varianten</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></span>
+        <h3>Call-to-Action</h3>
+        <p>Zentriertes CTA-Band, Verlaufs-Karte mit E-Mail-Feld und zweispaltiger Split mit Vorteils-Liste.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="footer.html">
+        <span class="count">3 Varianten</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15h18M7 18h4"/></svg></span>
+        <h3>Footer</h3>
+        <p>Mehrspaltig mit Social-Icons, einzeilig minimal und Footer mit integriertem Mini-CTA.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="leadgen.html">
+        <span class="count">6 Bausteine</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></span>
+        <h3>Lead-Generierung</h3>
+        <p>Lead-Magnet, Demo-Buchung mit Slot-Picker, Exit-Intent, Sticky-CTA-Leiste, Plan-Finder-Quiz, Countdown-Band.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="kaufentscheidung.html">
+        <span class="count">6 Bausteine</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></span>
+        <h3>Kaufentscheidung</h3>
+        <p>ROI-Rechner, Wettbewerber-Vergleich, Garantie-Band, Onboarding in 3 Schritten, Einwand-Sektion, Vorher/Nachher-Slider.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="vertrauen.html">
+        <span class="count">5 Bausteine</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <h3>Vertrauen & Menschen</h3>
+        <p>Team-Grid, Gründer-Brief mit gezeichneter Unterschrift, Bewertungs-Widget, Presse-Zitate, Award-Badges.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="social-proof.html">
+        <span class="count">6 Bausteine</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg></span>
+        <h3>Social Proof & Compliance</h3>
+        <p>Logo-Wall, Community-Zahlen, Fallstudien-Grid, Live-Toasts, DSGVO/Compliance-Badges, Integrations-Grid mit Filter.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="medien.html">
+        <span class="count">5 Bausteine</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m10 8 5 3-5 3z"/><path d="M8 21h8"/></svg></span>
+        <h3>Medien & Produkt-Demo</h3>
+        <p>Video-Lightbox, Screenshot-Karussell, Produkt-Tour mit Hotspots, Use-Case-Tabs, animierte Chart-Teaser.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="interaktiv.html">
+        <span class="count">6 Bausteine</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+        <h3>Interaktive Extras</h3>
+        <p>Code-Beispiel mit Copy, Scrollytelling, Roadmap-Timeline, Chat-Teaser, Weltkarte, Command-Palette (Cmd+K).</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="utility.html">
+        <span class="count">7 Bausteine</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+        <h3>Utility & Struktur</h3>
+        <p>Cookie-Consent-Banner (DSGVO), Kontakt-Sektion, Blog-Teaser, Scrollspy-TOC, Breadcrumbs, Sprach-Umschalter, Jobs.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+    </div>
+
+    <p class="kit-label">Seiten-Vorlagen</p>
+    <div class="kit-grid" data-stagger>
+      <a class="kit-card" href="404.html">
+        <span class="count">Vorlage</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+        <h3>404-Seite</h3>
+        <p>Minimal-typografisch: riesige Verlaufs-404, ein Satz, Zurück-Button und drei Karten-Links.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="wartung.html">
+        <span class="count">Vorlage</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+        <h3>Wartungsseite</h3>
+        <p>Wir-sind-gleich-zurück-Seite mit Countdown und Status-Link auf dezentem Aurora-Verlauf.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="coming-soon.html">
+        <span class="count">Vorlage</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></span>
+        <h3>Coming Soon / Warteliste</h3>
+        <p>Launch-Countdown, Wartelisten-Formular mit Validierung und Social Proof.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="danke.html">
+        <span class="count">Vorlage</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <h3>Danke-Seite</h3>
+        <p>Animiertes Häkchen, drei Was-jetzt-passiert-Schritte, Weiterempfehlen mit Copy-Link.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="agb.html">
+        <span class="count">Vorlage</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+        <h3>AGB</h3>
+        <p>SaaS-AGB-Vorlage mit markierten [Platzhaltern] — komplettiert Impressum & Datenschutz.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="status.html">
+        <span class="count">Vorlage</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+        <h3>Status-Seite</h3>
+        <p>Komponenten-Status mit 90-Tage-Uptime-Balken und Incident-Historie.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+    </div>
+
+    <p class="kit-label">Grundlagen &amp; Mobile</p>
+    <div class="kit-grid" data-stagger>
+      <a class="kit-card" href="mobile.html">
+        <span class="count">4 Bausteine</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></span>
+        <h3>Mobile-Conversion</h3>
+        <p>Sticky-Bottom-CTA in der Daumenzone, Tap-to-Call-Leiste, Tabelle-zu-Karten-Muster, Bottom-Tab-Navigation — im Telefon-Mockup.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="grundlagen-seo.html">
+        <span class="count">9 Snippets</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
+        <h3>SEO & Meta</h3>
+        <p>Kopierbare Head-Vorlage, Open Graph, JSON-LD (Organization, FAQ, Preise, Breadcrumbs), hreflang, robots & Sitemap + Checkliste.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="grundlagen-a11y.html">
+        <span class="count">7 Abschnitte</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M4 9.5h16M12 9.5V15m0 0-3.5 6M12 15l3.5 6"/></svg></span>
+        <h3>Barrierefreiheit</h3>
+        <p>Live-Skip-Link, Fokus-Demos, ARIA-Spickzettel mit Verweisen in den Baukasten, Reduced Motion, Kontrast — BFSG-relevant.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="grundlagen-performance.html">
+        <span class="count">7 Abschnitte</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+        <h3>Performance & Medien</h3>
+        <p>Responsive Bilder, LCP-Hero-Muster, Font-Loading, Video-Facade (live), content-visibility, Core-Web-Vitals-Karten.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+      <a class="kit-card" href="grundlagen-tracking.html">
+        <span class="count">7 Abschnitte</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></span>
+        <h3>Analytics & Tracking</h3>
+        <p>Consent-abhängiges Skript-Laden mit Live-Simulator, CTA-Event-Tracking, UTM-Capture, Scroll-Tiefe — DSGVO-bewusst.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+    </div>
+
+    <p class="kit-label">Animation &amp; Recht</p>
+    <div class="kit-grid" data-stagger>
+
+      <a class="kit-card" href="scroll-animationen.html">
+        <span class="count">9 Muster</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="m8 7 4-4 4 4"/><path d="m8 17 4 4 4-4"/></svg></span>
+        <h3>Scroll-Animationen</h3>
+        <p>Alle Muster live: Reveals, Stagger, Delay, Zoom, Zähler, Parallax, Spring und Sticky-Stapel — mit Code-Snippets.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="impressum.html">
+        <span class="count">Vorlage</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg></span>
+        <h3>Impressum</h3>
+        <p>Rechtsseiten-Vorlage nach § 5 DDG mit gelb markierten [Platzhaltern] — nichts wird vergessen.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="datenschutz.html">
+        <span class="count">Vorlage</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <h3>Datenschutz</h3>
+        <p>DSGVO-Struktur für einfache Landing Pages: Hosting, Kontakt, Newsletter, Cookies, Betroffenenrechte.</p>
+        <span class="go">Ansehen <i>→</i></span>
+      </a>
+
+      <a class="kit-card" href="IDEEN.md">
+        <span class="count">46 Ideen</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.4 1 2.3h6c0-.9.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg></span>
+        <h3>Ideen-Backlog</h3>
+        <p>Das Brainstorming hinter dem Ausbau: 46 Komponenten aus 4 Blickwinkeln — inzwischen alle umgesetzt; die Querschnitts-Themen sind die nächste Stufe.</p>
+        <span class="go">Lesen <i>→</i></span>
+      </a>
+
+    </div>
+
+  </div>
+</main>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

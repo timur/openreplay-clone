@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Utility &amp; Struktur</title>
+<meta name="description" content="7 Utility- und Struktur-Bausteine: Cookie-Consent, Kontakt, Blog-Teaser, Scrollspy-TOC, Breadcrumbs, Sprach-Umschalter, Jobs — Plain HTML/CSS/JS." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: UTILITY 1 · Cookie-Consent-Banner (DSGVO)
+     Bottom-Bar mit GLEICHWERTIGEN Buttons "Alle akzeptieren" /
+     "Nur notwendige" (kein Dark Pattern) + "Einstellungen"-Modal
+     mit Kategorien-Toggles. Consent liegt als JSON in localStorage.
+
+     Muster für consent-abhängige Skripte:
+       <script type="text/plain" data-consent="statistik"> … </script>
+     bleibt inert, bis der Consent-Manager es nach Zustimmung als
+     echtes <script> aktiviert (Beispiel unten im Demo-Panel).
+
+     Weitere Varianten (nur erwähnt):
+     · Dezente Eck-Karte unten links, die die Seite nicht blockiert
+     · Wiederöffnen-Link "Cookie-Einstellungen" als Footer-Utility
+       (hier als Button im Demo-Panel gezeigt)
+     Kopieren: <style> + <section> + das <script> direkt darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Utility 1 · Cookie-Consent-Banner <code>.bs-cookie</code> <code>data-theme="dark"</code></p></div>
+<style>
+  .bs-cookie .inner { padding-top: 88px; padding-bottom: 96px; }
+
+  /* Demo-Panel: zeigt den gespeicherten Consent-Status */
+  .bs-cookie .demo-panel { max-width: 760px; margin: 0 auto; background: var(--card);
+    border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px 26px;
+    display: flex; flex-direction: column; gap: 18px; }
+  .bs-cookie .demo-panel .row1 { display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px 24px; flex-wrap: wrap; }
+  .bs-cookie .demo-panel .row1 b { display: block; font-family: var(--font-display); font-size: 16px;
+    color: var(--fg); margin-bottom: 4px; }
+  .bs-cookie .demo-panel .row1 p { font-size: 14px; color: var(--fg-muted); max-width: 44ch; }
+  .bs-cookie .chip { display: inline-flex; align-items: center; gap: 8px; flex: none;
+    font-size: 13px; font-weight: 600; color: var(--fg-muted);
+    border: 1px solid var(--line); background: var(--glass); border-radius: 999px; padding: 6px 14px; }
+  .bs-cookie .chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--fg-muted); }
+  .bs-cookie .chip.on { color: var(--fg); border-color: rgba(37,194,110,.5); }
+  .bs-cookie .chip.on::before { background: var(--green); }
+  .bs-cookie .demo-panel .actions { display: flex; gap: 10px; flex-wrap: wrap;
+    border-top: 1px solid var(--line); padding-top: 18px; }
+
+  /* Bottom-Bar — beide Entscheidungs-Buttons GLEICHWERTIG gestaltet */
+  .bs-cookie-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 400;
+    background: var(--bg); border-top: 1px solid var(--line);
+    box-shadow: 0 -18px 60px -20px rgba(13,3,59,.45); }
+  .bs-cookie-bar[hidden] { display: none; }
+  .bs-cookie-bar:not([hidden]) { animation: bsCookieIn .45s cubic-bezier(.2,.7,.3,1); }
+  @keyframes bsCookieIn { from { transform: translateY(100%); } }
+  .bs-cookie-bar .bar-inner { max-width: var(--maxw); margin: 0 auto; padding: 18px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; }
+  .bs-cookie-bar .txt { flex: 1 1 340px; font-size: 14.5px; line-height: 1.55; }
+  .bs-cookie-bar .txt b { color: var(--fg); }
+  .bs-cookie-bar .txt a { text-decoration: underline; text-underline-offset: 3px; color: var(--fg); }
+  .bs-cookie-bar .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  /* Einstellungen-Modal */
+  .bs-cookie-modal { position: fixed; inset: 0; z-index: 500; display: grid; place-items: center; padding: 20px; }
+  .bs-cookie-modal[hidden] { display: none; }
+  .bs-cookie-modal .backdrop { position: absolute; inset: 0; background: rgba(13,3,59,.6); backdrop-filter: blur(4px); }
+  .bs-cookie-modal .dialog { position: relative; width: min(560px, 100%); max-height: min(86vh, 660px);
+    overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 28px; box-shadow: var(--shadow); animation: bsDialogIn .3s cubic-bezier(.2,.7,.3,1); }
+  @keyframes bsDialogIn { from { opacity: 0; transform: translateY(14px) scale(.98); } }
+  .bs-cookie-modal h3 { font-size: 22px; margin-bottom: 8px; padding-right: 40px; }
+  .bs-cookie-modal .hint { font-size: 14.5px; color: var(--fg-soft); margin-bottom: 22px; }
+  .bs-cookie-modal .close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px;
+    display: grid; place-items: center; border-radius: 50%; cursor: pointer;
+    border: 1px solid var(--line); background: var(--glass); color: var(--fg); font-size: 15px; line-height: 1; }
+  .bs-cookie-modal .close:hover { border-color: var(--fg-muted); }
+  .bs-cookie-modal .cat { display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px; padding: 15px 0; border-top: 1px solid var(--line); }
+  .bs-cookie-modal .cat b { display: flex; align-items: center; gap: 10px; color: var(--fg); font-size: 15.5px; }
+  .bs-cookie-modal .cat b .lock { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--green); border: 1px solid rgba(37,194,110,.45); border-radius: 999px; padding: 1px 8px; }
+  .bs-cookie-modal .cat p { font-size: 13.5px; color: var(--fg-muted); max-width: 46ch; margin-top: 3px; }
+  /* Toggle-Switch als gestylte Checkbox */
+  .bs-cookie-modal .cat input[type="checkbox"] { appearance: none; -webkit-appearance: none; flex: none;
+    width: 46px; height: 26px; margin: 2px 0 0; border-radius: 999px; position: relative; cursor: pointer;
+    background: var(--glass); border: 1.5px solid var(--line); transition: background .2s, border-color .2s; }
+  .bs-cookie-modal .cat input::after { content: ""; position: absolute; top: 2.5px; left: 3px;
+    width: 18px; height: 18px; border-radius: 50%; background: var(--fg-muted);
+    transition: transform .2s, background .2s; }
+  .bs-cookie-modal .cat input:checked { background: var(--brand); border-color: var(--brand); }
+  .bs-cookie-modal .cat input:checked::after { transform: translateX(19px); background: #fff; }
+  .bs-cookie-modal .cat input:disabled { cursor: not-allowed; opacity: .65; }
+  .bs-cookie-modal .m-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+</style>
+<section class="bs-cookie" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">DSGVO &amp; Consent</p>
+      <h2>Cookies? Erst nach deiner Einwilligung.</h2>
+      <p>Beide Entscheidungen sind einen Klick entfernt und gleichwertig gestaltet — optionale Skripte laden erst, wenn du zustimmst.</p>
+    </div>
+
+    <div class="demo-panel" data-reveal data-reveal-delay="120">
+      <div class="row1">
+        <div>
+          <b>Aktueller Consent-Status</b>
+          <p data-consent-status aria-live="polite">Noch keine Auswahl getroffen — der Banner unten ist aktiv.</p>
+        </div>
+        <span class="chip" data-analytics-chip>Statistik-Skript: wartet auf Einwilligung</span>
+      </div>
+      <div class="actions">
+        <button type="button" class="bs-btn bs-btn-outline bs-btn-sm" data-consent-open>Cookie-Einstellungen öffnen</button>
+        <button type="button" class="bs-btn bs-btn-ghost bs-btn-sm" data-consent-reset>Demo zurücksetzen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUSTER: consent-abhängiges Skript. Liegt als type="text/plain" inert
+       im HTML und wird erst nach Zustimmung zu "statistik" aktiviert.
+       Im echten Einsatz stünde hier z. B. das Analytics-Snippet. -->
+  <script type="text/plain" data-consent="statistik">
+    (function () {
+      var chip = document.querySelector(".bs-cookie [data-analytics-chip]");
+      if (chip) { chip.textContent = "Statistik-Skript: geladen ✓"; chip.classList.add("on"); }
+    })();
+  </script>
+
+  <!-- Bottom-Bar (fixed) -->
+  <div class="bs-cookie-bar" role="region" aria-label="Cookie-Hinweis" hidden>
+    <div class="bar-inner">
+      <p class="txt"><b>Wir respektieren deine Daten.</b> Notwendige Cookies halten die Seite am Laufen. Statistik &amp; Marketing laden nur mit deiner Einwilligung — Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+      <div class="actions">
+        <button type="button" class="bs-btn bs-btn-ghost bs-btn-sm" data-consent-open>Einstellungen</button>
+        <button type="button" class="bs-btn bs-btn-primary bs-btn-sm" data-consent-necessary>Nur notwendige</button>
+        <button type="button" class="bs-btn bs-btn-primary bs-btn-sm" data-consent-accept-all>Alle akzeptieren</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Einstellungen-Modal -->
+  <div class="bs-cookie-modal" hidden>
+    <div class="backdrop"></div>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="bs-cookie-title">
+      <button type="button" class="close" aria-label="Einstellungen schließen">✕</button>
+      <h3 id="bs-cookie-title">Cookie-Einstellungen</h3>
+      <p class="hint">Wähle selbst, welche Kategorien wir verwenden dürfen. Deine Auswahl gilt sofort und lässt sich jederzeit ändern.</p>
+
+      <div class="cat">
+        <div>
+          <b>Notwendig <span class="lock">immer aktiv</span></b>
+          <p>Grundfunktionen wie Seitennavigation, Formulare und deine Cookie-Auswahl selbst. Ohne sie läuft die Seite nicht.</p>
+        </div>
+        <input type="checkbox" checked disabled aria-label="Notwendige Cookies (immer aktiv)" />
+      </div>
+      <div class="cat">
+        <div>
+          <b>Statistik</b>
+          <p>Hilft uns zu verstehen, wie die Website genutzt wird — anonymisiert und ohne Werbeprofile.</p>
+        </div>
+        <input type="checkbox" id="bs-cc-statistik" aria-label="Statistik-Cookies erlauben" />
+      </div>
+      <div class="cat">
+        <div>
+          <b>Marketing</b>
+          <p>Ermöglicht personalisierte Inhalte und die Erfolgsmessung von Kampagnen auf Drittplattformen.</p>
+        </div>
+        <input type="checkbox" id="bs-cc-marketing" aria-label="Marketing-Cookies erlauben" />
+      </div>
+
+      <div class="m-actions">
+        <button type="button" class="bs-btn bs-btn-primary bs-btn-sm" data-consent-save>Auswahl speichern</button>
+        <button type="button" class="bs-btn bs-btn-outline bs-btn-sm" data-consent-accept-all>Alle akzeptieren</button>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-cookie");
+  if (!root) return;
+  var KEY = "bs-consent"; // Consent liegt als JSON in localStorage
+  var bar = root.querySelector(".bs-cookie-bar");
+  var modal = root.querySelector(".bs-cookie-modal");
+  var dialog = modal.querySelector(".dialog");
+  var statusEl = root.querySelector("[data-consent-status]");
+  var chip = root.querySelector("[data-analytics-chip]");
+  var boxStat = root.querySelector("#bs-cc-statistik");
+  var boxMark = root.querySelector("#bs-cc-marketing");
+  var lastFocus = null;
+
+  function read() { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } }
+  function store(c) { try { localStorage.setItem(KEY, JSON.stringify(c)); } catch (e) { /* Private Mode */ } }
+
+  /* Kern des Musters: inerte <script type="text/plain" data-consent="…">-Blöcke
+     werden nach Zustimmung als echte <script>-Elemente eingesetzt.
+     Ein Widerruf entfernt bereits geladene Skripte nicht — im echten
+     Einsatz nach einem Downgrade location.reload() aufrufen. */
+  function activateScripts(c) {
+    document.querySelectorAll('script[type="text/plain"][data-consent]').forEach(function (tpl) {
+      if (!c[tpl.dataset.consent] || tpl.dataset.active === "true") return;
+      var live = document.createElement("script");
+      live.textContent = tpl.textContent;
+      live.setAttribute("data-consent-live", tpl.dataset.consent);
+      tpl.dataset.active = "true";
+      tpl.parentNode.insertBefore(live, tpl.nextSibling);
+    });
+  }
+
+  function renderStatus(c) {
+    if (!c) { statusEl.textContent = "Noch keine Auswahl getroffen — der Banner unten ist aktiv."; return; }
+    var wann = "";
+    if (c.zeitpunkt) wann = " · gespeichert am " + new Date(c.zeitpunkt).toLocaleString("de-DE") + " Uhr";
+    statusEl.textContent = "Notwendig ✓ · Statistik " + (c.statistik ? "✓" : "✗") +
+      " · Marketing " + (c.marketing ? "✓" : "✗") + wann;
+  }
+
+  function decide(c) {
+    c.notwendig = true;
+    c.zeitpunkt = new Date().toISOString();
+    store(c);
+    bar.hidden = true;
+    closeModal();
+    activateScripts(c);
+    renderStatus(c);
+  }
+
+  function onKey(e) {
+    if (e.key === "Escape") { closeModal(); return; }
+    if (e.key !== "Tab") return; // Mini-Fokus-Falle im Dialog
+    var f = dialog.querySelectorAll("button, a[href], input:not(:disabled)");
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
+  function openModal() {
+    var c = read() || { statistik: false, marketing: false };
+    boxStat.checked = !!c.statistik;
+    boxMark.checked = !!c.marketing;
+    lastFocus = document.activeElement;
+    modal.hidden = false;
+    document.documentElement.style.overflow = "hidden"; // Scroll-Lock (nicht body!)
+    dialog.querySelector(".close").focus();
+    document.addEventListener("keydown", onKey);
+  }
+
+  function closeModal() {
+    if (modal.hidden) return;
+    modal.hidden = true;
+    document.documentElement.style.overflow = "";
+    document.removeEventListener("keydown", onKey);
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  root.querySelectorAll("[data-consent-open]").forEach(function (b) { b.addEventListener("click", openModal); });
+  root.querySelectorAll("[data-consent-accept-all]").forEach(function (b) {
+    b.addEventListener("click", function () { decide({ statistik: true, marketing: true }); });
+  });
+  root.querySelector("[data-consent-necessary]").addEventListener("click", function () {
+    decide({ statistik: false, marketing: false });
+  });
+  root.querySelector("[data-consent-save]").addEventListener("click", function () {
+    decide({ statistik: boxStat.checked, marketing: boxMark.checked });
+  });
+  modal.querySelector(".backdrop").addEventListener("click", closeModal);
+  modal.querySelector(".close").addEventListener("click", closeModal);
+
+  // Nur für die Demo: Auswahl verwerfen und Banner erneut zeigen
+  root.querySelector("[data-consent-reset]").addEventListener("click", function () {
+    try { localStorage.removeItem(KEY); } catch (e) { /* egal */ }
+    document.querySelectorAll("script[data-consent-live]").forEach(function (s) { s.remove(); });
+    document.querySelectorAll('script[type="text/plain"][data-consent]').forEach(function (s) { delete s.dataset.active; });
+    chip.textContent = "Statistik-Skript: wartet auf Einwilligung";
+    chip.classList.remove("on");
+    renderStatus(null);
+    bar.hidden = false;
+  });
+
+  // Init: gespeicherte Entscheidung anwenden, sonst Banner zeigen
+  var saved = read();
+  if (saved) { activateScripts(saved); renderStatus(saved); }
+  else { bar.hidden = false; }
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: UTILITY 2 · Kontakt-Sektion
+     Zweispaltig: validiertes Formular (Name, E-Mail, Nachricht,
+     DSGVO-Checkbox, Honeypot) links — Antwortzeit-Versprechen +
+     Kontakt-Kacheln mit mailto rechts. Erfolgszustand inline.
+     Weitere Varianten (nur erwähnt):
+     · Nur Kontakt-Kacheln nach Anliegen, ganz ohne Formular-Backend
+     · Zentriertes schmales Formular als eigene "Sprich mit uns"-Seite
+     · Formular + statische Karte (SVG) für Firmen mit Standort
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Utility 2 · Kontakt-Sektion <code>.bs-kontakt</code> <code>hell</code></p>
+<style>
+  .bs-kontakt .inner { display: grid; grid-template-columns: 1.1fr .9fr; gap: 64px;
+    align-items: start; padding-top: 92px; padding-bottom: 96px; }
+  .bs-kontakt h2 { font-size: clamp(30px, 3.4vw, 42px); margin: 0 0 12px; }
+  .bs-kontakt .lead { max-width: 48ch; margin-bottom: 30px; }
+  .bs-kontakt form { display: grid; gap: 18px; }
+  /* display:grid/flex würde das UA-[hidden] überstimmen — explizit absichern */
+  .bs-kontakt form[hidden], .bs-kontakt .bs-success-box[hidden] { display: none; }
+  .bs-kontakt .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .bs-kontakt .bs-check a { text-decoration: underline; text-underline-offset: 2px; color: var(--fg); }
+  .bs-kontakt form .bs-btn { justify-self: start; }
+
+  .bs-kontakt .info-card { background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 24px 26px; box-shadow: var(--shadow); }
+  .bs-kontakt .promise { display: flex; gap: 12px; align-items: flex-start; font-size: 15px;
+    padding-bottom: 18px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+  .bs-kontakt .promise b { color: var(--fg); }
+  .bs-kontakt .pulse { flex: none; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green); margin-top: 7px; box-shadow: 0 0 0 4px rgba(37,194,110,.2); }
+  .bs-kontakt .tiles { display: grid; gap: 12px; }
+  .bs-kontakt .tile { display: flex; gap: 14px; align-items: center;
+    border: 1px solid var(--line); border-radius: var(--r-md); padding: 13px 16px;
+    transition: border-color .2s, transform .15s; }
+  .bs-kontakt .tile:hover { border-color: var(--brand); transform: translateY(-1px); }
+  .bs-kontakt .tile .ico { flex: none; width: 42px; height: 42px; border-radius: 12px;
+    display: grid; place-items: center; font-size: 19px; background: rgba(var(--brand-rgb),.1); }
+  .bs-kontakt .tile b { display: block; color: var(--fg); font-size: 15px; }
+  .bs-kontakt .tile span { font-size: 13.5px; color: var(--fg-muted); }
+  .bs-kontakt .adresse { margin-top: 18px; font-size: 13.5px; color: var(--fg-muted); }
+  @media (max-width: 900px) { .bs-kontakt .inner { grid-template-columns: 1fr; gap: 44px; } }
+  @media (max-width: 520px) { .bs-kontakt .row2 { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-kontakt">
+  <div class="bs-container inner">
+    <div data-reveal>
+      <p class="bs-eyebrow">Kontakt</p>
+      <h2>Sprich mit uns</h2>
+      <p class="lead">Fragen zu Preisen, Datenschutz oder einer Demo? Schreib uns — ein Mensch antwortet, kein Ticketsystem-Roboter.</p>
+
+      <!-- Ohne Backend: für den Live-Betrieb action auf einen Formular-Dienst
+           setzen, z. B. <form action="https://formspree.io/f/DEINE-ID" method="POST"> -->
+      <form novalidate>
+        <!-- Honeypot gegen Spam: bleibt für Menschen unsichtbar (NICHT entfernen) -->
+        <div class="bs-hp" aria-hidden="true">
+          <label for="kt-firma">Firma (bitte leer lassen)</label>
+          <input type="text" id="kt-firma" name="firma" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="row2">
+          <div class="bs-field">
+            <label for="kt-name">Name*</label>
+            <input class="bs-input" type="text" id="kt-name" name="name" autocomplete="name" placeholder="Maja Lindberg" aria-describedby="kt-name-err" />
+            <p class="bs-error" id="kt-name-err" hidden></p>
+          </div>
+          <div class="bs-field">
+            <label for="kt-mail">E-Mail*</label>
+            <input class="bs-input" type="email" id="kt-mail" name="email" autocomplete="email" placeholder="maja@firma.de" aria-describedby="kt-mail-err" />
+            <p class="bs-error" id="kt-mail-err" hidden></p>
+          </div>
+        </div>
+        <div class="bs-field">
+          <label for="kt-msg">Nachricht*</label>
+          <textarea class="bs-textarea" id="kt-msg" name="nachricht" rows="5" placeholder="Worum geht es? Je konkreter, desto schneller können wir helfen." aria-describedby="kt-msg-err"></textarea>
+          <p class="bs-error" id="kt-msg-err" hidden></p>
+        </div>
+        <div class="bs-field">
+          <label class="bs-check">
+            <input type="checkbox" id="kt-dsgvo" name="dsgvo" aria-describedby="kt-dsgvo-err" />
+            <span>Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage gespeichert werden.*</span>
+          </label>
+          <p class="bs-error" id="kt-dsgvo-err" hidden></p>
+        </div>
+        <button type="submit" class="bs-btn bs-btn-primary">Nachricht senden</button>
+        <p class="bs-form-note">* Pflichtfelder. Wir geben deine Daten niemals weiter.</p>
+      </form>
+
+      <div class="bs-success-box" role="status" tabindex="-1" hidden>
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="10" stroke="var(--green)" stroke-width="2"/><path d="M6.5 11.5l3 3 6-6.5" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Danke, deine Nachricht ist raus! Wir melden uns werktags innerhalb von vier Stunden bei dir.</span>
+      </div>
+    </div>
+
+    <aside data-reveal data-reveal-delay="150">
+      <div class="info-card">
+        <p class="promise"><span class="pulse" aria-hidden="true"></span><span>Werktags antworten wir <b>in unter 4 Stunden</b> — im Schnitt sogar in 47 Minuten.</span></p>
+        <div class="tiles">
+          <a class="tile" href="mailto:vertrieb@lumeo.de">
+            <span class="ico" aria-hidden="true">💼</span>
+            <span><b>Vertrieb</b><span>Demo, Preise &amp; Angebote — vertrieb@lumeo.de</span></span>
+          </a>
+          <a class="tile" href="mailto:support@lumeo.de">
+            <span class="ico" aria-hidden="true">🛟</span>
+            <span><b>Support</b><span>Technische Fragen — support@lumeo.de</span></span>
+          </a>
+          <a class="tile" href="mailto:presse@lumeo.de">
+            <span class="ico" aria-hidden="true">📰</span>
+            <span><b>Presse</b><span>Interviews &amp; Material — presse@lumeo.de</span></span>
+          </a>
+        </div>
+        <p class="adresse">Lumeo GmbH · Torstraße 98 · 10119 Berlin</p>
+      </div>
+    </aside>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-kontakt");
+  if (!root) return;
+  var form = root.querySelector("form");
+  var success = root.querySelector(".bs-success-box");
+  var name = root.querySelector("#kt-name");
+  var mail = root.querySelector("#kt-mail");
+  var msg = root.querySelector("#kt-msg");
+  var dsgvo = root.querySelector("#kt-dsgvo");
+  var hp = root.querySelector("#kt-firma");
+
+  function errEl(input) { return root.querySelector("#" + input.id + "-err"); }
+  function setErr(input, text) {
+    var el = errEl(input);
+    if (text) { input.setAttribute("aria-invalid", "true"); el.textContent = text; el.hidden = false; }
+    else { input.removeAttribute("aria-invalid"); el.hidden = true; }
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    // Honeypot gefüllt → Bot: still "Erfolg" zeigen, nichts senden
+    if (hp && hp.value) { form.hidden = true; success.hidden = false; return; }
+
+    var first = null, ok = true;
+    function check(input, valid, message) {
+      setErr(input, valid ? "" : message);
+      if (!valid) { ok = false; if (!first) first = input; }
+    }
+    check(name, name.value.trim().length >= 2, "Bitte gib deinen Namen an.");
+    check(mail, /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail.value.trim()), "Bitte gib eine gültige E-Mail-Adresse an.");
+    check(msg, msg.value.trim().length >= 10, "Bitte beschreibe dein Anliegen (mindestens 10 Zeichen).");
+    check(dsgvo, dsgvo.checked, "Bitte stimme der Verarbeitung deiner Angaben zu.");
+    if (!ok) { if (first) first.focus(); return; }
+
+    // Ohne Backend: hier würde fetch(form.action, { method: "POST",
+    // body: new FormData(form) }) stehen. Für die Demo direkt Erfolg:
+    form.hidden = true;
+    success.hidden = false;
+    success.focus();
+  });
+
+  [name, mail, msg].forEach(function (input) {
+    input.addEventListener("input", function () { setErr(input, ""); });
+  });
+  dsgvo.addEventListener("change", function () { setErr(dsgvo, ""); });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: UTILITY 3 · Blog-/Ressourcen-Teaser
+     3-Karten-Grid, aus einem JS-Array gerendert (ohne CMS befüllbar):
+     CSS-Bildplatzhalter mit Kategorie-Tag, Titel, Datum, Lesezeit.
+     Weitere Varianten (nur erwähnt):
+     · Featured-Layout: großer Hauptartikel + 3 Listeneinträge
+     · Horizontaler scroll-snap-Streifen für viele Artikel
+     · Changelog-Stil: Datum + Titel + Pfeil, ganz ohne Bilder
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Utility 3 · Blog-Teaser <code>.bs-blog</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-blog .inner { padding-top: 92px; padding-bottom: 96px; }
+  .bs-blog .head-row { display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 20px; flex-wrap: wrap; margin-bottom: 40px; }
+  .bs-blog .head-row h2 { font-size: clamp(28px, 3.4vw, 42px); }
+  .bs-blog .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
+  .bs-blog .card { display: flex; flex-direction: column; background: var(--card);
+    border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden;
+    transition: transform .18s ease, border-color .2s, box-shadow .2s; }
+  .bs-blog .card:hover { transform: translateY(-4px); border-color: rgba(var(--brand-rgb),.55); box-shadow: var(--shadow); }
+
+  /* Bildplatzhalter (reines CSS) — hier käme das echte <img loading="lazy"> hin */
+  .bs-blog .thumb { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
+  .bs-blog .thumb::after { content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.28) 1px, transparent 1.4px);
+    background-size: 15px 15px; mix-blend-mode: overlay; }
+  .bs-blog .thumb.tint-a { background: linear-gradient(135deg, rgba(var(--brand-rgb),.9), rgba(var(--violet-rgb),.8)); }
+  .bs-blog .thumb.tint-b { background: linear-gradient(135deg, color-mix(in srgb, var(--teal) 80%, var(--bg)), rgba(var(--brand-rgb),.7)); }
+  .bs-blog .thumb.tint-c { background: linear-gradient(135deg, color-mix(in srgb, var(--orange) 82%, var(--bg)), color-mix(in srgb, var(--red) 72%, var(--bg))); }
+  .bs-blog .thumb i { position: absolute; right: 16px; bottom: 6px; font-style: normal;
+    font-size: 56px; transform: rotate(-8deg); filter: drop-shadow(0 8px 16px rgba(13,3,59,.35)); }
+  .bs-blog .thumb .tag { position: absolute; top: 12px; left: 12px; z-index: 1;
+    font-size: 11.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
+    background: rgba(255,255,255,.94); color: #14101f; border-radius: 999px; padding: 4px 11px; }
+
+  .bs-blog .body { display: flex; flex-direction: column; flex: 1; padding: 18px 20px 20px; }
+  .bs-blog .meta { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--fg-muted); }
+  .bs-blog .body h3 { font-size: 19px; line-height: 1.25; margin: 9px 0 8px; }
+  .bs-blog .teaser { font-size: 14.5px; color: var(--fg-soft); }
+  .bs-blog .mehr { margin-top: auto; padding-top: 16px; font-size: 14px; font-weight: 700; color: var(--brand); }
+  [data-theme="dark"] .bs-blog .mehr, .bs-blog[data-theme="dark"] .mehr { color: var(--brand-300); }
+  .bs-blog .card:hover .mehr { text-decoration: underline; text-underline-offset: 3px; }
+</style>
+<section class="bs-blog" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="head-row" data-reveal>
+      <div>
+        <p class="bs-eyebrow">Ressourcen</p>
+        <h2>Neues aus dem Blog</h2>
+      </div>
+      <a href="#" class="bs-btn bs-btn-outline bs-btn-sm">Alle Artikel ansehen →</a>
+    </div>
+    <!-- Karten werden unten aus dem ARTIKEL-Array gerendert -->
+    <div class="grid" data-blog-grid data-stagger></div>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-blog");
+  if (!root) return;
+  var grid = root.querySelector("[data-blog-grid]");
+
+  // Inhalte hier pflegen — kein CMS nötig
+  var ARTIKEL = [
+    {
+      kategorie: "Produkt-Analytics", tint: "tint-a", emoji: "📊",
+      titel: "Warum Heatmaps allein nicht reichen",
+      teaser: "Klick-Karten zeigen das Wo, aber nie das Warum. Drei Methoden, mit denen du echte Absichten erkennst.",
+      datum: "2026-06-18", lesezeit: "6 Min."
+    },
+    {
+      kategorie: "DSGVO", tint: "tint-b", emoji: "🛡️",
+      titel: "Session-Replays ohne personenbezogene Daten",
+      teaser: "Maskierung, EU-Hosting, Aufbewahrungsfristen: So setzt du Replays ein, ohne den Datenschutz zu verlieren.",
+      datum: "2026-06-02", lesezeit: "8 Min."
+    },
+    {
+      kategorie: "Engineering", tint: "tint-c", emoji: "⚡",
+      titel: "Wie wir 40 Mio. Events pro Tag verarbeiten",
+      teaser: "Ein Blick hinter die Kulissen unserer Ingest-Pipeline — und warum wir auf Batching statt Streaming setzen.",
+      datum: "2026-05-21", lesezeit: "11 Min."
+    }
+  ];
+
+  function fmt(iso) {
+    return new Date(iso + "T12:00:00").toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" });
+  }
+
+  grid.innerHTML = ARTIKEL.map(function (a) {
+    return '<a class="card" href="#">' +
+      /* Platzhalter-Fläche — hier echtes <img src="…" alt=""> einsetzen */
+      '<div class="thumb ' + a.tint + '" aria-hidden="true"><span class="tag">' + a.kategorie + '</span><i>' + a.emoji + "</i></div>" +
+      '<div class="body">' +
+        '<span class="meta"><time datetime="' + a.datum + '">' + fmt(a.datum) + "</time><span aria-hidden=\"true\">·</span><span>" + a.lesezeit + " Lesezeit</span></span>" +
+        "<h3>" + a.titel + "</h3>" +
+        '<span class="teaser">' + a.teaser + "</span>" +
+        '<span class="mehr">Weiterlesen →</span>' +
+      "</div></a>";
+  }).join("");
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: UTILITY 4 · Scrollspy-Inhaltsverzeichnis (TOC)
+     Sticky Sidebar, die sich per JS automatisch aus den h3 des
+     Artikels generiert; IntersectionObserver markiert den aktiven
+     Abschnitt. Ideal für Datenschutz-, AGB- und Vergleichsseiten.
+     Weitere Varianten (nur erwähnt):
+     · Einklappbares "Auf dieser Seite"-Panel mit details/summary (0 JS)
+     · Punkt-Navigation am rechten Rand mit Tooltips
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Utility 4 · Scrollspy-TOC <code>.bs-toc</code> <code>hell</code></p>
+<style>
+  .bs-toc .inner { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 64px;
+    align-items: start; padding-top: 92px; padding-bottom: 96px; }
+  .bs-toc .toc-side { position: sticky; top: 24px; }
+  .bs-toc .toc-title { font-size: 12.5px; font-weight: 800; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--fg-muted); margin-bottom: 12px; }
+  .bs-toc nav ul { display: grid; border-left: 2px solid var(--line); }
+  .bs-toc nav a { display: block; padding: 7px 15px; margin-left: -2px; border-left: 2px solid transparent;
+    border-radius: 0 8px 8px 0; font-size: 14.5px; color: var(--fg-muted);
+    transition: color .15s, border-color .15s, background-color .15s; }
+  .bs-toc nav a:hover { color: var(--fg); background: var(--glass); }
+  .bs-toc nav a.active { color: var(--brand); border-left-color: var(--brand); font-weight: 700; }
+  [data-theme="dark"] .bs-toc nav a.active { color: var(--brand-300); border-left-color: var(--brand-300); }
+
+  .bs-toc .prose .stand { font-size: 13.5px; color: var(--fg-muted); margin-bottom: 10px; }
+  .bs-toc .prose h2 { font-size: clamp(28px, 3.2vw, 38px); margin-bottom: 14px; }
+  .bs-toc .prose h3 { font-size: 21px; margin: 38px 0 10px; scroll-margin-top: 90px; }
+  .bs-toc .prose p { margin-bottom: 12px; max-width: 68ch; }
+  @media (max-width: 860px) {
+    .bs-toc .inner { grid-template-columns: 1fr; gap: 30px; }
+    .bs-toc .toc-side { position: static; }
+    .bs-toc nav ul { border-left: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+    .bs-toc nav a { margin-left: 0; border: 1px solid var(--line); border-radius: 999px; padding: 6px 13px; }
+    .bs-toc nav a.active { border-color: var(--brand); }
+  }
+</style>
+<section class="bs-toc">
+  <div class="bs-container inner">
+    <aside class="toc-side" data-reveal>
+      <nav aria-label="Inhalt dieser Seite">
+        <p class="toc-title">Auf dieser Seite</p>
+        <!-- Einträge werden unten automatisch aus den h3 generiert -->
+        <ul data-toc-list></ul>
+      </nav>
+    </aside>
+
+    <article class="prose" data-reveal data-reveal-delay="100">
+      <p class="bs-eyebrow">Rechtliches</p>
+      <h2>Datenschutz auf einen Blick</h2>
+      <p class="stand">Zuletzt aktualisiert am 12. Juni 2026 · Lesezeit ca. 4 Minuten</p>
+
+      <h3>Verantwortliche Stelle</h3>
+      <p>Verantwortlich für die Datenverarbeitung auf dieser Website ist die Lumeo GmbH, Torstraße 98, 10119 Berlin. Du erreichst unser Datenschutzteam jederzeit unter datenschutz@lumeo.de.</p>
+      <p>Wir haben eine externe Datenschutzbeauftragte bestellt und dokumentieren alle Verarbeitungstätigkeiten in einem Verzeichnis nach Art. 30 DSGVO.</p>
+
+      <h3>Welche Daten wir erheben</h3>
+      <p>Beim Besuch dieser Seite verarbeiten wir technisch notwendige Daten wie IP-Adresse, Browser-Typ und Zeitpunkt des Zugriffs — sie werden nach spätestens sieben Tagen gelöscht. Wenn du unser Kontaktformular nutzt, speichern wir zusätzlich Name, E-Mail-Adresse und den Inhalt deiner Nachricht.</p>
+      <p>Produktdaten aus Session-Aufzeichnungen werden vor der Übertragung im Browser maskiert: Eingaben, Namen und Zahlungsdaten verlassen dein Gerät niemals im Klartext.</p>
+
+      <h3>Cookies und Einwilligung</h3>
+      <p>Optionale Cookies für Statistik und Marketing setzen wir ausschließlich nach deiner aktiven Einwilligung über unseren Cookie-Banner. Deine Auswahl speichern wir lokal in deinem Browser und du kannst sie jederzeit über den Link „Cookie-Einstellungen" im Footer ändern.</p>
+      <p>Notwendige Cookies — etwa für die Formular-Sicherheit — basieren auf unserem berechtigten Interesse an einem stabilen Betrieb der Website (Art. 6 Abs. 1 lit. f DSGVO).</p>
+
+      <h3>Hosting und Auftragsverarbeitung</h3>
+      <p>Unsere Server stehen ausschließlich in Frankfurt am Main und werden von einem ISO-27001-zertifizierten Rechenzentrum betrieben. Mit allen Dienstleistern haben wir Auftragsverarbeitungsverträge nach Art. 28 DSGVO geschlossen.</p>
+      <p>Eine Übermittlung personenbezogener Daten in Drittländer außerhalb der EU findet nicht statt.</p>
+
+      <h3>Speicherdauer und Löschung</h3>
+      <p>Kontaktanfragen löschen wir spätestens zwölf Monate nach Abschluss der Konversation, sofern keine gesetzlichen Aufbewahrungspflichten bestehen. Analysedaten werden nach 90 Tagen automatisch aggregiert und anonymisiert.</p>
+
+      <h3>Deine Rechte</h3>
+      <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie Widerspruch. Eine E-Mail an datenschutz@lumeo.de genügt — wir antworten innerhalb der gesetzlichen Frist von einem Monat.</p>
+      <p>Außerdem kannst du dich jederzeit bei der Berliner Beauftragten für Datenschutz und Informationsfreiheit beschweren.</p>
+
+      <h3>Kontakt zum Datenschutzteam</h3>
+      <p>Bei Fragen zu dieser Erklärung oder zur Verarbeitung deiner Daten schreib uns an datenschutz@lumeo.de oder per Post an die oben genannte Adresse — Stichwort „Datenschutz".</p>
+    </article>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-toc");
+  if (!root) return;
+  var list = root.querySelector("[data-toc-list]");
+  var headings = Array.prototype.slice.call(root.querySelectorAll(".prose h3"));
+  if (!list || !headings.length) return;
+
+  function slug(text) {
+    return "ds-" + text.toLowerCase()
+      .replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  }
+
+  // TOC automatisch aus den Überschriften generieren
+  var links = {};
+  headings.forEach(function (h) {
+    if (!h.id) h.id = slug(h.textContent);
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.href = "#" + h.id;
+    a.textContent = h.textContent;
+    li.appendChild(a);
+    list.appendChild(li);
+    links[h.id] = a;
+  });
+
+  function setActive(id) {
+    Object.keys(links).forEach(function (key) {
+      var on = key === id;
+      links[key].classList.toggle("active", on);
+      if (on) links[key].setAttribute("aria-current", "true");
+      else links[key].removeAttribute("aria-current");
+    });
+  }
+
+  // Scrollspy: Überschrift aktiv, sobald sie das obere Viewport-Band kreuzt
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) setActive(en.target.id); });
+    }, { rootMargin: "-12% 0px -72% 0px", threshold: 0 });
+    headings.forEach(function (h) { io.observe(h); });
+  }
+  setActive(headings[0].id);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: UTILITY 5 · Breadcrumbs
+     Klassische Brotkrumen mit Chevron-Trennern, letzter Eintrag
+     hervorgehoben + aria-current="page". Für Blog, Rechtsseiten,
+     Changelog. JSON-LD-Vorlage für Suchmaschinen liegt als
+     Kommentar bei.
+     Weitere Varianten (nur erwähnt):
+     · Pill-Stil: jede Ebene als Kapsel, passend zur Pill-Nav
+     · Mobile: nur "← Zurück zu Blog" (letzte Ebene) anzeigen
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Utility 5 · Breadcrumbs <code>.bs-breadcrumb</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-breadcrumb .inner { padding-top: 72px; padding-bottom: 76px; }
+  .bs-breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center;
+    gap: 4px 0; font-size: 14px; color: var(--fg-muted); }
+  .bs-breadcrumb li { display: flex; align-items: center; }
+  .bs-breadcrumb li + li::before { content: "›"; margin: 0 10px; color: var(--fg-muted); opacity: .65; }
+  .bs-breadcrumb ol a { color: var(--fg-muted); transition: color .15s; }
+  .bs-breadcrumb ol a:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+  .bs-breadcrumb [aria-current="page"] { color: var(--fg); font-weight: 700; }
+  .bs-breadcrumb h2 { font-size: clamp(28px, 3.6vw, 44px); margin-top: 20px; max-width: 24ch; }
+  .bs-breadcrumb .meta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px;
+    font-size: 14.5px; color: var(--fg-muted); }
+</style>
+<section class="bs-breadcrumb" data-theme="dark">
+  <div class="bs-container inner" data-reveal>
+    <nav aria-label="Breadcrumb">
+      <ol>
+        <li><a href="#">Startseite</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Produkt-Analytics</a></li>
+        <li aria-current="page">Session-Replays DSGVO-konform einsetzen</li>
+      </ol>
+    </nav>
+    <h2>Session-Replays DSGVO-konform einsetzen</h2>
+    <p class="meta"><span>Von Jonas Petersen</span><span aria-hidden="true">·</span><time datetime="2026-06-02">2. Juni 2026</time><span aria-hidden="true">·</span><span>8 Min. Lesezeit</span></p>
+  </div>
+
+  <!-- SEO: JSON-LD BreadcrumbList — auf der echten Unterseite in den <head>
+       einfügen und URLs/Namen anpassen:
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://www.lumeo.de/" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.lumeo.de/blog/" },
+      { "@type": "ListItem", "position": 3, "name": "Produkt-Analytics", "item": "https://www.lumeo.de/blog/produkt-analytics/" },
+      { "@type": "ListItem", "position": 4, "name": "Session-Replays DSGVO-konform einsetzen" }
+    ]
+  }
+  </script>
+  -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: UTILITY 6 · Sprach-Umschalter (DE/EN)
+     Globus-Button in der Nav öffnet ein Popover mit Sprachliste;
+     aktive Sprache mit Häkchen + aria-current, Wahl landet in
+     localStorage. UI-Demo: Bei Plain HTML zeigen die Einträge im
+     echten Einsatz auf PARALLELE SEITEN (z. B. /index.html und
+     /en/index.html) statt auf Runtime-Übersetzung.
+
+     hreflang-Vorlage für den <head> BEIDER Sprachversionen:
+     <link rel="alternate" hreflang="de" href="https://www.lumeo.de/" />
+     <link rel="alternate" hreflang="en" href="https://www.lumeo.de/en/" />
+     <link rel="alternate" hreflang="x-default" href="https://www.lumeo.de/" />
+
+     Weitere Varianten (nur erwähnt):
+     · Dropdown mit Sprachkürzel direkt in der Haupt-Nav
+     · Segmented-Toggle DE|EN im Footer, analog zum Dark-Mode-Toggle
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Utility 6 · Sprach-Umschalter <code>.bs-lang</code> <code>hell</code></p>
+<style>
+  .bs-lang .inner { padding-top: 88px; padding-bottom: 110px; }
+  .bs-lang .demo-nav { display: flex; align-items: center; justify-content: space-between; gap: 18px;
+    max-width: 860px; margin: 0 auto; background: var(--card); border: 1px solid var(--line);
+    border-radius: 999px; padding: 10px 12px 10px 24px; box-shadow: var(--shadow); }
+  .bs-lang .logo { font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--fg); }
+  .bs-lang .logo i { font-style: normal; color: var(--brand); }
+  .bs-lang .demo-nav .links { display: flex; gap: 4px; }
+  .bs-lang .demo-nav .links a { font-size: 14.5px; font-weight: 600; color: var(--fg-soft);
+    padding: 8px 14px; border-radius: 999px; }
+  .bs-lang .demo-nav .links a:hover { background: var(--glass); color: var(--fg); }
+  @media (max-width: 640px) { .bs-lang .demo-nav .links { display: none; } }
+
+  .bs-lang .lang { position: relative; }
+  .bs-lang .lang-btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px;
+    border-radius: 999px; border: 1px solid var(--line); background: var(--glass); color: var(--fg);
+    font: 700 14px var(--font-body); cursor: pointer; transition: border-color .2s; }
+  .bs-lang .lang-btn:hover { border-color: var(--fg-muted); }
+  .bs-lang .lang-btn .chev { transition: transform .2s; }
+  .bs-lang .lang-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .bs-lang .lang-pop { position: absolute; right: 0; top: calc(100% + 8px); z-index: 60; min-width: 195px;
+    background: var(--bg); border: 1px solid var(--line); border-radius: var(--r-md); padding: 6px;
+    box-shadow: var(--shadow); animation: bsLangIn .18s ease; }
+  .bs-lang .lang-pop[hidden] { display: none; }
+  @keyframes bsLangIn { from { opacity: 0; transform: translateY(-4px); } }
+  .bs-lang .lang-pop a { display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+    border-radius: 10px; font-size: 14.5px; font-weight: 600; color: var(--fg-soft); }
+  .bs-lang .lang-pop a:hover { background: var(--glass); color: var(--fg); }
+  .bs-lang .lang-pop a b { font-size: 11px; font-weight: 800; letter-spacing: .05em;
+    border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; color: var(--fg-muted); }
+  .bs-lang .lang-pop a .check { margin-left: auto; color: var(--brand); opacity: 0; }
+  .bs-lang .lang-pop a.active { color: var(--fg); }
+  .bs-lang .lang-pop a.active b { border-color: var(--brand); color: var(--brand); }
+  .bs-lang .lang-pop a.active .check { opacity: 1; }
+  .bs-lang .demo-note { max-width: 860px; margin: 18px auto 0; font-size: 13px; color: var(--fg-muted); text-align: center; }
+</style>
+<section class="bs-lang">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">International</p>
+      <h2>Ein Klick zwischen DE und EN</h2>
+      <p>Der Globus-Button merkt sich die Wahl — im echten Einsatz verlinken die Einträge parallele Sprachversionen der Seite.</p>
+    </div>
+
+    <div class="demo-nav" data-reveal data-reveal-delay="120">
+      <span class="logo"><i>◆</i> lumeo</span>
+      <nav class="links" aria-label="Demo-Navigation">
+        <a href="#">Funktionen</a><a href="#">Preise</a><a href="#">Blog</a>
+      </nav>
+      <div class="lang">
+        <button type="button" class="lang-btn" aria-haspopup="true" aria-expanded="false" aria-controls="bs-lang-pop">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4M12 2.8c2.6 2.5 3.9 5.7 3.9 9.2s-1.3 6.7-3.9 9.2c-2.6-2.5-3.9-5.7-3.9-9.2s1.3-6.7 3.9-9.2z"/></svg>
+          <span data-lang-code>DE</span>
+          <svg class="chev" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M1.5 3.5 5 7l3.5-3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="lang-pop" id="bs-lang-pop" hidden>
+          <!-- Im echten Einsatz: href="/index.html" bzw. href="/en/index.html" -->
+          <a href="#" data-lang="de"><b>DE</b> Deutsch <svg class="check" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="#" data-lang="en"><b>EN</b> English <svg class="check" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <p class="demo-note">Demo ohne EN-Seite: Die Wahl wird nur in localStorage gespeichert und im Button angezeigt.</p>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-lang");
+  if (!root) return;
+  var KEY = "bs-lang";
+  var btn = root.querySelector(".lang-btn");
+  var pop = root.querySelector(".lang-pop");
+  var codeEl = root.querySelector("[data-lang-code]");
+  var NAMES = { de: "Deutsch", en: "English" };
+
+  function apply(lang) {
+    codeEl.textContent = lang.toUpperCase();
+    btn.setAttribute("aria-label", "Sprache wählen — aktuell " + NAMES[lang]);
+    pop.querySelectorAll("[data-lang]").forEach(function (a) {
+      var on = a.dataset.lang === lang;
+      a.classList.toggle("active", on);
+      if (on) a.setAttribute("aria-current", "true");
+      else a.removeAttribute("aria-current");
+    });
+  }
+
+  function onKey(e) { if (e.key === "Escape") close(true); }
+  function onOutside(e) {
+    if (!pop.contains(e.target) && !btn.contains(e.target)) close(false);
+  }
+  function open() {
+    pop.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+    pop.querySelector("[data-lang]").focus();
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("click", onOutside, true);
+  }
+  function close(refocus) {
+    if (pop.hidden) return;
+    pop.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
+    document.removeEventListener("keydown", onKey);
+    document.removeEventListener("click", onOutside, true);
+    if (refocus) btn.focus();
+  }
+
+  btn.addEventListener("click", function () { if (pop.hidden) open(); else close(true); });
+  pop.querySelectorAll("[data-lang]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault(); // Demo — im echten Einsatz normale Links auf /en/…
+      var lang = a.dataset.lang;
+      try { localStorage.setItem(KEY, lang); } catch (err) { /* Private Mode */ }
+      apply(lang);
+      close(true);
+    });
+  });
+
+  var saved = "de";
+  try { saved = localStorage.getItem(KEY) || "de"; } catch (err) { /* egal */ }
+  apply(NAMES[saved] ? saved : "de");
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: UTILITY 7 · Jobs-/Karriere-Sektion
+     Stellen-Liste aus einem JS-Array gerendert: Titel, Team-Badge,
+     Standort-/Remote-Tag, Pensum + Pfeil. Bewerbung per mailto mit
+     vorbelegtem Betreff — ganz ohne Bewerbungs-Backend.
+     Weitere Varianten (nur erwähnt):
+     · Kultur-Sektion: Emoji-/Foto-Grid + Werte, darunter die Stellen
+     · Einzeiliges "Wir stellen ein"-Badge für Nav oder Footer
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Utility 7 · Jobs-Sektion <code>.bs-jobs</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-jobs .inner { padding-top: 92px; padding-bottom: 100px; }
+  .bs-jobs .list { max-width: 860px; margin: 0 auto; display: grid; gap: 12px; }
+  .bs-jobs .job { display: flex; align-items: center; justify-content: space-between; gap: 18px;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 18px 22px; transition: transform .18s ease, border-color .2s; }
+  .bs-jobs .job:hover { transform: translateX(4px); border-color: rgba(var(--brand-rgb),.6); }
+  .bs-jobs .job h3 { font-size: 18px; margin-bottom: 9px; }
+  .bs-jobs .job-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .bs-jobs .team { font-size: 12px; font-weight: 700; border-radius: 999px; padding: 3.5px 11px; }
+  .bs-jobs .t-eng { background: rgba(var(--brand-rgb),.16); color: color-mix(in srgb, var(--brand) 55%, var(--fg)); }
+  .bs-jobs .t-des { background: rgba(var(--violet-rgb),.16); color: color-mix(in srgb, var(--violet) 55%, var(--fg)); }
+  .bs-jobs .t-sup { background: color-mix(in srgb, var(--teal) 16%, transparent); color: color-mix(in srgb, var(--teal) 55%, var(--fg)); }
+  .bs-jobs .t-mar { background: color-mix(in srgb, var(--orange) 16%, transparent); color: color-mix(in srgb, var(--orange) 55%, var(--fg)); }
+  .bs-jobs .tag { font-size: 12.5px; font-weight: 600; color: var(--fg-muted);
+    border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+  .bs-jobs .arrow { flex: none; font-size: 20px; color: var(--fg-muted); transition: transform .18s, color .2s; }
+  .bs-jobs .job:hover .arrow { transform: translateX(3px); color: color-mix(in srgb, var(--brand) 55%, var(--fg)); }
+  .bs-jobs .jobs-note { max-width: 860px; margin: 22px auto 0; text-align: center;
+    font-size: 14.5px; color: var(--fg-muted); }
+  .bs-jobs .jobs-note a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 480px) { .bs-jobs .job { padding: 16px 18px; } }
+</style>
+<section class="bs-jobs" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head">
+      <p class="bs-eyebrow">Karriere</p>
+      <h2>Bau mit uns die Zukunft der Produktanalytik</h2>
+      <p><span data-jobs-count>0</span> offene Stellen · Remote-first · Team-Treffen viermal im Jahr in Berlin</p>
+    </div>
+    <!-- Stellen werden unten aus dem STELLEN-Array gerendert -->
+    <div class="list" data-jobs-list data-stagger></div>
+    <p class="jobs-note" data-reveal>Nichts Passendes dabei? Schick uns eine Initiativbewerbung an <a href="mailto:jobs@lumeo.de">jobs@lumeo.de</a>.</p>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-jobs");
+  if (!root) return;
+  var list = root.querySelector("[data-jobs-list]");
+  var countEl = root.querySelector("[data-jobs-count]");
+
+  // Offene Stellen hier pflegen — kein Bewerbungs-Backend nötig
+  var STELLEN = [
+    { titel: "Senior Frontend Engineer (m/w/d)", team: "Engineering", ort: "Remote (EU)", pensum: "Vollzeit" },
+    { titel: "Product Designer (m/w/d)", team: "Design", ort: "Berlin oder Remote", pensum: "Vollzeit" },
+    { titel: "Customer Success Manager (m/w/d)", team: "Support", ort: "Berlin", pensum: "Voll- oder Teilzeit" },
+    { titel: "Werkstudent:in Content Marketing", team: "Marketing", ort: "Remote (DE)", pensum: "16–20 h/Woche" }
+  ];
+  var TEAM_CLASS = { Engineering: "t-eng", Design: "t-des", Support: "t-sup", Marketing: "t-mar" };
+
+  if (countEl) countEl.textContent = String(STELLEN.length);
+
+  list.innerHTML = STELLEN.map(function (s) {
+    var subject = encodeURIComponent("Bewerbung: " + s.titel);
+    return '<a class="job" href="mailto:jobs@lumeo.de?subject=' + subject + '">' +
+      "<div><h3>" + s.titel + "</h3>" +
+      '<div class="job-tags">' +
+        '<span class="team ' + (TEAM_CLASS[s.team] || "") + '">' + s.team + "</span>" +
+        '<span class="tag">📍 ' + s.ort + "</span>" +
+        '<span class="tag">' + s.pensum + "</span>" +
+      "</div></div>" +
+      '<span class="arrow" aria-hidden="true">→</span></a>';
+  }).join("");
+})();
+</script>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

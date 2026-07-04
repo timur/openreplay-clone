@@ -10,6 +10,8 @@
     --indigo-deep:#0D033B; --primary:#394DFE; --accent-violet:#6f5bff;
     --accent-teal:#18b8a6; --accent-green:#25c26e; --accent-red:#ef5b6e; --accent-orange:#ff8a3d;
     --veil:#3b2b86; --ink:#14101f; --muted:#8b8798; --line:#e9e7f0;
+    --brand-rgb:57,77,254; --violet-rgb:111,91,255; --veil-rgb:59,43,134;
+    --indigo-deep-2:#160a52; --indigo-3:#1d1066; --primary-700:#2c3ad6; --primary-300:#8a96ff;
     --font-display:"Bricolage Grotesque",sans-serif; --font-body:"Figtree",system-ui,sans-serif;
   }
   *{box-sizing:border-box;}
@@ -35,7 +37,7 @@
   .cta{display:flex;gap:14px;}
   .btn{display:inline-flex;align-items:center;gap:8px;height:52px;padding:0 24px;border-radius:999px;
     font-family:var(--font-body);font-weight:600;font-size:17px;border:1.5px solid transparent;cursor:pointer;text-decoration:none;}
-  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px -8px rgba(57,77,254,.7);}
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px -8px rgba(var(--brand-rgb),.7);}
   .btn-ghost{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.22);}
 
   /* ---- DER ANIMIERTE VISUAL-BEREICH ---- */
@@ -43,7 +45,7 @@
   .hv-dots{position:absolute;inset:0;z-index:4;pointer-events:none;
     background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1.4px);background-size:22px 22px;}
   .hv-tint{position:absolute;inset:0;z-index:3;pointer-events:none;
-    background:linear-gradient(120deg,rgba(57,77,254,.30),rgba(111,91,255,.14) 60%,rgba(111,91,255,.05));}
+    background:linear-gradient(120deg,rgba(var(--brand-rgb),.30),rgba(var(--violet-rgb),.14) 60%,rgba(var(--violet-rgb),.05));}
   .hv-veil{position:absolute;inset:0;z-index:5;pointer-events:none;}
 
   .montage{position:absolute;inset:-8% -4%;z-index:2;}
@@ -68,7 +70,7 @@
     radial-gradient(circle at 30% 40%,rgba(239,91,110,.9),transparent 26%),
     radial-gradient(circle at 62% 55%,rgba(255,138,61,.85),transparent 24%),
     radial-gradient(circle at 48% 70%,rgba(37,194,110,.7),transparent 22%),
-    radial-gradient(circle at 75% 30%,rgba(57,77,254,.55),transparent 22%),#eef0fb;}
+    radial-gradient(circle at 75% 30%,rgba(var(--brand-rgb),.55),transparent 22%),#eef0fb;}
   .mini-table div{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line);color:var(--ink);}
   .mini-console{background:#0f1024;border-radius:8px;padding:8px;font-family:ui-monospace,monospace;font-size:9px;color:#b9c2ff;}
   .mini-console .err{color:#ff8a9b;} .mini-console .ok{color:#6ee7a8;}
@@ -78,25 +80,25 @@
      und den passenden Verlauf auf .hv-veil
      =================================================================== */
 
-  /* A — Sanfter Radial (aktuell in index.html) */
+  /* A — Sanfter Radial (aktuell in home.html) */
   [data-variant="A"] .hero-visual{
     -webkit-mask-image:radial-gradient(135% 120% at 80% 50%,#000 56%,transparent 82%);
             mask-image:radial-gradient(135% 120% at 80% 50%,#000 56%,transparent 82%);}
   [data-variant="A"] .hv-veil{background:linear-gradient(104deg,var(--indigo-deep) 0%,var(--veil) 16%,
-    rgba(59,43,134,.78) 30%,rgba(59,43,134,.34) 46%,transparent 62%);}
+    rgba(var(--veil-rgb),.78) 30%,rgba(var(--veil-rgb),.34) 46%,transparent 62%);}
 
   /* B — Konkaver Bogen (Original-nah, wölbt sich mittig nach rechts) */
   [data-variant="B"] .hero-visual{
     -webkit-mask-image:radial-gradient(75% 135% at 115% 50%,#000 58%,transparent 86%);
             mask-image:radial-gradient(75% 135% at 115% 50%,#000 58%,transparent 86%);}
   [data-variant="B"] .hv-veil{background:radial-gradient(70% 120% at 108% 50%,transparent 40%,
-    rgba(59,43,134,.5) 62%,var(--veil) 80%,var(--indigo-deep) 100%);}
+    rgba(var(--veil-rgb),.5) 62%,var(--veil) 80%,var(--indigo-deep) 100%);}
 
   /* C — Scharfe Ellipsen-Kurve (clip-path: ellipse, knackige Kante + Farb-Veil) */
   [data-variant="C"] .hero-visual{
     clip-path:ellipse(88% 135% at 100% 50%);}
   [data-variant="C"] .hv-veil{background:linear-gradient(100deg,transparent 30%,
-    rgba(59,43,134,.45) 55%,transparent 75%);}
+    rgba(var(--veil-rgb),.45) 55%,transparent 75%);}
 
   /* D — S-Welle (zwei überlagerte Radial-Masken = weiche S-Kurve) */
   [data-variant="D"] .hero-visual{
@@ -108,26 +110,21 @@
       radial-gradient(60% 70% at 60% 22%,#000 60%,transparent 88%),
       radial-gradient(60% 70% at 95% 78%,#000 60%,transparent 88%);}
   [data-variant="D"] .hv-veil{background:linear-gradient(104deg,var(--indigo-deep) 0%,
-    var(--veil) 18%,rgba(59,43,134,.4) 44%,transparent 60%);}
+    var(--veil) 18%,rgba(var(--veil-rgb),.4) 44%,transparent 60%);}
 
   /* E — Weiche Diagonale (angewinkelter Linearverlauf als Maske) */
   [data-variant="E"] .hero-visual{
     -webkit-mask-image:linear-gradient(108deg,transparent 18%,#000 40%);
             mask-image:linear-gradient(108deg,transparent 18%,#000 40%);}
   [data-variant="E"] .hv-veil{background:linear-gradient(108deg,var(--indigo-deep) 8%,
-    var(--veil) 24%,rgba(59,43,134,.3) 42%,transparent 56%);}
-
-  /* F — Gerader weicher Fade (1:1 DOM-treu, nur der #3b2b86-Verlauf, keine Maske) */
-  [data-variant="F"] .hero-visual{ -webkit-mask-image:none; mask-image:none; clip-path:none; }
-  [data-variant="F"] .hv-veil{background:linear-gradient(to right,var(--veil) 0%,
-    rgba(59,43,134,.55) 22%,transparent 50%);}
+    var(--veil) 24%,rgba(var(--veil-rgb),.3) 42%,transparent 56%);}
 
   /* G — Tropfen/Blob (organische Wölbung via radialer Maske, weit aussen) */
   [data-variant="G"] .hero-visual{
     -webkit-mask-image:radial-gradient(95% 80% at 90% 38%,#000 60%,transparent 88%);
             mask-image:radial-gradient(95% 80% at 90% 38%,#000 60%,transparent 88%);}
   [data-variant="G"] .hv-veil{background:linear-gradient(116deg,var(--indigo-deep) 4%,
-    var(--veil) 20%,rgba(59,43,134,.3) 48%,transparent 64%);}
+    var(--veil) 20%,rgba(var(--veil-rgb),.3) 48%,transparent 64%);}
 
   @media (max-width:900px){.hero-visual{display:none;}}
 </style>
@@ -141,7 +138,6 @@
     <button class="vbtn" data-v="C">C · Scharfe Ellipse</button>
     <button class="vbtn" data-v="D">D · S-Welle</button>
     <button class="vbtn" data-v="E">E · Weiche Diagonale</button>
-    <button class="vbtn" data-v="F">F · Gerader Fade</button>
     <button class="vbtn" data-v="G">G · Blob</button>
   </div>
   <div class="vlabel" id="vlabel">Variante A — Sanfter Radial</div>
@@ -164,21 +160,21 @@
   </section>
 
 <script>
-  // Montage-Karten (wie index.html), 2× für nahtlose Schleife
+  // Montage-Karten (wie home.html), 2× für nahtlose Schleife
   const CARDS = [
-    `<div class="mc"><h5>Most Visited Guides</h5><svg class="mini-svg" viewBox="0 0 120 50" preserveAspectRatio="none"><path d="M0 40 C20 20 35 30 55 18 S95 10 120 22 L120 50 L0 50 Z" fill="rgba(57,77,254,.18)"/><path d="M0 40 C20 20 35 30 55 18 S95 10 120 22" fill="none" stroke="#394DFE" stroke-width="2"/></svg></div>`,
+    `<div class="mc"><h5>Most Visited Guides</h5><svg class="mini-svg" viewBox="0 0 120 50" preserveAspectRatio="none"><path d="M0 40 C20 20 35 30 55 18 S95 10 120 22 L120 50 L0 50 Z" fill="rgba(var(--brand-rgb),.18)"/><path d="M0 40 C20 20 35 30 55 18 S95 10 120 22" fill="none" style="stroke:var(--primary)" stroke-width="2"/></svg></div>`,
     `<div class="mc"><h5>Performance</h5><div class="mini-bars"><span style="height:55%"></span><span style="height:80%"></span><span style="height:40%"></span><span style="height:65%"></span><span style="height:90%"></span><span style="height:50%"></span></div></div>`,
-    `<div class="mc"><h5>Most Visited pages trend</h5><svg class="mini-svg" viewBox="0 0 120 50" preserveAspectRatio="none"><path d="M0 30 L18 22 L34 34 L52 18 L70 26 L88 12 L106 24 L120 16" fill="none" stroke="#18b8a6" stroke-width="2"/></svg></div>`,
+    `<div class="mc"><h5>Most Visited pages trend</h5><svg class="mini-svg" viewBox="0 0 120 50" preserveAspectRatio="none"><path d="M0 30 L18 22 L34 34 L52 18 L70 26 L88 12 L106 24 L120 16" fill="none" style="stroke:var(--accent-violet)" stroke-width="2"/></svg></div>`,
     `<div class="mc"><h5>User Environment</h5><div class="donut"></div><p class="sub2" style="text-align:center">Windows · Mac · Linux</p></div>`,
     `<div class="mc"><h5>Conversion Funnel</h5><div class="mini-funnel"><span style="width:100%"></span><span style="width:62%"></span><span style="width:28%"></span></div><p class="sub2">10% conversion · 1m12s</p></div>`,
     `<div class="mc"><h5>Session Heatmap</h5><div class="mini-heat"></div></div>`,
     `<div class="mc"><h5>Common Events</h5><div class="mini-table"><div><span>clicked (asc)</span><b>2,424</b></div><div><span>clicked (pay)</span><b>389</b></div><div><span>clicked (qty)</span><b>593</b></div></div></div>`,
-    `<div class="mc"><h5>Deployments</h5><div class="mini-bars"><span style="height:30%;background:#6f5bff"></span><span style="height:70%;background:#6f5bff"></span><span style="height:45%;background:#6f5bff"></span><span style="height:85%;background:#6f5bff"></span><span style="height:60%;background:#6f5bff"></span></div></div>`,
+    `<div class="mc"><h5>Deployments</h5><div class="mini-bars"><span style="height:30%;background:var(--accent-violet)"></span><span style="height:70%;background:var(--accent-violet)"></span><span style="height:45%;background:var(--accent-violet)"></span><span style="height:85%;background:var(--accent-violet)"></span><span style="height:60%;background:var(--accent-violet)"></span></div></div>`,
     `<div class="mc"><h5>Console</h5><div class="mini-console"><div class="err">GET /api 404 ERR_BLOCKED</div><div>Crisp found state of...</div><div class="ok">preBlock loaded ✓</div></div></div>`,
   ];
   document.getElementById('track').innerHTML = CARDS.join('') + CARDS.join('');
 
-  const labels = {A:'Sanfter Radial',B:'Konkaver Bogen',C:'Scharfe Ellipse',D:'S-Welle',E:'Weiche Diagonale',F:'Gerader Fade',G:'Blob'};
+  const labels = {A:'Sanfter Radial',B:'Konkaver Bogen',C:'Scharfe Ellipse',D:'S-Welle',E:'Weiche Diagonale',G:'Blob'};
   document.querySelectorAll('.vbtn').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const v=btn.dataset.v;
@@ -188,5 +184,7 @@
     });
   });
 </script>
+<script src="js/font-switcher.js"></script>
+<script src="js/color-switcher.js"></script>
 </body>
 </html>

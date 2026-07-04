@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Interaktive Extras</title>
+<meta name="description" content="6 interaktive Landing-Page-Bausteine — Code-Snippet, Scrollytelling, Roadmap, Chat-Teaser, Weltkarte, Command-Palette. Plain HTML/CSS/JS." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: INTERAKTIV 1 · Code-Beispiel mit Copy-Button (dunkel)
+     Dunkle Code-Karte mit Zeilennummern, Paketmanager-Tabs
+     (npm/yarn/pnpm) und Copy-Button inkl. „Kopiert ✓"-Feedback.
+     Weitere Varianten (nicht umgesetzt): Terminal mit Typing-
+     Animation · Zweispaltig Code + Live-Mini-Vorschau.
+     Kopieren: Style-Block + Section + Script-Block direkt darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Interaktiv 1 · Code-Beispiel mit Copy <code>.bs-code</code> <code>data-theme="dark"</code></p></div>
+<style>
+  .bs-code { position: relative; overflow: hidden; padding: 88px 0; }
+  .bs-code::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(55% 70% at 50% 0%, rgba(var(--brand-rgb),.18), transparent 65%); }
+  .bs-code .bs-container { position: relative; }
+
+  /* Code-Karte — bewusst immer dunkel (wie ein Editor-Fenster) */
+  .bs-code-card { max-width: 760px; margin: 0 auto;
+    background: #0a0823; border: 1px solid rgba(255,255,255,.14); border-radius: 16px;
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,.75); overflow: hidden; }
+  .bs-code-head { display: flex; align-items: center; gap: 14px; padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,.1); }
+  .bs-code-head .dots { display: flex; gap: 6px; }
+  .bs-code-head .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.15); }
+  .bs-code-head .dots i:nth-child(1) { background: var(--red); }
+  .bs-code-head .dots i:nth-child(2) { background: rgba(255,255,255,.3); }
+  .bs-code-head .dots i:nth-child(3) { background: var(--green); }
+
+  .bs-code-tabs { display: flex; gap: 4px; background: rgba(255,255,255,.07); padding: 4px; border-radius: 10px; }
+  .bs-code-tabs [role="tab"] { border: 0; cursor: pointer; background: transparent; color: rgba(255,255,255,.6);
+    font: 600 12.5px var(--font-body); padding: 5px 13px; border-radius: 7px; transition: background .2s, color .2s; }
+  .bs-code-tabs [role="tab"]:hover { color: #fff; }
+  .bs-code-tabs [role="tab"][aria-selected="true"] { background: var(--brand); color: #fff; }
+
+  .bs-code-copy { margin-left: auto; display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+    font: 600 12.5px var(--font-body); color: #fff; background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18); border-radius: 8px; padding: 6px 12px;
+    transition: border-color .2s, background .2s, color .2s; }
+  .bs-code-copy:hover { border-color: rgba(255,255,255,.45); }
+  .bs-code-copy.ok { color: var(--green); border-color: rgba(37,194,110,.55); background: rgba(37,194,110,.12); }
+
+  .bs-code-card pre { margin: 0; padding: 20px 22px 24px; overflow-x: auto; counter-reset: bsline;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13.5px; line-height: 1.75; color: #dfe3ff; }
+  .bs-code-card .line { display: block; counter-increment: bsline; position: relative; padding-left: 44px; min-height: 1.75em; white-space: pre; }
+  .bs-code-card .line::before { content: counter(bsline); position: absolute; left: 0; width: 26px;
+    text-align: right; color: rgba(223,227,255,.28); user-select: none; }
+  .bs-code-card .cm  { color: rgba(223,227,255,.42); }
+  .bs-code-card .kw  { color: var(--brand-300); }
+  .bs-code-card .str { color: #6ee7a8; }
+  .bs-code-card .fn  { color: color-mix(in srgb, var(--orange) 75%, #fff); }
+  .bs-code-card [role="tabpanel"][hidden] { display: none; }
+
+  .bs-code .perks { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+
+  @media (max-width: 560px) {
+    .bs-code-head { flex-wrap: wrap; }
+    .bs-code-head .dots { display: none; }
+    .bs-code-card pre { font-size: 12.5px; }
+  }
+</style>
+<section class="bs-code" data-theme="dark">
+  <div class="bs-container">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Integration</p>
+      <h2>Live in zwei Zeilen Code</h2>
+      <p>Snippet einbauen, deployen, fertig — Klarblick zeichnet ab der ersten Minute auf. Ohne Proxy, ohne Cookie-Banner-Drama.</p>
+    </div>
+
+    <div class="bs-code-card" data-reveal="zoom">
+      <div class="bs-code-head">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div class="bs-code-tabs" role="tablist" aria-label="Paketmanager wählen">
+          <button type="button" role="tab" id="bs-code-tab-npm"  aria-controls="bs-code-panel-npm"  aria-selected="true">npm</button>
+          <button type="button" role="tab" id="bs-code-tab-yarn" aria-controls="bs-code-panel-yarn" aria-selected="false" tabindex="-1">yarn</button>
+          <button type="button" role="tab" id="bs-code-tab-pnpm" aria-controls="bs-code-panel-pnpm" aria-selected="false" tabindex="-1">pnpm</button>
+        </div>
+        <button type="button" class="bs-code-copy" aria-live="polite">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5.5" y="5.5" width="8.5" height="8.5" rx="2"/><path d="M10.5 5.5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v4.5a2 2 0 0 0 2 2h1.5"/></svg>
+          <span>Kopieren</span>
+        </button>
+      </div>
+
+      <div role="tabpanel" id="bs-code-panel-npm" aria-labelledby="bs-code-tab-npm">
+        <pre><code><span class="line"><span class="cm"># 1. SDK installieren</span></span><span class="line">npm <span class="kw">install</span> @klarblick/replay</span><span class="line"></span><span class="line"><span class="cm">// 2. Zwei Zeilen in deiner App — mehr ist es nicht</span></span><span class="line"><span class="kw">import</span> { Replay } <span class="kw">from</span> <span class="str">'@klarblick/replay'</span></span><span class="line"><span class="kw">new</span> <span class="fn">Replay</span>({ projekt: <span class="str">'kb-1a2b3c'</span> }).<span class="fn">start</span>()</span></code></pre>
+      </div>
+      <div role="tabpanel" id="bs-code-panel-yarn" aria-labelledby="bs-code-tab-yarn" hidden>
+        <pre><code><span class="line"><span class="cm"># 1. SDK installieren</span></span><span class="line">yarn <span class="kw">add</span> @klarblick/replay</span><span class="line"></span><span class="line"><span class="cm">// 2. Zwei Zeilen in deiner App — mehr ist es nicht</span></span><span class="line"><span class="kw">import</span> { Replay } <span class="kw">from</span> <span class="str">'@klarblick/replay'</span></span><span class="line"><span class="kw">new</span> <span class="fn">Replay</span>({ projekt: <span class="str">'kb-1a2b3c'</span> }).<span class="fn">start</span>()</span></code></pre>
+      </div>
+      <div role="tabpanel" id="bs-code-panel-pnpm" aria-labelledby="bs-code-tab-pnpm" hidden>
+        <pre><code><span class="line"><span class="cm"># 1. SDK installieren</span></span><span class="line">pnpm <span class="kw">add</span> @klarblick/replay</span><span class="line"></span><span class="line"><span class="cm">// 2. Zwei Zeilen in deiner App — mehr ist es nicht</span></span><span class="line"><span class="kw">import</span> { Replay } <span class="kw">from</span> <span class="str">'@klarblick/replay'</span></span><span class="line"><span class="kw">new</span> <span class="fn">Replay</span>({ projekt: <span class="str">'kb-1a2b3c'</span> }).<span class="fn">start</span>()</span></code></pre>
+      </div>
+    </div>
+
+    <div class="perks" data-stagger>
+      <span class="bs-badge">⏱ Setup unter 60 Sekunden</span>
+      <span class="bs-badge">📦 4,1 kB gzip</span>
+      <span class="bs-badge">🛡 DSGVO-Maskierung ab Werk</span>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-code");
+  if (!root) return;
+
+  /* --- Paketmanager-Tabs --- */
+  var tabs = [].slice.call(root.querySelectorAll('[role="tab"]'));
+  var panels = [].slice.call(root.querySelectorAll('[role="tabpanel"]'));
+  function selectTab(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+    });
+    panels.forEach(function (p) { p.hidden = p.id !== tab.getAttribute("aria-controls"); });
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener("click", function () { selectTab(tab); });
+    tab.addEventListener("keydown", function (e) {
+      var next = null;
+      if (e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+      if (e.key === "ArrowLeft")  next = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (e.key === "Home") next = tabs[0];
+      if (e.key === "End")  next = tabs[tabs.length - 1];
+      if (next) { e.preventDefault(); next.focus(); selectTab(next); }
+    });
+  });
+
+  /* --- Copy-Button (clipboard-API + execCommand-Fallback) --- */
+  var copyBtn = root.querySelector(".bs-code-copy");
+  var copyLabel = copyBtn.querySelector("span");
+  var resetTimer = null;
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+      ta.remove();
+      ok ? resolve() : reject(new Error("copy failed"));
+    });
+  }
+  copyBtn.addEventListener("click", function () {
+    var active = panels.filter(function (p) { return !p.hidden; })[0] || panels[0];
+    var text = [].slice.call(active.querySelectorAll(".line"))
+      .map(function (l) { return l.textContent; }).join("\n");
+    copyText(text).then(function () {
+      copyBtn.classList.add("ok");
+      copyLabel.textContent = "Kopiert ✓";
+    }).catch(function () {
+      copyLabel.textContent = "Bitte manuell kopieren";
+    }).then(function () {
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(function () {
+        copyBtn.classList.remove("ok");
+        copyLabel.textContent = "Kopieren";
+      }, 2200);
+    });
+  });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: INTERAKTIV 2 · Scrollytelling-Feature-Story (hell)
+     Links klebt ein CSS-Produkt-Mock (Session-Replay-Fenster),
+     rechts scrollen 4 Text-Schritte vorbei. Ein IntersectionObserver
+     auf den Schritten schaltet data-state am Mock um — Cursor,
+     Fehler-Toast, Netzwerk-Panel und Kommentar wechseln synchron.
+     Weitere Varianten (nicht umgesetzt): Sticky-Phone-Mockup mit
+     Screenshot-Tausch · Fortschritts-Linie am Rand.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Interaktiv 2 · Scrollytelling-Feature-Story <code>.bs-scrolly</code> <code>hell</code></p>
+<style>
+  .bs-scrolly { padding: 88px 0 72px; }
+  .bs-scrolly .grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(32px, 6vw, 88px); align-items: start; }
+
+  .bs-scrolly .visual { align-self: stretch; }
+  .bs-scrolly .visual-sticky { position: sticky; top: clamp(72px, calc(50vh - 250px), 170px); }
+
+  /* Produkt-Mock — bewusst „heller Screenshot", unabhängig vom Seitenmodus */
+  .bs-scrolly-mock { max-width: 540px; background: #fff; color: #14101f; border: 1px solid #e9e7f0;
+    border-radius: 16px; box-shadow: 0 30px 70px -28px rgba(20,16,31,.35); overflow: hidden; font-size: 12px; }
+  .bs-scrolly-mock .bar { display: flex; align-items: center; gap: 6px; padding: 11px 14px; border-bottom: 1px solid #e9e7f0; }
+  .bs-scrolly-mock .bar i { width: 10px; height: 10px; border-radius: 50%; background: #e9e7f0; }
+  .bs-scrolly-mock .bar .url { flex: 1; max-width: 260px; margin: 0 auto; text-align: center;
+    background: #f7f6fb; border-radius: 7px; font-size: 11px; color: #8b8798; padding: 3px 10px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .bs-scrolly-mock .stage { position: relative; height: 300px; background: #f7f6fb; overflow: hidden; }
+  .bs-scrolly-mock .page { position: absolute; inset: 14px 14px 14px 14px; background: #fff;
+    border: 1px solid #eceaf3; border-radius: 10px; padding: 14px; }
+  .bs-scrolly-mock .page .row { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+  .bs-scrolly-mock .page .logo { width: 18px; height: 18px; border-radius: 6px; background: var(--brand); }
+  .bs-scrolly-mock .page .sk { height: 9px; border-radius: 5px; background: #eceaf3; }
+  .bs-scrolly-mock .page .hero-sk { height: 54px; border-radius: 8px; margin-bottom: 12px; background:
+    radial-gradient(60% 120% at 20% 0%, rgba(var(--brand-rgb),.16), transparent 70%), #f1f0f8; }
+  .bs-scrolly-mock .pbtn { position: absolute; left: 44%; top: 57%; padding: 7px 14px; border-radius: 8px;
+    background: var(--brand); color: #fff; font-weight: 700; font-size: 11.5px; transition: box-shadow .4s; }
+  .bs-scrolly-mock[data-state="2"] .pbtn { box-shadow: 0 0 0 3px rgba(239,91,110,.55); }
+
+  /* Cursor + Rage-Click-Ripple */
+  .bs-scrolly-mock .cursor { position: absolute; left: 24%; top: 26%; width: 17px; z-index: 6;
+    fill: #14101f; filter: drop-shadow(0 2px 4px rgba(0,0,0,.3));
+    transition: left .8s cubic-bezier(.3,.7,.3,1), top .8s cubic-bezier(.3,.7,.3,1); }
+  .bs-scrolly-mock[data-state="2"] .cursor,
+  .bs-scrolly-mock[data-state="3"] .cursor { left: 52%; top: 62%; }
+  .bs-scrolly-mock[data-state="4"] .cursor { left: 72%; top: 30%; }
+  .bs-scrolly-mock .ripple { position: absolute; left: calc(52% + 8px); top: calc(62% + 8px);
+    width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%;
+    border: 2px solid var(--red); opacity: 0; z-index: 5; }
+  .bs-scrolly-mock[data-state="2"] .ripple { animation: bsScrollyRage 1s ease-out 3; }
+  @keyframes bsScrollyRage { 0% { transform: scale(.25); opacity: .95; } 100% { transform: scale(1.2); opacity: 0; } }
+
+  /* Overlays je Zustand */
+  .bs-scrolly-mock .toast { position: absolute; top: 12px; right: 12px; z-index: 7;
+    background: #fff; border: 1px solid rgba(239,91,110,.5); border-left: 3px solid var(--red);
+    color: #14101f; font-weight: 600; font-size: 11px; border-radius: 8px; padding: 8px 12px;
+    box-shadow: 0 14px 30px -12px rgba(20,16,31,.3);
+    opacity: 0; transform: translateY(-8px); transition: opacity .45s, transform .45s; }
+  .bs-scrolly-mock[data-state="2"] .toast,
+  .bs-scrolly-mock[data-state="3"] .toast { opacity: 1; transform: none; }
+
+  .bs-scrolly-mock .net { position: absolute; left: 0; right: 0; bottom: 0; z-index: 8;
+    background: #0a0823; color: #b9c2ff; font-family: ui-monospace, Menlo, monospace; font-size: 11px;
+    padding: 10px 14px 12px; transform: translateY(105%); transition: transform .5s cubic-bezier(.3,.7,.3,1); }
+  .bs-scrolly-mock[data-state="3"] .net { transform: none; }
+  .bs-scrolly-mock .net b { display: block; font-family: var(--font-body); font-size: 10px; letter-spacing: .08em;
+    text-transform: uppercase; color: rgba(185,194,255,.6); margin-bottom: 6px; }
+  .bs-scrolly-mock .net .nrow { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; }
+  .bs-scrolly-mock .net em { font-style: normal; color: #6ee7a8; }
+  .bs-scrolly-mock .net em.bad { color: var(--red); font-weight: 700; }
+
+  .bs-scrolly-mock .note { position: absolute; left: 12px; top: 40%; z-index: 8; max-width: 62%;
+    background: #fff; border: 1px solid #e9e7f0; border-radius: 10px 10px 10px 3px; padding: 9px 12px;
+    font-size: 11px; color: #4a4658; box-shadow: 0 16px 36px -14px rgba(20,16,31,.35);
+    opacity: 0; transform: translateY(10px); transition: opacity .45s .1s, transform .45s .1s; }
+  .bs-scrolly-mock .note b { color: #14101f; }
+  .bs-scrolly-mock .chip-done { position: absolute; right: 12px; bottom: 12px; z-index: 8;
+    background: rgba(37,194,110,.14); border: 1px solid rgba(37,194,110,.5); color: #128a4c;
+    font-weight: 700; font-size: 11px; border-radius: 999px; padding: 5px 11px;
+    opacity: 0; transform: scale(.85); transition: opacity .4s .25s, transform .4s .25s; }
+  .bs-scrolly-mock[data-state="4"] .note,
+  .bs-scrolly-mock[data-state="4"] .chip-done { opacity: 1; transform: none; }
+
+  /* Replay-Scrubber */
+  .bs-scrolly-mock .scrub { position: relative; height: 36px; border-top: 1px solid #e9e7f0; background: #fff; }
+  .bs-scrolly-mock .scrub::before { content: ""; position: absolute; left: 14px; right: 14px; top: 50%;
+    height: 4px; margin-top: -2px; border-radius: 2px; background: #eceaf3; }
+  .bs-scrolly-mock .scrub .fill { position: absolute; left: 14px; top: 50%; height: 4px; margin-top: -2px;
+    border-radius: 2px; background: linear-gradient(90deg, var(--brand-300), var(--brand));
+    width: 16%; transition: width .8s cubic-bezier(.3,.7,.3,1); }
+  .bs-scrolly-mock[data-state="2"] .fill { width: 42%; }
+  .bs-scrolly-mock[data-state="3"] .fill { width: 66%; }
+  .bs-scrolly-mock[data-state="4"] .fill { width: 92%; }
+  .bs-scrolly-mock .scrub .m { position: absolute; top: 50%; width: 8px; height: 8px; border-radius: 50%;
+    transform: translate(-50%,-50%); background: #cfccdd; }
+  .bs-scrolly-mock .scrub .m.err { background: var(--red); }
+
+  /* Text-Schritte rechts */
+  .bs-scrolly-step { min-height: 58vh; display: flex; flex-direction: column; justify-content: center;
+    opacity: .38; transition: opacity .4s; }
+  .bs-scrolly-step.is-active { opacity: 1; }
+  .bs-scrolly-step .num { display: inline-grid; place-items: center; width: 40px; height: 40px;
+    border-radius: 12px; border: 1.5px solid var(--line); font: 800 15px var(--font-display);
+    color: var(--fg-muted); margin-bottom: 16px; transition: background .3s, color .3s, border-color .3s; }
+  .bs-scrolly-step.is-active .num { background: var(--brand); border-color: var(--brand); color: #fff;
+    box-shadow: 0 10px 22px -10px rgba(var(--brand-rgb),.8); }
+  .bs-scrolly-step h3 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 800; margin-bottom: 12px; }
+  .bs-scrolly-step p { max-width: 42ch; }
+
+  @media (max-width: 900px) {
+    .bs-scrolly .grid { grid-template-columns: 1fr; }
+    .bs-scrolly .visual-sticky { top: 8px; z-index: 20; padding: 8px 0; background: var(--bg); }
+    .bs-scrolly-mock { max-width: 440px; margin: 0 auto; }
+    .bs-scrolly-mock .stage { height: 240px; }
+    .bs-scrolly-step { min-height: 66vh; }
+  }
+</style>
+<section class="bs-scrolly">
+  <div class="bs-container">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Produkt-Tour</p>
+      <h2>Vom Bug zur Lösung — in vier Schritten</h2>
+      <p>Scroll weiter und sieh zu, wie sich das Replay-Fenster links mit jedem Schritt verändert.</p>
+    </div>
+
+    <div class="grid">
+      <div class="visual">
+        <div class="visual-sticky" data-reveal>
+          <div class="bs-scrolly-mock" data-state="1" aria-hidden="true">
+            <div class="bar"><i style="background:#ef5b6e"></i><i style="background:#ffce4a"></i><i style="background:#25c26e"></i><span class="url">klarblick.de/replay/session-7f3k2</span></div>
+            <div class="stage">
+              <div class="page">
+                <div class="row"><span class="logo"></span><span class="sk" style="width:22%"></span><span class="sk" style="width:12%;margin-left:auto"></span><span class="sk" style="width:12%"></span></div>
+                <div class="hero-sk"></div>
+                <span class="sk" style="display:block;width:70%;margin-bottom:8px"></span>
+                <span class="sk" style="display:block;width:52%"></span>
+                <span class="pbtn">In den Warenkorb</span>
+              </div>
+              <svg class="cursor" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 1l5.6 15.4 2.4-6.4 6.4-2.2z"/></svg>
+              <span class="ripple"></span>
+              <div class="toast">⚠ TypeError: cart is undefined</div>
+              <div class="net">
+                <b>Netzwerk · synchron zum Replay</b>
+                <div class="nrow"><span>POST /api/cart</span><em class="bad">500</em></div>
+                <div class="nrow"><span>GET /api/user</span><em>200</em></div>
+                <div class="nrow"><span>GET /api/products</span><em>200</em></div>
+              </div>
+              <div class="note">💬 <b>Anna:</b> Fix ist im Review — heute Abend live.</div>
+              <span class="chip-done">✓ Behoben in v2.4.1</span>
+            </div>
+            <div class="scrub"><span class="fill"></span><span class="m" style="left:30%"></span><span class="m err" style="left:44%"></span><span class="m" style="left:78%"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="bs-scrolly-step" data-step="1">
+          <span class="num">01</span>
+          <h3>Aufnehmen, was wirklich passiert</h3>
+          <p>Das 4-kB-Snippet zeichnet jede Session als DOM-Replay auf — Eingaben werden schon im Browser maskiert, kein Video verlässt das Gerät.</p>
+        </div>
+        <div class="bs-scrolly-step" data-step="2">
+          <span class="num">02</span>
+          <h3>Frust sofort erkennen</h3>
+          <p>Rage-Clicks, tote Buttons, JS-Fehler: Klarblick markiert exakt den Moment, in dem Nutzer scheitern — hier drei wütende Klicks auf den Warenkorb.</p>
+        </div>
+        <div class="bs-scrolly-step" data-step="3">
+          <span class="num">03</span>
+          <h3>Die Ursache im Kontext sehen</h3>
+          <p>Konsole, Netzwerk-Requests und Store-Zustand liegen synchron unter dem Replay. Der 500er auf <code>/api/cart</code> ist in Sekunden gefunden — nichts muss nachgestellt werden.</p>
+        </div>
+        <div class="bs-scrolly-step" data-step="4">
+          <span class="num">04</span>
+          <h3>Im Team lösen</h3>
+          <p>Sequenz teilen, Kommentar hinterlassen, Issue verlinken: vom Bug-Report zum verifizierten Fix in einem einzigen Flow.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-scrolly");
+  if (!root) return;
+  var mock = root.querySelector(".bs-scrolly-mock");
+  var steps = [].slice.call(root.querySelectorAll(".bs-scrolly-step"));
+  if (!mock || !steps.length) return;
+
+  function activate(step) {
+    steps.forEach(function (s) { s.classList.toggle("is-active", s === step); });
+    mock.setAttribute("data-state", step.dataset.step);
+  }
+
+  if (!("IntersectionObserver" in window)) { activate(steps[0]); return; }
+
+  /* Schritt gilt als aktiv, sobald er das mittlere Viewport-Band kreuzt —
+     funktioniert dadurch in beide Scroll-Richtungen. */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) activate(e.target); });
+  }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
+  steps.forEach(function (s) { io.observe(s); });
+  activate(steps[0]);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: INTERAKTIV 3 · Timeline / Roadmap (dunkel)
+     Vertikale Timeline: Die Linie „zeichnet sich" beim Scrollen
+     (scaleY, gekoppelt an einen IntersectionObserver pro Eintrag),
+     Punkte leuchten auf, Status-Badges Geplant / In Arbeit / Live.
+     Weitere Varianten (nicht umgesetzt): horizontale Roadmap mit
+     Scroll-Snap · Changelog-Feed mit <details>-Einträgen.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Interaktiv 3 · Timeline / Roadmap <code>.bs-tl</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-tl { position: relative; overflow: hidden; padding: 88px 0; }
+  .bs-tl::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(45% 60% at 85% 15%, rgba(var(--violet-rgb),.16), transparent 65%); }
+  .bs-tl .bs-container { position: relative; }
+
+  .bs-tl-rail { position: relative; max-width: 720px; margin: 0 auto; }
+  .bs-tl-line { position: absolute; left: 14px; top: 8px; bottom: 8px; width: 2px;
+    border-radius: 2px; background: var(--line); }
+  .bs-tl-line i { position: absolute; inset: 0; border-radius: 2px;
+    background: linear-gradient(180deg, var(--brand-300), var(--brand));
+    transform: scaleY(0); transform-origin: top; transition: transform .9s cubic-bezier(.25,.7,.3,1); }
+
+  .bs-tl-items { display: flex; flex-direction: column; gap: 36px; }
+  .bs-tl-item { position: relative; padding-left: 56px; }
+  .bs-tl-item .dot { position: absolute; left: 8px; top: 6px; width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--fg-muted); background: var(--bg);
+    transition: border-color .35s, background .35s, box-shadow .35s; }
+  .bs-tl-item.is-hit .dot { border-color: var(--brand-300); background: var(--brand);
+    box-shadow: 0 0 0 5px rgba(var(--brand-rgb),.22); }
+
+  .bs-tl-item .meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .bs-tl-item time { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-muted); }
+  .bs-tl-item h3 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+  .bs-tl-item p { max-width: 52ch; font-size: 15.5px; }
+
+  .bs-tl .st { font-size: 11.5px; font-weight: 700; letter-spacing: .04em; padding: 3px 11px; border-radius: 999px; }
+  .bs-tl .st-live { color: var(--green); background: rgba(37,194,110,.13); border: 1px solid rgba(37,194,110,.4); }
+  .bs-tl .st-wip  { color: var(--orange); background: rgba(255,138,61,.13); border: 1px solid rgba(255,138,61,.4); }
+  .bs-tl .st-plan { color: var(--fg-muted); background: var(--glass); border: 1px solid var(--line); }
+</style>
+<section class="bs-tl" data-theme="dark">
+  <div class="bs-container">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Roadmap</p>
+      <h2>Woran wir gerade bauen</h2>
+      <p>Klarblick lebt: Jeden Monat wird ausgeliefert — und was als Nächstes kommt, entscheidet ihr im Feature-Voting mit.</p>
+    </div>
+
+    <div class="bs-tl-rail">
+      <div class="bs-tl-line" aria-hidden="true"><i></i></div>
+      <ol class="bs-tl-items">
+        <li class="bs-tl-item" data-reveal>
+          <span class="dot" aria-hidden="true"></span>
+          <div class="meta"><time datetime="2026-03">März 2026</time><span class="st st-live">Live</span></div>
+          <h3>Self-Hosting per Docker Compose</h3>
+          <p>Die komplette Plattform auf eurer eigenen Infrastruktur — ein <code>docker compose up</code>, fertig.</p>
+        </li>
+        <li class="bs-tl-item" data-reveal>
+          <span class="dot" aria-hidden="true"></span>
+          <div class="meta"><time datetime="2026-05">Mai 2026</time><span class="st st-live">Live</span></div>
+          <h3>KI-Zusammenfassung pro Session</h3>
+          <p>Statt 12 Minuten Replay: drei Sätze, was passiert ist — inklusive Frust-Momenten und Absprunggrund.</p>
+        </li>
+        <li class="bs-tl-item" data-reveal>
+          <span class="dot" aria-hidden="true"></span>
+          <div class="meta"><time datetime="2026-07">Juli 2026</time><span class="st st-wip">In Arbeit</span></div>
+          <h3>Frust-Score &amp; Rage-Click-Alarme</h3>
+          <p>Jede Session bekommt einen Frust-Score — bei Häufungen alarmiert Klarblick euer Team in Slack, bevor Support-Tickets aufschlagen.</p>
+        </li>
+        <li class="bs-tl-item" data-reveal>
+          <span class="dot" aria-hidden="true"></span>
+          <div class="meta"><time datetime="2026-10">Q4 2026</time><span class="st st-plan">Geplant</span></div>
+          <h3>Native SDKs für iOS &amp; Android</h3>
+          <p>Session-Replay für App-Teams — mit derselben Maskierung und demselben Dashboard wie im Web.</p>
+        </li>
+        <li class="bs-tl-item" data-reveal>
+          <span class="dot" aria-hidden="true"></span>
+          <div class="meta"><time datetime="2027-01">Anfang 2027</time><span class="st st-plan">Geplant</span></div>
+          <h3>Heatmap-Vergleich für A/B-Tests</h3>
+          <p>Zwei Varianten, zwei Heatmaps, ein Overlay — sehen statt raten, welche Version wirklich besser klickt.</p>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-tl");
+  if (!root) return;
+  var rail = root.querySelector(".bs-tl-rail");
+  var track = root.querySelector(".bs-tl-line i");
+  var items = [].slice.call(root.querySelectorAll(".bs-tl-item"));
+  if (!rail || !track || !items.length) return;
+
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce || !("IntersectionObserver" in window)) {
+    track.style.transform = "scaleY(1)";
+    items.forEach(function (it) { it.classList.add("is-hit"); });
+    return;
+  }
+
+  var progress = 0;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var it = e.target;
+      it.classList.add("is-hit");
+      /* Linie bis zum Punkt dieses Eintrags „zeichnen" (letzter Eintrag = 100 %) */
+      var ratio = it === items[items.length - 1]
+        ? 1
+        : Math.min(1, (it.offsetTop + 14) / rail.offsetHeight);
+      if (ratio > progress) {
+        progress = ratio;
+        track.style.transform = "scaleY(" + ratio.toFixed(4) + ")";
+      }
+      io.unobserve(it);
+    });
+  }, { threshold: 0.5, rootMargin: "0px 0px -8% 0px" });
+  items.forEach(function (it) { io.observe(it); });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: INTERAKTIV 4 · Chat-/Support-Teaser (hell)
+     Nachgestellter Chat-Verlauf: Bubbles erscheinen nacheinander
+     mit Typing-Indicator (drei hüpfende Punkte), Start bei inView.
+     Am Ende erscheinen Quick-Reply-Chips — ein Klick spielt die
+     letzte Antwort ein. Ohne JS steht der Verlauf einfach still da.
+     Weitere Varianten (nicht umgesetzt): schwebender Chat-Button
+     mit Popover · Split mit Antwortzeit + Team-Avataren.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Interaktiv 4 · Chat-/Support-Teaser <code>.bs-chat</code> <code>hell</code></p>
+<style>
+  .bs-chat { position: relative; overflow: hidden; padding: 88px 0; }
+  .bs-chat::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(50% 60% at 15% 100%, rgba(var(--brand-rgb),.07), transparent 65%); }
+  .bs-chat .bs-container { position: relative; }
+
+  .bs-chat-card { max-width: 460px; margin: 0 auto; background: var(--card); border: 1px solid var(--line);
+    border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; }
+  .bs-chat-card .head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  .bs-chat-card .ava { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    font: 800 14px var(--font-display); color: #fff;
+    background: linear-gradient(135deg, var(--brand), var(--violet)); }
+  .bs-chat-card .head b { display: block; font-size: 15px; color: var(--fg); line-height: 1.3; }
+  .bs-chat-card .head small { font-size: 12.5px; color: var(--fg-muted); display: flex; align-items: center; gap: 6px; }
+  .bs-chat-card .head .on { width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+    box-shadow: 0 0 0 3px rgba(37,194,110,.2); }
+
+  .bs-chat-log { display: flex; flex-direction: column; justify-content: flex-end; gap: 10px;
+    min-height: 380px; padding: 18px; }
+  .bs-chat-log .msg { max-width: 82%; padding: 10px 14px; font-size: 15px; line-height: 1.5; margin: 0; }
+  .bs-chat-log .msg.agent { align-self: flex-start; background: var(--bg-soft); color: var(--fg);
+    border-radius: 16px 16px 16px 5px; }
+  .bs-chat-log .msg.user { align-self: flex-end; background: var(--brand); color: #fff;
+    border-radius: 16px 16px 5px 16px; }
+
+  /* Sequenz-Zustände: .armed setzt erst das JS — ohne JS bleibt alles sichtbar */
+  .bs-chat-log.armed .msg { display: none; }
+  .bs-chat-log .msg.reply, .bs-chat-log .msg.final { display: none; }
+  .bs-chat-log .msg.is-shown { display: block; animation: bsChatIn .38s cubic-bezier(.3,.7,.3,1) both; }
+  @keyframes bsChatIn { from { opacity: 0; transform: translateY(10px) scale(.96); } to { opacity: 1; transform: none; } }
+
+  .bs-chat-log .typing { display: none; align-self: flex-start; gap: 5px; align-items: center;
+    background: var(--bg-soft); border-radius: 16px 16px 16px 5px; padding: 13px 15px; }
+  .bs-chat-log .typing.on { display: flex; animation: bsChatIn .3s both; }
+  .bs-chat-log .typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--fg-muted);
+    animation: bsChatDot 1.1s ease-in-out infinite; }
+  .bs-chat-log .typing span:nth-child(2) { animation-delay: .15s; }
+  .bs-chat-log .typing span:nth-child(3) { animation-delay: .3s; }
+  @keyframes bsChatDot { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+  .bs-chat-log .replies { display: none; gap: 8px; flex-wrap: wrap; align-self: flex-end; }
+  .bs-chat-log .replies.on { display: flex; animation: bsChatIn .38s both; }
+  .bs-chat-log .chip { cursor: pointer; font: 600 13.5px var(--font-body); color: var(--brand);
+    background: rgba(var(--brand-rgb),.08); border: 1.5px solid rgba(var(--brand-rgb),.4);
+    border-radius: 999px; padding: 7px 15px; transition: background .2s, color .2s; }
+  .bs-chat-log .chip:hover { background: var(--brand); color: #fff; }
+  [data-theme="dark"] .bs-chat-log .chip { color: var(--brand-300); }
+
+  .bs-chat-meta { text-align: center; margin-top: 22px; font-size: 14px; color: var(--fg-muted); }
+  .bs-chat-meta b { color: var(--fg); }
+</style>
+<section class="bs-chat">
+  <div class="bs-container">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Support</p>
+      <h2>Echte Menschen. Ehrliche Antworten.</h2>
+      <p>Kein Bot-Labyrinth, keine Warteschleife: Unser Team sitzt in Köln und antwortet im Schnitt in unter zwei Minuten.</p>
+    </div>
+
+    <div class="bs-chat-card" data-reveal="zoom">
+      <div class="head">
+        <span class="ava" aria-hidden="true">LS</span>
+        <div><b>Lena Sommer</b><small><i class="on" aria-hidden="true"></i> Klarblick-Support · online</small></div>
+      </div>
+      <div class="bs-chat-log" aria-live="polite">
+        <div class="typing" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="msg agent">Hi! 👋 Ich bin Lena aus dem Klarblick-Support. Womit kann ich helfen?</p>
+        <p class="msg user">Ist euer Session-Replay wirklich DSGVO-konform?</p>
+        <div class="typing" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="msg agent">Ja — alle Eingaben werden direkt im Browser maskiert. Rohdaten verlassen das Gerät deiner Nutzer nie.</p>
+        <div class="typing" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="msg agent">Gehostet wird wahlweise in Frankfurt. Soll ich dir unsere DSGVO-Doku schicken?</p>
+        <div class="replies">
+          <button type="button" class="chip">Ja, gern!</button>
+          <button type="button" class="chip">Ich schau mich erst um</button>
+        </div>
+        <p class="msg user reply"></p>
+        <div class="typing t-final" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="msg agent final">Alles klar! Hier entlang: <b>klarblick.de/dsgvo</b> — und falls etwas offen bleibt, sind wir Mo–Fr von 9 bis 18 Uhr da. 💙</p>
+      </div>
+    </div>
+
+    <p class="bs-chat-meta" data-reveal>Ø Antwortzeit: <b>1 Min 42 Sek</b> · gemessen über die letzten 30 Tage</p>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-chat");
+  if (!root) return;
+  var log = root.querySelector(".bs-chat-log");
+  var replies = log.querySelector(".replies");
+  var replyMsg = log.querySelector(".msg.reply");
+  var finalTyping = log.querySelector(".typing.t-final");
+  var finalMsg = log.querySelector(".msg.final");
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Ohne IntersectionObserver oder bei reduzierter Bewegung:
+     Verlauf bleibt statisch sichtbar, keine Sequenz. */
+  if (reduce || !("IntersectionObserver" in window)) return;
+
+  /* Sequenz: alle Kinder in DOM-Reihenfolge, ohne Reply-Teil */
+  var sequence = [].slice.call(log.children).filter(function (el) {
+    return !el.classList.contains("replies") &&
+           !el.classList.contains("reply") &&
+           !el.classList.contains("final") &&
+           !el.classList.contains("t-final");
+  });
+
+  log.classList.add("armed");
+
+  function play() {
+    var i = 0;
+    (function next() {
+      if (i >= sequence.length) { replies.classList.add("on"); return; }
+      var el = sequence[i++];
+      if (el.classList.contains("typing")) {
+        el.classList.add("on");
+        setTimeout(function () { el.classList.remove("on"); next(); }, 1100);
+      } else {
+        el.classList.add("is-shown");
+        setTimeout(next, 650);
+      }
+    })();
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { io.disconnect(); setTimeout(play, 350); }
+    });
+  }, { threshold: 0.35 });
+  io.observe(log);
+
+  /* Quick-Replies: Klick spielt Nutzer-Bubble + letzte Antwort ein */
+  var answered = false;
+  [].slice.call(replies.querySelectorAll(".chip")).forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      if (answered) return;
+      answered = true;
+      replies.classList.remove("on");
+      replyMsg.textContent = chip.textContent;
+      replyMsg.classList.add("is-shown");
+      setTimeout(function () {
+        finalTyping.classList.add("on");
+        setTimeout(function () {
+          finalTyping.classList.remove("on");
+          finalMsg.classList.add("is-shown");
+        }, 1000);
+      }, 400);
+    });
+  });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: INTERAKTIV 5 · Standorte-/Weltkarten-Sektion (dunkel)
+     Punktraster-Weltkarte: Die Dots werden NICHT von Hand gepflegt,
+     sondern per Inline-JS aus einem kompakten Zeilen-Array ('#' =
+     Land) in das SVG generiert. Darüber 5 pulsierende Marker mit
+     Tooltip (Hover/Fokus) — plus Zähler-Zeile via data-count-to.
+     Weitere Varianten (nicht umgesetzt): Live-Traffic-Aufblitzen ·
+     Regionen-Zoom über SVG-viewBox.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Interaktiv 5 · Weltkarte mit Markern <code>.bs-map</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-map { position: relative; overflow: hidden; padding: 88px 0; }
+  .bs-map::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(60% 70% at 50% 45%, rgba(var(--brand-rgb),.14), transparent 70%); }
+  .bs-map .bs-container { position: relative; }
+
+  .bs-map-wrap { position: relative; max-width: 880px; margin: 0 auto; }
+  .bs-map-svg { display: block; width: 100%; height: auto; color: var(--fg-muted); opacity: .55; }
+  .bs-map-svg circle { fill: currentColor; }
+
+  /* Pulsierende Marker (HTML-Buttons über dem SVG → fokussierbar + Tooltip) */
+  .bs-map-mark { position: absolute; transform: translate(-50%, -50%); width: 26px; height: 26px;
+    border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: 50%; }
+  .bs-map-mark::after { content: ""; position: absolute; inset: 8px; border-radius: 50%;
+    background: var(--brand-300); box-shadow: 0 0 14px rgba(var(--brand-rgb),.9); }
+  .bs-map-mark::before { content: ""; position: absolute; inset: 0; border-radius: 50%;
+    border: 2px solid rgba(var(--brand-rgb),.85); animation: bsMapPing 2.6s ease-out infinite; }
+  .bs-map-mark:nth-of-type(2)::before { animation-delay: .4s; }
+  .bs-map-mark:nth-of-type(3)::before { animation-delay: .9s; }
+  .bs-map-mark:nth-of-type(4)::before { animation-delay: 1.3s; }
+  .bs-map-mark:nth-of-type(5)::before { animation-delay: 1.8s; }
+  @keyframes bsMapPing { 0% { transform: scale(.35); opacity: 1; } 75%, 100% { transform: scale(1.5); opacity: 0; } }
+
+  .bs-map-mark .tip { position: absolute; bottom: calc(100% + 10px); left: 50%;
+    transform: translateX(-50%) translateY(5px); white-space: nowrap; pointer-events: none;
+    background: var(--bg-soft); border: 1px solid var(--line); color: var(--fg);
+    font-size: 12.5px; font-weight: 600; padding: 7px 12px; border-radius: 10px;
+    box-shadow: 0 16px 36px -14px rgba(0,0,0,.55);
+    opacity: 0; transition: opacity .2s, transform .2s; }
+  .bs-map-mark:hover .tip, .bs-map-mark:focus-visible .tip, .bs-map-mark:focus .tip {
+    opacity: 1; transform: translateX(-50%) translateY(0); }
+  .bs-map-mark.edge .tip { left: auto; right: -8px; transform: translateY(5px); }
+  .bs-map-mark.edge:hover .tip, .bs-map-mark.edge:focus .tip { transform: translateY(0); }
+
+  .bs-map-stats { display: flex; gap: clamp(24px, 6vw, 64px); justify-content: center; flex-wrap: wrap;
+    margin-top: 44px; padding-top: 30px; border-top: 1px solid var(--line); text-align: center; }
+  .bs-map-stats b { display: block; font-family: var(--font-display); font-size: clamp(26px, 3vw, 36px);
+    font-weight: 800; color: var(--fg); }
+  .bs-map-stats span { font-size: 13.5px; color: var(--fg-muted); }
+</style>
+<section class="bs-map" data-theme="dark">
+  <div class="bs-container">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Infrastruktur</p>
+      <h2>Deine Daten bleiben, wo du sie willst</h2>
+      <p>Fünf Regionen, ein Versprechen: EU-Kunden werden ausschließlich in Frankfurt gehostet — Replays laden trotzdem überall in Millisekunden.</p>
+    </div>
+
+    <div class="bs-map-wrap" data-reveal>
+      <svg class="bs-map-svg" viewBox="0 0 660 300" role="img" aria-label="Stilisierte Weltkarte mit fünf Rechenzentrums-Standorten"></svg>
+      <button type="button" class="bs-map-mark" style="left:52.4%; top:20.5%" aria-labelledby="bs-map-tip-fra"><span class="tip" id="bs-map-tip-fra" role="tooltip">🇩🇪 Frankfurt · EU-Region (DSGVO-Standard)</span></button>
+      <button type="button" class="bs-map-mark" style="left:28.5%; top:28.7%" aria-labelledby="bs-map-tip-ash"><span class="tip" id="bs-map-tip-ash" role="tooltip">🇺🇸 Ashburn · US East</span></button>
+      <button type="button" class="bs-map-mark" style="left:37.1%; top:74.6%" aria-labelledby="bs-map-tip-sao"><span class="tip" id="bs-map-tip-sao" role="tooltip">🇧🇷 São Paulo · South America</span></button>
+      <button type="button" class="bs-map-mark" style="left:78.8%; top:56.4%" aria-labelledby="bs-map-tip-sin"><span class="tip" id="bs-map-tip-sin" role="tooltip">🇸🇬 Singapur · Asia-Pacific</span></button>
+      <button type="button" class="bs-map-mark edge" style="left:92%; top:82.3%" aria-labelledby="bs-map-tip-syd"><span class="tip" id="bs-map-tip-syd" role="tooltip">🇦🇺 Sydney · Australia</span></button>
+    </div>
+
+    <div class="bs-map-stats" data-stagger>
+      <div><b><span data-count-to="42">0</span>+</b><span>Länder mit aktiven Sessions</span></div>
+      <div><b><span data-count-to="5">0</span></b><span>Rechenzentrums-Regionen</span></div>
+      <div><b>Ø <span data-count-to="78">0</span> ms</b><span>Ladezeit eines Replays</span></div>
+      <div><b>99,99 %</b><span>Uptime, öffentlich geloggt</span></div>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var svg = document.querySelector(".bs-map-svg");
+  if (!svg) return;
+
+  /* Kompakte Karten-Daten: 30 Zeilen × 66 Spalten, '#' = Landmasse.
+     Eine Zeile ≈ 4,7° Breite, eine Spalte ≈ 5,45° Länge (78°N–58°S). */
+  var ROWS = [
+    "...........###.####....#####..........#......########.####........",
+    "...###...############.######........##.########################...",
+    "..#####.#############..####...##...####.########################..",
+    ".#####################.###.........###.##########################.",
+    ".####...###############.........#.###.###########################.",
+    "........#####..########........###.#############################..",
+    "......#################..........##############################...",
+    ".....#################..........##########.##################.....",
+    ".....################..........###..#######################.##....",
+    ".....##############...........#####.#####################.##......",
+    "......###########............#########.####.############..........",
+    "........########.............##########.###.############..........",
+    ".........######.###..........############.#.####.######...........",
+    "...........####..###.........#############..###..#####.##.........",
+    "............####.............#############..##...####..#..........",
+    "..............####............###########....#...###.###..........",
+    "...............#######.........##########.......###.###.#.........",
+    "...............########.........#########........#######.####.....",
+    "...............#########........########..........#####..#####....",
+    "................#########........#######...............####.......",
+    "................#########........######..#...........########.....",
+    ".................########........######..#...........#########....",
+    ".................########........#####...............#########....",
+    "..................#####...........###................########.....",
+    "..................####............##..................#######.....",
+    "..................###...................................###....##.",
+    "..................###.....................................#....#..",
+    "..................##..............................................",
+    "..................##..............................................",
+    "..................#..............................................."
+  ];
+  var NS = "http://www.w3.org/2000/svg";
+  var GAP = 10;
+  ROWS.forEach(function (row, y) {
+    for (var x = 0; x < row.length && x < 66; x++) {
+      if (row.charAt(x) !== "#") continue;
+      var c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx", x * GAP + GAP / 2);
+      c.setAttribute("cy", y * GAP + GAP / 2);
+      c.setAttribute("r", 2.1);
+      svg.appendChild(c);
+    }
+  });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: INTERAKTIV 6 · Command-Palette-Demo (hell)
+     Echte auslösbare Palette: Cmd/Ctrl+K oder Klick auf das
+     gemockte Suchfeld öffnet ein <dialog>-Overlay. Tippen filtert
+     die Befehlsliste live, Pfeiltasten + Enter wählen aus
+     (aria-activedescendant), Escape schließt. Scroll-Lock über
+     documentElement, Fokus kehrt zum Auslöser zurück.
+     Weitere Varianten (nicht umgesetzt): Autoplay-Mock als Loop ·
+     Shortcut-Spickzettel aus <kbd>-Kacheln.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Interaktiv 6 · Command-Palette <code>.bs-cmdk</code> <code>hell</code></p>
+<style>
+  .bs-cmdk { position: relative; overflow: hidden; padding: 88px 0 96px; }
+  .bs-cmdk::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(50% 65% at 50% 0%, rgba(var(--violet-rgb),.08), transparent 65%); }
+  .bs-cmdk .bs-container { position: relative; }
+
+  .bs-cmdk kbd { display: inline-grid; place-items: center; min-width: 22px; padding: 2px 7px;
+    font: 700 12px var(--font-body); color: var(--fg-soft); background: var(--glass);
+    border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; }
+
+  .bs-cmdk-trigger { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 560px;
+    margin: 0 auto; padding: 15px 18px; cursor: pointer; text-align: left;
+    font: 500 16px var(--font-body); color: var(--fg-muted);
+    background: var(--card); border: 1.5px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow); transition: border-color .2s, transform .15s; }
+  .bs-cmdk-trigger:hover { border-color: var(--brand); transform: translateY(-1px); }
+  .bs-cmdk-trigger svg { flex: none; color: var(--fg-muted); }
+  .bs-cmdk-trigger span { flex: 1; }
+  .bs-cmdk-status { text-align: center; margin-top: 18px; font-size: 14px; color: var(--fg-soft); min-height: 1.6em; }
+  .bs-cmdk-status b { color: var(--brand); }
+  [data-theme="dark"] .bs-cmdk-status b { color: var(--brand-300); }
+
+  .bs-cmdk-dialog { border: 0; padding: 0; background: transparent; width: min(92vw, 600px);
+    margin-top: min(14vh, 140px); }
+  .bs-cmdk-dialog::backdrop { background: rgba(10, 8, 35, .55); backdrop-filter: blur(4px); }
+  .bs-cmdk-dialog .win { background: var(--bg); color: var(--fg-soft); border: 1px solid var(--line);
+    border-radius: 16px; overflow: hidden; box-shadow: 0 40px 110px -20px rgba(0,0,0,.5); }
+
+  .bs-cmdk-dialog .searchrow { display: flex; align-items: center; gap: 12px; padding: 15px 18px;
+    border-bottom: 1px solid var(--line); }
+  .bs-cmdk-dialog .searchrow svg { flex: none; color: var(--fg-muted); }
+  .bs-cmdk-dialog input { flex: 1; min-width: 0; border: 0; outline: none; background: transparent;
+    font: 500 16.5px var(--font-body); color: var(--fg); }
+  .bs-cmdk-dialog input::placeholder { color: var(--fg-muted); }
+
+  .bs-cmdk-dialog [role="listbox"] { max-height: 320px; overflow-y: auto; padding: 8px; }
+  .bs-cmdk-dialog [role="option"] { display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: 10px; cursor: pointer; font-size: 15px; color: var(--fg-soft); }
+  .bs-cmdk-dialog [role="option"][hidden] { display: none; }
+  .bs-cmdk-dialog [role="option"].is-active { background: rgba(var(--brand-rgb),.1); color: var(--fg); }
+  .bs-cmdk-dialog [role="option"] .ic { flex: none; display: grid; place-items: center; width: 30px; height: 30px;
+    border-radius: 8px; background: var(--glass); border: 1px solid var(--line); color: var(--fg-soft); }
+  .bs-cmdk-dialog [role="option"].is-active .ic { color: var(--brand); border-color: rgba(var(--brand-rgb),.4); }
+  [data-theme="dark"] .bs-cmdk-dialog [role="option"].is-active .ic { color: var(--brand-300); }
+  .bs-cmdk-dialog [role="option"] .cat { margin-left: auto; font-size: 12px; color: var(--fg-muted); }
+
+  .bs-cmdk-dialog .empty { padding: 26px 18px; text-align: center; font-size: 14.5px; color: var(--fg-muted); margin: 0; }
+  .bs-cmdk-dialog .foot { display: flex; gap: 18px; flex-wrap: wrap; padding: 11px 18px;
+    border-top: 1px solid var(--line); font-size: 12.5px; color: var(--fg-muted); }
+  .bs-cmdk-dialog .foot span { display: inline-flex; align-items: center; gap: 6px; }
+
+  .bs-cmdk .vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+</style>
+<section class="bs-cmdk">
+  <div class="bs-container">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Power-Feature</p>
+      <h2>Drück <kbd>⌘</kbd><kbd>K</kbd> — und flieg durchs Produkt</h2>
+      <p>Jede Aktion in Klarblick ist eine Tastenkombination entfernt. Probier die Befehlspalette direkt hier auf der Seite aus.</p>
+    </div>
+
+    <div data-reveal>
+      <button type="button" class="bs-cmdk-trigger" aria-haspopup="dialog" aria-controls="bs-cmdk-dialog">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M10.6 10.6 14 14"/></svg>
+        <span>Befehl oder Suche eingeben …</span>
+        <kbd data-meta>⌘</kbd><kbd>K</kbd>
+      </button>
+      <p class="bs-cmdk-status" role="status"></p>
+    </div>
+
+    <dialog class="bs-cmdk-dialog" id="bs-cmdk-dialog" aria-label="Befehlspalette">
+      <div class="win">
+        <div class="searchrow">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M10.6 10.6 14 14"/></svg>
+          <input type="text" id="bs-cmdk-input" role="combobox" aria-expanded="true" aria-controls="bs-cmdk-list"
+                 aria-activedescendant="" aria-autocomplete="list" autocomplete="off" spellcheck="false"
+                 placeholder="Befehl eingeben oder suchen …" autofocus />
+          <kbd>esc</kbd>
+        </div>
+        <ul id="bs-cmdk-list" role="listbox" aria-label="Befehle">
+          <li id="bs-cmdk-opt-1" role="option" aria-selected="false" data-keywords="video aufnahme wiedergabe session">
+            <span class="ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6L13 8z"/></svg></span>
+            <span class="label">Session-Replay öffnen</span><span class="cat">Ansicht</span>
+          </li>
+          <li id="bs-cmdk-opt-2" role="option" aria-selected="false" data-keywords="trichter conversion analyse neu">
+            <span class="ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 3v10M3 8h10"/></svg></span>
+            <span class="label">Neue Funnel-Analyse anlegen</span><span class="cat">Erstellen</span>
+          </li>
+          <li id="bs-cmdk-opt-3" role="option" aria-selected="false" data-keywords="klicks scrollmap checkout wärme">
+            <span class="ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="5" height="5" rx="1.2"/><rect x="9" y="2" width="5" height="5" rx="1.2" opacity=".55"/><rect x="2" y="9" width="5" height="5" rx="1.2" opacity=".55"/><rect x="9" y="9" width="5" height="5" rx="1.2" opacity=".25"/></svg></span>
+            <span class="label">Heatmap für /checkout zeigen</span><span class="cat">Ansicht</span>
+          </li>
+          <li id="bs-cmdk-opt-4" role="option" aria-selected="false" data-keywords="errors exceptions konsole bugs">
+            <span class="ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2.2 14.4 13H1.6z" stroke-linejoin="round"/><path d="M8 6.4v3.2"/><circle cx="8" cy="11.4" r=".4" fill="currentColor"/></svg></span>
+            <span class="label">Fehler der letzten 24 Stunden</span><span class="cat">Debugging</span>
+          </li>
+          <li id="bs-cmdk-opt-5" role="option" aria-selected="false" data-keywords="mitglied kollege hinzufügen">
+            <span class="ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="5.5" r="2.6"/><path d="M2 13.5c.6-2.6 2.4-4 4.5-4s3.9 1.4 4.5 4M12.5 5v4M10.5 7h4"/></svg></span>
+            <span class="label">Teammitglied einladen</span><span class="cat">Team</span>
+          </li>
+          <li id="bs-cmdk-opt-6" role="option" aria-selected="false" data-keywords="konfiguration maskierung domains">
+            <span class="ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 5h8M13 5h1M2 11h1M6 11h8"/><circle cx="11.5" cy="5" r="1.7"/><circle cx="4.5" cy="11" r="1.7"/></svg></span>
+            <span class="label">Projekt-Einstellungen öffnen</span><span class="cat">Einstellungen</span>
+          </li>
+          <li id="bs-cmdk-opt-7" role="option" aria-selected="false" data-keywords="tastatur shortcuts kürzel hotkeys">
+            <span class="ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.6" y="4" width="12.8" height="8" rx="1.6"/><path d="M4.4 7h.01M7 7h.01M9.6 7h.01M12.2 7h.01M5 9.6h6"/></svg></span>
+            <span class="label">Tastaturkürzel anzeigen</span><span class="cat">Hilfe</span>
+          </li>
+          <li id="bs-cmdk-opt-8" role="option" aria-selected="false" data-keywords="docs handbuch anleitung hilfe">
+            <span class="ic" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 3.2A1.7 1.7 0 0 1 4.2 1.5h9.3v11.3H4.2a1.7 1.7 0 0 0-1.7 1.7z"/><path d="M2.5 3.2v11.3A1.7 1.7 0 0 1 4.2 12.8h9.3"/></svg></span>
+            <span class="label">Dokumentation durchsuchen</span><span class="cat">Hilfe</span>
+          </li>
+        </ul>
+        <p class="empty" hidden>Keine Treffer für „<span></span>“ — anderer Suchbegriff?</p>
+        <div class="foot">
+          <span><kbd>↑</kbd><kbd>↓</kbd> wählen</span>
+          <span><kbd>↵</kbd> ausführen</span>
+          <span><kbd>esc</kbd> schließen</span>
+        </div>
+      </div>
+      <span class="vh" aria-live="polite"></span>
+    </dialog>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-cmdk");
+  if (!root) return;
+  var trigger = root.querySelector(".bs-cmdk-trigger");
+  var status = root.querySelector(".bs-cmdk-status");
+  var dialog = root.querySelector(".bs-cmdk-dialog");
+  var input = root.querySelector("#bs-cmdk-input");
+  var list = root.querySelector("#bs-cmdk-list");
+  var empty = dialog.querySelector(".empty");
+  var emptyQuery = empty.querySelector("span");
+  var live = dialog.querySelector(".vh");
+  var options = [].slice.call(list.querySelectorAll('[role="option"]'));
+  if (!dialog.showModal) { trigger.disabled = true; return; }
+
+  /* ⌘ vs. Strg je nach Plattform */
+  var isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  if (!isMac) trigger.querySelector("[data-meta]").textContent = "Strg";
+
+  function visibleOptions() {
+    return options.filter(function (o) { return !o.hidden; });
+  }
+
+  function setActive(el) {
+    options.forEach(function (o) {
+      o.classList.toggle("is-active", o === el);
+      o.setAttribute("aria-selected", String(o === el));
+    });
+    input.setAttribute("aria-activedescendant", el ? el.id : "");
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" });
+  }
+
+  function applyFilter() {
+    var q = input.value.trim().toLowerCase();
+    options.forEach(function (o) {
+      var haystack = (o.textContent + " " + (o.dataset.keywords || "")).toLowerCase();
+      o.hidden = q !== "" && haystack.indexOf(q) === -1;
+    });
+    var vis = visibleOptions();
+    empty.hidden = vis.length !== 0;
+    emptyQuery.textContent = input.value.trim();
+    live.textContent = vis.length + " Befehle verfügbar";
+    setActive(vis[0] || null);
+  }
+
+  function execute(el) {
+    if (!el) return;
+    var label = el.querySelector(".label").textContent;
+    status.innerHTML = "";
+    status.append("Ausgeführt: ");
+    var b = document.createElement("b");
+    b.textContent = "„" + label + "“";
+    status.append(b);
+    dialog.close();
+  }
+
+  function openPalette() {
+    if (dialog.open) return;
+    input.value = "";
+    applyFilter();
+    dialog.showModal();
+    document.documentElement.style.overflow = "hidden";
+    input.focus();
+  }
+
+  trigger.addEventListener("click", openPalette);
+  dialog.addEventListener("close", function () {
+    document.documentElement.style.overflow = "";
+  });
+  /* Klick auf den Backdrop schließt */
+  dialog.addEventListener("click", function (e) {
+    if (e.target === dialog) dialog.close();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if ((e.metaKey || e.ctrlKey) && String(e.key).toLowerCase() === "k") {
+      e.preventDefault();
+      dialog.open ? dialog.close() : openPalette();
+    }
+  });
+
+  input.addEventListener("input", applyFilter);
+  input.addEventListener("keydown", function (e) {
+    var vis = visibleOptions();
+    if (!vis.length) return;
+    var idx = vis.indexOf(list.querySelector(".is-active"));
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActive(vis[(idx + 1) % vis.length]);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActive(vis[(idx - 1 + vis.length) % vis.length]);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      execute(list.querySelector(".is-active"));
+    }
+  });
+
+  options.forEach(function (o) {
+    o.addEventListener("mouseenter", function () { setActive(o); });
+    o.addEventListener("click", function () { execute(o); });
+  });
+})();
+</script>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

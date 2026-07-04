@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Wartungsseite</title>
+<meta name="description" content="Wartungsseiten-Vorlage — 'Wir sind gleich zurück' mit Aurora-Verlauf, Countdown und Status-Link." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: Wartungsseite (.bs-wartung) · Aurora + Countdown, dunkel
+     "Wir sind gleich zurück" mit dezentem Aurora-Verlauf (Token-basiert),
+     Countdown bis zum Wartungsende und Link auf die Status-Seite.
+     Zieldatum: data-target="2026-07-31T18:00:00" auf der <section>
+     setzen — ohne Attribut zählt die Demo ab jetzt + 2 Stunden.
+     Weitere Varianten (hier nicht umgesetzt):
+     · Terminal-Stil passend zum Developer-Hero
+     · Ohne Countdown, nur mit E-Mail-Benachrichtigungsfeld
+     ═══════════════════════════════════════════════════════════════ */
+  .bs-wartung [hidden] { display: none !important; } /* Sicherheitsnetz: gewinnt gegen display:flex der Success-Box */
+  .bs-wartung { position: relative; overflow: hidden; min-height: 100vh; min-height: 100svh;
+    display: grid; place-items: center; text-align: center; }
+  .bs-wartung::before { /* driftende Aurora-Schwaden, rein Token-basiert */
+    content: ""; position: absolute; inset: -25%; pointer-events: none;
+    background:
+      radial-gradient(28% 38% at 30% 30%, rgba(var(--violet-rgb),.34), transparent 70%),
+      radial-gradient(24% 34% at 70% 60%, rgba(var(--brand-rgb),.3), transparent 70%),
+      radial-gradient(20% 30% at 50% 85%, rgba(var(--brand-rgb),.18), transparent 70%);
+    filter: blur(48px); animation: bsWartungAurora 22s ease-in-out infinite alternate; }
+  @keyframes bsWartungAurora {
+    from { transform: translate3d(-3%,-2%,0) rotate(0deg) scale(1); }
+    to   { transform: translate3d(3%,3%,0) rotate(6deg) scale(1.06); }
+  }
+  .bs-wartung .inner { position: relative; padding-top: 72px; padding-bottom: 88px; max-width: 720px; }
+  .bs-wartung .bs-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange);
+    animation: bsWartungBlink 1.6s ease-in-out infinite; }
+  @keyframes bsWartungBlink { 50% { opacity: .35; } }
+  .bs-wartung h1 { font-size: clamp(38px, 6vw, 64px); font-weight: 800; margin: 20px 0 16px; }
+  .bs-wartung .sub { font-size: 18px; max-width: 50ch; margin: 0 auto 38px; color: var(--fg-soft); }
+  .bs-wartung .count { display: flex; gap: 8px; justify-content: center; align-items: stretch; }
+  .bs-wartung .unit { min-width: 92px; padding: 16px 10px 12px; border: 1px solid var(--line);
+    border-radius: var(--r-md); background: var(--glass); backdrop-filter: blur(4px); }
+  .bs-wartung .unit b { display: block; font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(30px, 5vw, 44px); line-height: 1; color: var(--fg);
+    font-variant-numeric: tabular-nums; }
+  .bs-wartung .unit span { display: block; margin-top: 8px; font-size: 12px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--fg-muted); }
+  .bs-wartung .sep { align-self: center; font-family: var(--font-display); font-size: 30px;
+    font-weight: 800; color: var(--fg-muted); }
+  .bs-wartung .done { max-width: 420px; margin: 0 auto; text-align: left; }
+  .bs-wartung .note { margin-top: 36px; font-size: 14.5px; color: var(--fg-muted); }
+  .bs-wartung .note a { color: var(--brand-300); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 480px) {
+    .bs-wartung .unit { min-width: 72px; }
+    .bs-wartung .sep { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- Zieldatum optional fest setzen: <section class="bs-wartung" data-theme="dark" data-target="2026-07-31T18:00:00"> -->
+<section class="bs-wartung" data-theme="dark">
+  <div class="bs-container inner" data-stagger>
+    <span class="bs-badge"><i class="dot" aria-hidden="true"></i> Geplante Wartung</span>
+    <h1>Wir sind gleich zurück.</h1>
+    <p class="sub">Wir spielen gerade ein größeres Update ein und machen Klarblick dabei schneller. Deine Daten und Aufnahmen sind sicher — laufende Sessions werden nach der Wartung automatisch nachverarbeitet.</p>
+
+    <div class="count" role="timer" aria-label="Verbleibende Wartungszeit">
+      <div class="unit"><b data-cd="h">02</b><span>Stunden</span></div>
+      <div class="sep" aria-hidden="true">:</div>
+      <div class="unit"><b data-cd="m">00</b><span>Minuten</span></div>
+      <div class="sep" aria-hidden="true">:</div>
+      <div class="unit"><b data-cd="s">00</b><span>Sekunden</span></div>
+    </div>
+    <div class="done bs-success-box" role="status" hidden>✓ <span>Die Wartung ist abgeschlossen — lade die Seite neu, dann geht es weiter.</span></div>
+
+    <p class="note">
+      Live-Updates auf unserer <a href="status.html">Status-Seite</a> ·
+      Dringende Fragen? <a href="mailto:support@klarblick.app">support@klarblick.app</a>
+    </p>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-wartung");
+  if (!root) return;
+  // Zieldatum aus data-target (ISO-String) — Fallback für die Demo: jetzt + 2 Stunden
+  var target = root.dataset.target
+    ? new Date(root.dataset.target).getTime()
+    : Date.now() + 2 * 60 * 60 * 1000;
+  var out = {
+    h: root.querySelector('[data-cd="h"]'),
+    m: root.querySelector('[data-cd="m"]'),
+    s: root.querySelector('[data-cd="s"]')
+  };
+  var timer = root.querySelector(".count");
+  var done = root.querySelector(".done");
+  var iv = null;
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function tick() {
+    var rest = Math.max(0, target - Date.now());
+    var sec = Math.floor(rest / 1000);
+    out.h.textContent = pad(Math.floor(sec / 3600));
+    out.m.textContent = pad(Math.floor(sec / 60) % 60);
+    out.s.textContent = pad(sec % 60);
+    if (rest === 0) {
+      if (iv) clearInterval(iv);
+      timer.hidden = true;
+      done.hidden = false;
+    }
+  }
+  tick();
+  iv = setInterval(tick, 1000);
+})();
+</script>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

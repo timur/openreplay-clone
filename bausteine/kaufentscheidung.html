@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Kaufentscheidung</title>
+<meta name="description" content="6 Conversion-Bausteine für die Kaufentscheidung — ROI-Rechner, Wettbewerber-Vergleich, Garantie-Band, Onboarding-Steps, Einwand-Sektion und Vorher/Nachher-Slider. Plain HTML/CSS/JS, hell & dunkel." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: KAUFENTSCHEIDUNG 1 · ROI-/Ersparnis-Rechner (dunkel)
+     3 Slider (Team, Bug-Tickets, Stundensatz) → live berechnete
+     Jahresersparnis, Annahmen konfigurierbar über data-Attribute
+     an der <section> (data-hours-per-bug, data-hours-per-dev-week).
+     Weitere Varianten (nicht umgesetzt): Vorher/Nachher-Kostenkarten
+     mit animiertem Differenz-Counter · Rechner mit Lead-Capture
+     („Ergebnis per Mail erhalten“).
+     Kopieren: diesen <style>-Block + <section> + das <script> darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Kaufentscheidung 1 · ROI-Rechner <code>.bs-roi</code> <code>data-theme="dark"</code></p></div>
+<style>
+  .bs-roi { position: relative; overflow: hidden; padding: 88px 0 72px; }
+  .bs-roi::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(55% 70% at 85% 15%, rgba(var(--brand-rgb),.22), transparent 60%),
+      radial-gradient(45% 60% at 5% 90%, rgba(var(--violet-rgb),.18), transparent 60%); }
+  .bs-roi .bs-container { position: relative; }
+  .bs-roi .roi-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 28px; align-items: stretch; }
+
+  /* Regler-Karte */
+  .bs-roi .roi-controls { background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 30px 28px; display: flex; flex-direction: column; gap: 26px; }
+  .bs-roi .roi-field label { display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    font-size: 15px; font-weight: 700; color: var(--fg); margin-bottom: 12px; }
+  .bs-roi .roi-field output { font-family: var(--font-display); font-size: 20px; font-weight: 800;
+    color: var(--brand); white-space: nowrap; }
+  [data-theme="dark"] .bs-roi .roi-field output, .bs-roi[data-theme="dark"] .roi-field output { color: var(--brand-300); }
+  .bs-roi .roi-field small { display: block; margin-top: 8px; font-size: 12.5px; color: var(--fg-muted); font-weight: 500; }
+
+  /* Slider — Track-Füllung über --p (setzt das Script) */
+  .bs-roi input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%;
+    height: 26px; background: transparent; margin: 0; cursor: pointer; }
+  .bs-roi input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 999px;
+    background: linear-gradient(90deg, var(--brand) var(--p, 50%), var(--line) var(--p, 50%)); }
+  .bs-roi input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px;
+    margin-top: -8px; border-radius: 50%; background: #fff; border: 4px solid var(--brand);
+    box-shadow: 0 4px 14px -4px rgba(var(--brand-rgb),.8); }
+  .bs-roi input[type="range"]::-moz-range-track { height: 6px; border-radius: 999px; background: var(--line); }
+  .bs-roi input[type="range"]::-moz-range-progress { height: 6px; border-radius: 999px; background: var(--brand); }
+  .bs-roi input[type="range"]::-moz-range-thumb { width: 15px; height: 15px; border-radius: 50%;
+    background: #fff; border: 4px solid var(--brand); box-shadow: 0 4px 14px -4px rgba(var(--brand-rgb),.8); }
+
+  /* Ergebnis-Karte */
+  .bs-roi .roi-result { position: relative; overflow: hidden; text-align: center;
+    display: flex; flex-direction: column; justify-content: center; gap: 6px;
+    background: linear-gradient(160deg, rgba(var(--brand-rgb),.16), rgba(var(--violet-rgb),.10)), var(--card);
+    border: 1px solid color-mix(in srgb, var(--brand) 45%, var(--line));
+    border-radius: var(--r-lg); padding: 34px 28px; }
+  .bs-roi .roi-result::before { content: ""; position: absolute; inset: -30% -30% auto;
+    height: 70%; pointer-events: none; filter: blur(40px);
+    background: radial-gradient(50% 60% at 50% 0%, rgba(var(--brand-rgb),.35), transparent 70%); }
+  .bs-roi .roi-label { position: relative; font-size: 13px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--fg-muted); }
+  .bs-roi .roi-total { position: relative; font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(42px, 5.6vw, 68px); line-height: 1.05; letter-spacing: -.02em; color: var(--fg);
+    font-variant-numeric: tabular-nums; }
+  .bs-roi .roi-sub { position: relative; display: flex; justify-content: center; flex-wrap: wrap;
+    gap: 8px 26px; margin-top: 8px; font-size: 14.5px; color: var(--fg-soft); }
+  .bs-roi .roi-sub b { color: var(--fg); font-variant-numeric: tabular-nums; }
+  .bs-roi .roi-result .bs-btn { position: relative; align-self: center; margin-top: 22px; }
+  .bs-roi .roi-note { max-width: 860px; margin: 26px auto 0; font-size: 12.5px; line-height: 1.6;
+    color: var(--fg-muted); text-align: center; }
+
+  @media (max-width: 940px) { .bs-roi .roi-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .bs-roi .roi-controls, .bs-roi .roi-result { padding: 24px 18px; } }
+</style>
+<section class="bs-roi" data-theme="dark" data-hours-per-bug="2.75" data-hours-per-dev-week="1">
+  <div class="bs-container">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">ROI-Rechner</p>
+      <h2>Was kostet dich Bug-Raten — in Euro?</h2>
+      <p>Drei Regler, deine Zahlen: So viel spart dein Team pro Jahr, wenn sich jeder Bug per Session-Replay selbst erklärt, statt mühsam reproduziert zu werden.</p>
+    </div>
+    <div class="roi-grid">
+      <div class="roi-controls" role="group" aria-label="Deine Zahlen" data-reveal="left">
+        <div class="roi-field">
+          <label for="roi-devs">Entwickler:innen im Team <output id="roi-devs-val" for="roi-devs">8</output></label>
+          <input type="range" id="roi-devs" min="1" max="50" step="1" value="8" />
+          <small>Alle, die regelmäßig Bugs untersuchen.</small>
+        </div>
+        <div class="roi-field">
+          <label for="roi-bugs">Bug-Tickets pro Monat <output id="roi-bugs-val" for="roi-bugs">40</output></label>
+          <input type="range" id="roi-bugs" min="5" max="300" step="5" value="40" />
+          <small>Gemeldete Fehler aus Support, QA und Monitoring.</small>
+        </div>
+        <div class="roi-field">
+          <label for="roi-rate">Interner Stundensatz <output id="roi-rate-val" for="roi-rate">85&nbsp;€</output></label>
+          <input type="range" id="roi-rate" min="40" max="160" step="5" value="85" />
+          <small>Vollkosten pro Entwickler:innen-Stunde.</small>
+        </div>
+      </div>
+      <div class="roi-result" data-reveal="right" data-reveal-delay="120">
+        <p class="roi-label">Geschätzte Ersparnis pro Jahr</p>
+        <p class="roi-total" id="roi-total" aria-live="polite">—</p>
+        <p class="roi-sub"><span><b id="roi-hours">—</b> Stunden weniger Debugging</span><span>≈ <b id="roi-days">—</b> Arbeitstage à 8 h</span></p>
+        <a href="#" class="bs-btn bs-btn-primary bs-btn-lg">Demo mit deinen Zahlen buchen</a>
+      </div>
+    </div>
+    <p class="roi-note" data-reveal>Annahmen: Reproduktion und Diagnose eines Bug-Tickets dauern ohne Session-Replay im Schnitt 3,5&nbsp;h, mit ReplayHQ 0,75&nbsp;h (Ersparnis 2,75&nbsp;h pro Ticket). Zusätzlich entfällt pro Entwickler:in rund 1&nbsp;h Rückfragen-Aufwand pro Woche bei 46 Arbeitswochen im Jahr. Unverbindliche Schätzung — der Rechner überträgt und speichert nichts.</p>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-roi");
+  if (!root) return;
+  var eur = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+  var num = new Intl.NumberFormat("de-DE");
+  var hPerBug = parseFloat(root.dataset.hoursPerBug) || 2.75;      // gesparte h pro Bug-Ticket
+  var hPerDevWeek = parseFloat(root.dataset.hoursPerDevWeek) || 1; // gesparte h pro Dev & Woche
+  var inDevs = root.querySelector("#roi-devs");
+  var inBugs = root.querySelector("#roi-bugs");
+  var inRate = root.querySelector("#roi-rate");
+  var outDevs = root.querySelector("#roi-devs-val");
+  var outBugs = root.querySelector("#roi-bugs-val");
+  var outRate = root.querySelector("#roi-rate-val");
+  var outTotal = root.querySelector("#roi-total");
+  var outHours = root.querySelector("#roi-hours");
+  var outDays = root.querySelector("#roi-days");
+
+  function fill(el) { // Track-Füllung links vom Daumen (WebKit)
+    var p = ((el.value - el.min) / (el.max - el.min)) * 100;
+    el.style.setProperty("--p", p + "%");
+  }
+  function calc() {
+    var devs = +inDevs.value, bugs = +inBugs.value, rate = +inRate.value;
+    var hours = bugs * hPerBug * 12 + devs * hPerDevWeek * 46;
+    outDevs.textContent = num.format(devs);
+    outBugs.textContent = num.format(bugs);
+    outRate.textContent = num.format(rate) + " €";
+    outTotal.textContent = eur.format(Math.round(hours * rate));
+    outHours.textContent = num.format(Math.round(hours));
+    outDays.textContent = num.format(Math.round(hours / 8));
+  }
+  [inDevs, inBugs, inRate].forEach(function (el) {
+    el.addEventListener("input", function () { fill(el); calc(); });
+    fill(el);
+  });
+  calc();
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: KAUFENTSCHEIDUNG 2 · Wettbewerber-Vergleich (hell)
+     Multi-Vergleich mit 3 Wettbewerber-Spalten; Funktions- und
+     eigene Spalte sticky (links), eigene Spalte farbig abgesetzt.
+     Mobile: Tabelle scrollt horizontal im .vs-scroll-Container.
+     Weitere Varianten (nicht umgesetzt): zweispaltige „Wir vs. Die“-
+     Tabelle · Kategorie-Vergleich als Differenzierungs-Karten ·
+     reiner Migrations-Teaser (hier nur als Badge unterm Vergleich).
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Kaufentscheidung 2 · Wettbewerber-Vergleich <code>.bs-vs</code> <code>hell</code></p>
+<style>
+  .bs-vs { padding: 88px 0 80px; }
+  .bs-vs .vh { position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+  .bs-vs .vs-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--line); border-radius: var(--r-md); background: var(--bg);
+    box-shadow: var(--shadow); }
+  .bs-vs table { --lbl: 190px; width: 100%; min-width: 780px; border-collapse: separate; border-spacing: 0;
+    font-size: 15px; }
+  .bs-vs th, .bs-vs td { padding: 14px 18px; text-align: center; border-bottom: 1px solid var(--line);
+    vertical-align: middle; }
+  .bs-vs tbody tr:last-child th, .bs-vs tbody tr:last-child td { border-bottom: 0; }
+  .bs-vs thead th { font-family: var(--font-display); font-size: 15.5px; font-weight: 800;
+    color: var(--fg); background: var(--bg); border-bottom: 2px solid var(--line); }
+
+  /* Sticky: Funktions-Spalte links, eigene Spalte direkt daneben */
+  .bs-vs .vs-feat { position: sticky; left: 0; z-index: 2; width: var(--lbl); min-width: var(--lbl); max-width: var(--lbl);
+    background: var(--bg); text-align: left; font-weight: 600; color: var(--fg); font-size: 14.5px; }
+  .bs-vs .vs-us { position: sticky; left: var(--lbl); z-index: 2; min-width: 160px;
+    background: color-mix(in srgb, var(--brand) 8%, var(--bg)); font-weight: 700; color: var(--fg); }
+  .bs-vs .vs-us::after { content: ""; position: absolute; top: 0; bottom: 0; right: -14px; width: 14px;
+    pointer-events: none; background: linear-gradient(90deg, rgba(20, 16, 31, .09), transparent); }
+  .bs-vs thead .vs-us { background: var(--brand); color: #fff; z-index: 3; }
+  .bs-vs thead .vs-us .vs-flag { display: block; font-family: var(--font-body); font-size: 11px;
+    font-weight: 700; letter-spacing: .07em; text-transform: uppercase; opacity: .9; margin-top: 2px; }
+  .bs-vs thead th:not(.vs-us):not(.vs-feat) { color: var(--fg-soft); }
+
+  /* Check/Kreuz/Teilweise-Chips */
+  .bs-vs .vs-ic { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+    font-size: 14px; font-weight: 800; line-height: 1; }
+  .bs-vs .vs-yes  { background: color-mix(in srgb, var(--green) 15%, transparent); color: var(--green); }
+  .bs-vs .vs-no   { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); }
+  .bs-vs .vs-part { background: color-mix(in srgb, var(--orange) 16%, transparent); color: var(--orange); }
+  .bs-vs td small { display: block; margin-top: 4px; font-size: 12px; color: var(--fg-muted); font-weight: 500; }
+
+  .bs-vs .vs-foot { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 26px; text-align: center; }
+  .bs-vs .vs-note { font-size: 12.5px; color: var(--fg-muted); max-width: 640px; }
+
+  @media (max-width: 560px) {
+    .bs-vs table { --lbl: 138px; }
+    .bs-vs th, .bs-vs td { padding: 12px 12px; }
+    .bs-vs .vs-feat { font-size: 13.5px; }
+  }
+</style>
+<section class="bs-vs">
+  <div class="bs-container">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Der ehrliche Vergleich</p>
+      <h2>ReplayHQ — oder doch die anderen?</h2>
+      <p>Wir haben die öffentlichen Preislisten und Feature-Seiten nebeneinandergelegt. Entscheide selbst.</p>
+    </div>
+    <div class="vs-scroll" role="region" aria-label="Vergleichstabelle, horizontal scrollbar" tabindex="0" data-reveal>
+      <table>
+        <caption class="vh">Funktions- und Preisvergleich: ReplayHQ gegenüber SessionEye, Trackaro und HeatPeak</caption>
+        <thead>
+          <tr>
+            <th class="vs-feat" scope="col"><span class="vh">Funktion</span></th>
+            <th class="vs-us" scope="col">ReplayHQ <span class="vs-flag">Das sind wir</span></th>
+            <th scope="col">SessionEye</th>
+            <th scope="col">Trackaro</th>
+            <th scope="col">HeatPeak</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="vs-feat" scope="row">Session-Replay mit Konsole &amp; Netzwerk</th>
+            <td class="vs-us"><span class="vs-ic vs-yes" aria-hidden="true">✓</span><span class="vh">Ja</span></td>
+            <td><span class="vs-ic vs-yes" aria-hidden="true">✓</span><span class="vh">Ja</span></td>
+            <td><span class="vs-ic vs-part" aria-hidden="true">~</span><span class="vh">Teilweise</span><small>nur Konsole</small></td>
+            <td><span class="vs-ic vs-no" aria-hidden="true">✕</span><span class="vh">Nein</span></td>
+          </tr>
+          <tr>
+            <th class="vs-feat" scope="row">EU-Hosting &amp; AV-Vertrag (DSGVO)</th>
+            <td class="vs-us"><span class="vs-ic vs-yes" aria-hidden="true">✓</span><span class="vh">Ja</span></td>
+            <td><span class="vs-ic vs-no" aria-hidden="true">✕</span><span class="vh">Nein</span><small>US-Hosting</small></td>
+            <td><span class="vs-ic vs-yes" aria-hidden="true">✓</span><span class="vh">Ja</span></td>
+            <td><span class="vs-ic vs-no" aria-hidden="true">✕</span><span class="vh">Nein</span></td>
+          </tr>
+          <tr>
+            <th class="vs-feat" scope="row">Self-Hosting (Open Source)</th>
+            <td class="vs-us"><span class="vs-ic vs-yes" aria-hidden="true">✓</span><span class="vh">Ja</span></td>
+            <td><span class="vs-ic vs-no" aria-hidden="true">✕</span><span class="vh">Nein</span></td>
+            <td><span class="vs-ic vs-no" aria-hidden="true">✕</span><span class="vh">Nein</span></td>
+            <td><span class="vs-ic vs-no" aria-hidden="true">✕</span><span class="vh">Nein</span></td>
+          </tr>
+          <tr>
+            <th class="vs-feat" scope="row">Fehler-Alarme in Slack &amp; Jira</th>
+            <td class="vs-us"><span class="vs-ic vs-yes" aria-hidden="true">✓</span><span class="vh">Ja</span></td>
+            <td><span class="vs-ic vs-yes" aria-hidden="true">✓</span><span class="vh">Ja</span></td>
+            <td><span class="vs-ic vs-no" aria-hidden="true">✕</span><span class="vh">Nein</span></td>
+            <td><span class="vs-ic vs-part" aria-hidden="true">~</span><span class="vh">Teilweise</span><small>nur E-Mail</small></td>
+          </tr>
+          <tr>
+            <th class="vs-feat" scope="row">Setup-Zeit bis zur ersten Session</th>
+            <td class="vs-us">unter 5 Min.</td>
+            <td>ca. 30 Min.</td>
+            <td>ca. 1 Std.</td>
+            <td>unter 15 Min.</td>
+          </tr>
+          <tr>
+            <th class="vs-feat" scope="row">Preis pro 1.000 Sessions</th>
+            <td class="vs-us">ab 5,95 €</td>
+            <td>ab 12 €</td>
+            <td>ab 9 €</td>
+            <td>ab 14 €</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="vs-foot" data-reveal>
+      <span class="bs-badge">🔁 Wechsel in 1 Tag — Import-Assistent für SessionEye &amp; Trackaro inklusive</span>
+      <p class="vs-note">Stand: Juli 2026, Quelle: öffentliche Preislisten und Dokumentationen der Anbieter. Alle Angaben ohne Gewähr — sag uns gern Bescheid, wenn etwas nicht mehr stimmt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: KAUFENTSCHEIDUNG 3 · Garantie- & Risk-Reversal-Band (dunkel)
+     Drei-Siegel-Band: Geld-zurück · keine Kreditkarte · monatlich
+     kündbar, Icons als Inline-SVG. Direkt unter einer Preise-Sektion
+     platzierbar. Weitere Varianten (nicht umgesetzt): großes
+     Garantie-Siegel mit Gründer-Unterschrift · schmale Garantie-Zeile
+     direkt am Kauf-Button.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Kaufentscheidung 3 · Garantie-Band <code>.bs-risk</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-risk { position: relative; overflow: hidden; padding: 64px 0; }
+  .bs-risk::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(60% 120% at 50% -20%, rgba(var(--brand-rgb),.14), transparent 65%); }
+  .bs-risk .inner { position: relative; }
+  .bs-risk h2 { text-align: center; font-size: clamp(22px, 2.6vw, 30px); font-weight: 800; margin-bottom: 34px; }
+  .bs-risk .seals { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .bs-risk .seal { display: flex; flex-direction: column; align-items: center; gap: 12px;
+    text-align: center; padding: 8px 26px; }
+  .bs-risk .seal + .seal { border-left: 1px solid var(--line); }
+  .bs-risk .seal .ic { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%;
+    color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent);
+    border: 1.5px dashed color-mix(in srgb, var(--green) 55%, transparent); }
+  .bs-risk .seal .ic svg { width: 27px; height: 27px; }
+  .bs-risk .seal b { font-family: var(--font-display); font-size: 17.5px; font-weight: 800; color: var(--fg); }
+  .bs-risk .seal p { font-size: 14px; color: var(--fg-soft); max-width: 30ch; }
+  .bs-risk .fine { position: relative; text-align: center; margin-top: 30px; font-size: 12.5px; color: var(--fg-muted); }
+  @media (max-width: 760px) {
+    .bs-risk .seals { grid-template-columns: 1fr; gap: 26px; }
+    .bs-risk .seal + .seal { border-left: 0; border-top: 1px solid var(--line); padding-top: 26px; }
+  }
+</style>
+<section class="bs-risk" data-theme="dark">
+  <div class="bs-container inner">
+    <h2 data-reveal>Kein Kleingedrucktes. Kein Risiko.</h2>
+    <div class="seals" data-stagger>
+      <div class="seal">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.6-3 8.2-7 10-4-1.8-7-5.4-7-10V6z"/><path d="M9 12l2 2 4.5-4.5"/></svg>
+        </span>
+        <b>30 Tage Geld-zurück</b>
+        <p>Nicht überzeugt? Eine Mail genügt — wir erstatten den vollen Betrag, ohne Nachfragen.</p>
+      </div>
+      <div class="seal">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13.5" rx="2.5"/><path d="M2.5 10h19"/><path d="M6.5 15.5h4"/></svg>
+        </span>
+        <b>Keine Kreditkarte nötig</b>
+        <p>Der Test startet ohne Zahlungsdaten. Aus der Testphase rutscht niemand „aus Versehen“ in ein Abo.</p>
+      </div>
+      <div class="seal">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17"/><path d="M8 3v4M16 3v4"/><path d="M10 14.5l1.7 1.7 3-3.2"/></svg>
+        </span>
+        <b>Monatlich kündbar</b>
+        <p>Kündigung per Klick in den Einstellungen — gilt zum Monatsende, deine Daten exportierst du vorher als ZIP.</p>
+      </div>
+    </div>
+    <p class="fine" data-reveal>Gilt für alle Pläne, auch im Jahresabo (anteilige Erstattung). Ohne Sternchen, versprochen.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: KAUFENTSCHEIDUNG 4 · Onboarding „In 3 Schritten startklar“ (hell)
+     Nummerierte Steps horizontal mit Zeitangaben; Step 1 mit
+     Code-Snippet + Copy-Button (navigator.clipboard + Fallback).
+     Weitere Varianten (nicht umgesetzt): vertikale Timeline ·
+     Tab-Stepper mit Screenshot pro Schritt · Tag-1/Woche-1/Monat-1-
+     Zeitstrahl.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Kaufentscheidung 4 · Onboarding in 3 Schritten <code>.bs-onb</code> <code>hell</code></p>
+<style>
+  .bs-onb { padding: 88px 0 84px; }
+  .bs-onb .vh { position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+  .bs-onb .onb-steps { list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 22px; align-items: stretch; }
+  .bs-onb .onb-step { display: flex; flex-direction: column; gap: 12px;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 26px 24px; box-shadow: var(--shadow); }
+  .bs-onb .onb-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .bs-onb .onb-num { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px;
+    font-family: var(--font-display); font-size: 18px; font-weight: 800; color: #fff;
+    background: var(--brand); box-shadow: 0 8px 18px -8px rgba(var(--brand-rgb),.8); }
+  .bs-onb .onb-time { font-size: 12.5px; font-weight: 700; color: var(--brand);
+    background: rgba(var(--brand-rgb),.09); border: 1px solid rgba(var(--brand-rgb),.22);
+    padding: 4px 11px; border-radius: 999px; white-space: nowrap; }
+  [data-theme="dark"] .bs-onb .onb-time { color: var(--brand-300); }
+  .bs-onb .onb-step h3 { font-size: 19px; font-weight: 800; }
+  .bs-onb .onb-step > p { font-size: 14.5px; }
+
+  /* Code-Block in Step 1 (neutrale dunkle Code-Fläche, keine Markenfarbe) */
+  .bs-onb .onb-code { margin-top: 4px; border-radius: 12px; overflow: hidden;
+    background: #0d0b26; border: 1px solid rgba(255,255,255,.12);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .bs-onb .onb-code-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 8px 8px 8px 14px; border-bottom: 1px solid rgba(255,255,255,.1);
+    font-size: 12px; color: rgba(255,255,255,.55); }
+  .bs-onb .onb-copy { display: inline-flex; align-items: center; gap: 6px;
+    font: 700 12px/1 var(--font-body); color: #fff; cursor: pointer;
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
+    border-radius: 8px; padding: 6px 10px; transition: background-color .2s, border-color .2s; }
+  .bs-onb .onb-copy:hover { background: rgba(255,255,255,.16); }
+  .bs-onb .onb-copy.is-copied { color: var(--green); border-color: color-mix(in srgb, var(--green) 60%, transparent); }
+  .bs-onb .onb-copy svg { width: 13px; height: 13px; }
+  .bs-onb .onb-code pre { margin: 0; padding: 14px 16px; overflow-x: auto;
+    font-size: 12.5px; line-height: 1.7; color: #b9c2ff; }
+  .bs-onb .onb-code code .tag { color: var(--brand-300); }
+  .bs-onb .onb-code code .val { color: #6ee7a8; }
+
+  /* Mini-Mocks in Step 2 + 3 */
+  .bs-onb .onb-mock { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+  .bs-onb .onb-mock .m-row { display: flex; align-items: center; gap: 8px;
+    font-size: 12.5px; color: var(--fg-soft); background: var(--glass);
+    border: 1px solid var(--line); border-radius: 9px; padding: 8px 11px; }
+  .bs-onb .onb-mock .m-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); flex: none; }
+  .bs-onb .onb-mock .m-err { margin-left: auto; font-weight: 700; color: var(--red); white-space: nowrap; }
+  .bs-onb .onb-done { margin-top: auto; display: inline-flex; align-items: center; gap: 9px; align-self: flex-start;
+    font-size: 13px; font-weight: 700; color: var(--green);
+    background: color-mix(in srgb, var(--green) 11%, transparent);
+    border: 1px solid color-mix(in srgb, var(--green) 40%, transparent);
+    border-radius: 999px; padding: 8px 14px; }
+  .bs-onb .onb-cta { display: flex; justify-content: center; margin-top: 38px; }
+  @media (max-width: 960px) { .bs-onb .onb-steps { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-onb">
+  <div class="bs-container">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Onboarding</p>
+      <h2>In 3 Schritten startklar — noch vor dem Mittagessen</h2>
+      <p>Kein SDK-Dschungel, keine Migration, kein Consulting-Projekt. Eine Zeile Code, und du siehst deine erste Session.</p>
+    </div>
+    <ol class="onb-steps" data-stagger>
+      <li class="onb-step">
+        <div class="onb-top"><span class="onb-num" aria-hidden="true">1</span><span class="onb-time">≈ 4 Minuten</span></div>
+        <h3>Snippet einbauen</h3>
+        <p>Eine Zeile vor dem schließenden <code>&lt;/head&gt;</code> — funktioniert mit jedem Framework und jedem Shop-System.</p>
+        <div class="onb-code">
+          <div class="onb-code-bar">
+            <span>index.html</span>
+            <button type="button" class="onb-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Kopieren</span>
+            </button>
+          </div>
+<pre><code><span class="tag">&lt;script</span> async
+  src=<span class="val">"https://cdn.replayhq.de/replay.js"</span>
+  data-key=<span class="val">"rk_live_8f3a92"</span><span class="tag">&gt;&lt;/script&gt;</span></code></pre>
+        </div>
+        <span class="vh onb-copy-status" role="status" aria-live="polite"></span>
+      </li>
+      <li class="onb-step">
+        <div class="onb-top"><span class="onb-num" aria-hidden="true">2</span><span class="onb-time">≈ 2 Minuten später</span></div>
+        <h3>Erste Session ansehen</h3>
+        <p>Sobald jemand deine Seite besucht, laufen Sessions ein — inklusive Konsole, Netzwerk und Klickpfad.</p>
+        <div class="onb-mock" aria-hidden="true">
+          <div class="m-row"><i class="m-dot"></i> 14:02 · anna@… — Checkout <span class="m-err">✕ 1 Fehler</span></div>
+          <div class="m-row"><i class="m-dot"></i> 14:04 · Gast — Produktsuche</div>
+          <div class="m-row"><i class="m-dot"></i> 14:05 · jonas@… — Registrierung</div>
+        </div>
+      </li>
+      <li class="onb-step">
+        <div class="onb-top"><span class="onb-num" aria-hidden="true">3</span><span class="onb-time">noch heute</span></div>
+        <h3>Ersten Bug fixen</h3>
+        <p>Fehler anklicken, Stacktrace neben dem Video lesen, Ursache sehen statt raten — und das Ticket schließen.</p>
+        <span class="onb-done" aria-hidden="true">✓ Fix deployed — Ticket #482 geschlossen</span>
+      </li>
+    </ol>
+    <div class="onb-cta" data-reveal>
+      <a href="#" class="bs-btn bs-btn-outline">Zur 5-Minuten-Anleitung in den Docs</a>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-onb");
+  if (!root) return;
+  var btn = root.querySelector(".onb-copy");
+  var code = root.querySelector(".onb-code code");
+  var label = btn ? btn.querySelector("span") : null;
+  var status = root.querySelector(".onb-copy-status");
+  if (!btn || !code || !label) return;
+  var timer;
+
+  function feedback(ok) {
+    btn.classList.toggle("is-copied", ok);
+    label.textContent = ok ? "Kopiert ✓" : "Fehler";
+    if (status) status.textContent = ok
+      ? "Snippet in die Zwischenablage kopiert."
+      : "Kopieren fehlgeschlagen — bitte Code manuell markieren.";
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      btn.classList.remove("is-copied");
+      label.textContent = "Kopieren";
+      if (status) status.textContent = "";
+    }, 2200);
+  }
+  function fallbackCopy(text) { // ältere Browser / file:// ohne Clipboard-API
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    feedback(ok);
+  }
+  btn.addEventListener("click", function () {
+    var text = code.textContent.trim();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        function () { feedback(true); },
+        function () { fallbackCopy(text); }
+      );
+    } else {
+      fallbackCopy(text);
+    }
+  });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: KAUFENTSCHEIDUNG 5 · Einwand-Sektion „Für wen ist das (nicht)?“ (dunkel)
+     Zwei Spalten: „Perfekt für dich, wenn …“ vs. „Eher nichts für
+     dich, wenn …“ — ehrliche Vorqualifizierung mit Check/Kreuz-Listen.
+     Weitere Varianten (nicht umgesetzt): Mythos/Fakt-Karten ·
+     Einwand-Akkordeon mit zugespitzten Sales-Antworten.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Kaufentscheidung 5 · Einwand-Sektion <code>.bs-fit</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-fit { position: relative; overflow: hidden; padding: 88px 0 80px; }
+  .bs-fit::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(50% 70% at 15% 10%, rgba(var(--violet-rgb),.16), transparent 60%); }
+  .bs-fit .inner { position: relative; }
+  .bs-fit .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; }
+  .bs-fit .col { background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 30px 28px; }
+  .bs-fit .col.yes { border-color: color-mix(in srgb, var(--green) 45%, var(--line));
+    box-shadow: 0 20px 50px -30px color-mix(in srgb, var(--green) 60%, transparent); }
+  .bs-fit .col h3 { font-size: 20px; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+  .bs-fit .col h3 .hd-ic { display: grid; place-items: center; width: 30px; height: 30px;
+    border-radius: 9px; font-size: 15px; font-weight: 800; flex: none; }
+  .bs-fit .col.yes .hd-ic { color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
+  .bs-fit .col.no  .hd-ic { color: var(--fg-muted); background: var(--glass); }
+  .bs-fit .col.no h3 { color: var(--fg-soft); }
+  .bs-fit .col ul { display: flex; flex-direction: column; gap: 13px; }
+  .bs-fit .col li { display: flex; gap: 11px; font-size: 15px; line-height: 1.55; }
+  .bs-fit .col li i { font-style: normal; font-weight: 800; flex: none; margin-top: 1px; }
+  .bs-fit .col.yes li i { color: var(--green); }
+  .bs-fit .col.no  li i { color: var(--red); opacity: .85; }
+  .bs-fit .col.no  li { color: var(--fg-muted); }
+  .bs-fit .col.no  li b { color: var(--fg-soft); }
+  .bs-fit .fit-cta { display: flex; align-items: center; justify-content: center; gap: 16px;
+    flex-wrap: wrap; margin-top: 34px; text-align: center; }
+  .bs-fit .fit-cta p { font-size: 14.5px; color: var(--fg-soft); }
+  @media (max-width: 860px) { .bs-fit .cols { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .bs-fit .col { padding: 24px 18px; } }
+</style>
+<section class="bs-fit" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Ehrliche Ansage</p>
+      <h2>Für wen ist ReplayHQ — und für wen nicht?</h2>
+      <p>Wir verkaufen lieber an 100 Teams, die bleiben, als an 1.000, die nach einem Monat kündigen.</p>
+    </div>
+    <div class="cols" data-stagger>
+      <div class="col yes">
+        <h3><span class="hd-ic" aria-hidden="true">✓</span>Perfekt für dich, wenn …</h3>
+        <ul>
+          <li><i aria-hidden="true">✓</i><span>dein Team <b>wöchentlich released</b> und Bugs finden will, bevor die Kund:innen sie melden.</span></li>
+          <li><i aria-hidden="true">✓</i><span>Support-Tickets à la <b>„Geht nicht, bitte fixen“</b> ohne Screenshot bei euch aufschlagen.</span></li>
+          <li><i aria-hidden="true">✓</i><span>ihr <b>DSGVO-konformes EU-Hosting</b> braucht — oder gleich Self-Hosting auf eigener Infrastruktur.</span></li>
+          <li><i aria-hidden="true">✓</i><span>Produkt und Engineering endlich auf <b>dieselben Daten</b> schauen sollen statt auf drei Dashboards.</span></li>
+          <li><i aria-hidden="true">✓</i><span>euer Analytics das „Was“ zeigt, euch aber das <b>„Warum“</b> fehlt.</span></li>
+        </ul>
+      </div>
+      <div class="col no">
+        <h3><span class="hd-ic" aria-hidden="true">✕</span>Eher nichts für dich, wenn …</h3>
+        <ul>
+          <li><i aria-hidden="true">✕</i><span>du eine <b>statische Marketing-Seite</b> ohne Login betreibst — da reicht klassisches Analytics völlig.</span></li>
+          <li><i aria-hidden="true">✕</i><span>ihr <b>unter 500 Sessions im Monat</b> habt. Spar dir das Geld, unser Free-Plan deckt das ab.</span></li>
+          <li><i aria-hidden="true">✕</i><span>du nur <b>Heatmaps für Blog-Artikel</b> suchst — dafür sind wir überdimensioniert.</span></li>
+          <li><i aria-hidden="true">✕</i><span>niemand im Team Zeit hat, Sessions anzusehen. <b>Ein Tool ersetzt keinen Prozess.</b></span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fit-cta" data-reveal>
+      <p>Unsicher, in welche Spalte ihr gehört?</p>
+      <a href="#" class="bs-btn bs-btn-ghost bs-btn-sm">15-Minuten-Gespräch buchen</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: KAUFENTSCHEIDUNG 6 · Vorher/Nachher-Beweis (hell)
+     Interaktiver Trenner-Slider: unsichtbares input[type=range] über
+     der Bühne steuert per --pos den clip-path der „Nachher“-Ebene.
+     Beide Seiten sind reine CSS-Mocks (Ticket-Chaos vs. Session-
+     Timeline) — kein Bild nötig. Weitere Varianten (nicht umgesetzt):
+     Kennzahlen-Kontrast als zwei große Zahlenkarten · Workflow-
+     Vergleich alte vs. neue Schrittkette.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Kaufentscheidung 6 · Vorher/Nachher-Slider <code>.bs-ba</code> <code>hell</code></p>
+<style>
+  .bs-ba { padding: 88px 0 80px; }
+  .bs-ba .vh { position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+  .bs-ba .ba-stage { position: relative; height: clamp(300px, 44vw, 440px); overflow: hidden;
+    border-radius: var(--r-lg); border: 1px solid var(--line); box-shadow: var(--shadow);
+    isolation: isolate; }
+  .bs-ba .ba-pane { position: absolute; inset: 0; padding: clamp(16px, 3vw, 30px); }
+
+  /* VORHER: Ticket-Chaos (rötlich getönte Fläche, verstreute Zettel) */
+  .bs-ba .ba-before { background:
+      radial-gradient(70% 90% at 20% 15%, color-mix(in srgb, var(--red) 10%, transparent), transparent 65%),
+      var(--bg-soft); }
+  .bs-ba .ba-err { display: inline-block; max-width: 90%;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: clamp(10.5px, 1.4vw, 13px);
+    color: var(--red); background: color-mix(in srgb, var(--red) 9%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--red) 40%, transparent);
+    border-radius: 9px; padding: 9px 13px; }
+  .bs-ba .ba-note { position: absolute; max-width: 210px;
+    font-size: clamp(11px, 1.5vw, 13.5px); line-height: 1.45; color: var(--fg-soft);
+    background: var(--card); border: 1.5px dashed color-mix(in srgb, var(--red) 45%, var(--line));
+    border-radius: 10px; padding: 10px 13px; box-shadow: 0 10px 24px -14px rgba(20,16,31,.35); }
+  .bs-ba .ba-note b { color: var(--fg); }
+  .bs-ba .n1 { top: 26%; left: 5%; transform: rotate(-3deg); }
+  .bs-ba .n2 { top: 46%; left: 30%; transform: rotate(2deg); }
+  .bs-ba .n3 { top: 68%; left: 8%; transform: rotate(-1.5deg); }
+  .bs-ba .n4 { top: 62%; left: 52%; transform: rotate(3deg); max-width: 180px; }
+
+  /* NACHHER: aufgeräumte Session-Timeline — liegt oben, wird geclippt */
+  .bs-ba .ba-after { background: var(--bg); clip-path: inset(0 0 0 var(--pos, 50%)); }
+  .bs-ba .ba-after .ui { max-width: 460px; margin-left: auto; display: flex; flex-direction: column;
+    gap: clamp(7px, 1.2vw, 11px); }
+  .bs-ba .ba-after .ui-head { display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    font-size: clamp(11.5px, 1.5vw, 13.5px); font-weight: 700; color: var(--fg); margin-bottom: 2px; }
+  .bs-ba .ba-after .ui-head .ok { color: var(--green); font-size: clamp(10.5px, 1.4vw, 12.5px); white-space: nowrap; }
+  .bs-ba .ba-after .step { display: flex; align-items: center; gap: 10px;
+    font-size: clamp(11px, 1.5vw, 13.5px); color: var(--fg-soft);
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: clamp(7px, 1.2vw, 10px) 13px; }
+  .bs-ba .ba-after .step i { font-style: normal; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--brand); flex: none; }
+  .bs-ba .ba-after .step .t { font-variant-numeric: tabular-nums; color: var(--fg-muted); flex: none; }
+  .bs-ba .ba-after .step.err { border-color: color-mix(in srgb, var(--red) 45%, var(--line)); color: var(--fg); }
+  .bs-ba .ba-after .step.err i { background: var(--red); }
+  .bs-ba .ba-after .fixed { align-self: flex-end; font-size: clamp(10.5px, 1.4vw, 12.5px); font-weight: 700;
+    color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--green) 40%, transparent);
+    border-radius: 999px; padding: 5px 12px; }
+
+  /* Ecken-Etiketten */
+  .bs-ba .ba-tag { position: absolute; top: 14px; font-size: 11.5px; font-weight: 800;
+    letter-spacing: .08em; text-transform: uppercase; border-radius: 999px; padding: 5px 12px; }
+  .bs-ba .ba-before .ba-tag { left: 14px; color: var(--red);
+    background: color-mix(in srgb, var(--red) 12%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--red) 40%, transparent); }
+  .bs-ba .ba-after .ba-tag { right: 14px; color: var(--green);
+    background: color-mix(in srgb, var(--green) 12%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--green) 40%, transparent); }
+
+  /* Trenner + Griff (rein dekorativ, folgt --pos) */
+  .bs-ba .ba-divider { position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 3px;
+    margin-left: -1.5px; background: var(--fg); z-index: 2; pointer-events: none; }
+  .bs-ba .ba-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+    background: var(--fg); color: var(--bg); font-size: 13px; font-weight: 800; letter-spacing: 1px;
+    box-shadow: 0 10px 26px -8px rgba(20,16,31,.5); white-space: nowrap; }
+
+  /* Unsichtbarer, aber fokussier- und ziehbarer Regler über der Bühne */
+  .bs-ba .ba-range { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%;
+    margin: 0; opacity: 0; cursor: ew-resize; -webkit-appearance: none; appearance: none; }
+  .bs-ba .ba-stage:has(.ba-range:focus-visible) .ba-handle {
+    outline: 3px solid var(--brand); outline-offset: 3px; }
+
+  .bs-ba .ba-hint { text-align: center; font-size: 13.5px; color: var(--fg-muted); margin-top: 16px; }
+  @media (max-width: 560px) {
+    .bs-ba .ba-stage { height: 340px; }
+    .bs-ba .n4 { display: none; }
+    .bs-ba .ba-note { max-width: 165px; }
+  }
+</style>
+<section class="bs-ba">
+  <div class="bs-container">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Vorher / Nachher</p>
+      <h2>Derselbe Bug. Zwei Welten.</h2>
+      <p>Links: das Ticket ohne Kontext, wie es heute bei dir ankommt. Rechts: dieselbe Session in ReplayHQ. Zieh den Regler.</p>
+    </div>
+    <div class="ba-stage" style="--pos:50%" data-reveal="zoom">
+      <div class="ba-pane ba-before" aria-hidden="true">
+        <span class="ba-err">✕ TypeError: cart is undefined — aber wo? bei wem? seit wann?</span>
+        <div class="ba-note n1">Ticket #482: <b>„Bei mir geht der Checkout nicht.“</b> — mehr steht da nicht.</div>
+        <div class="ba-note n2">Browser? Gerät? Schritte zur Reproduktion? <b>Unbekannt.</b></div>
+        <div class="ba-note n3">Slack, 17:40: „Kannst du nochmal schauen? Kunde wird ungeduldig …“</div>
+        <div class="ba-note n4">3. Reproduktions-Versuch: <b>läuft bei uns.</b> ¯\_(ツ)_/¯</div>
+        <span class="ba-tag">Vorher</span>
+      </div>
+      <div class="ba-pane ba-after" aria-hidden="true">
+        <div class="ui">
+          <div class="ui-head"><span>Session · anna@…, Safari 19, iPhone</span><span class="ok">● Ursache gefunden</span></div>
+          <div class="step"><i></i><span class="t">14:02</span><span>Checkout geöffnet, 3 Artikel im Warenkorb</span></div>
+          <div class="step"><i></i><span class="t">14:03</span><span>Klick auf „Jetzt bezahlen“</span></div>
+          <div class="step err"><i></i><span class="t">14:03</span><span>✕ TypeError in cart.js:112 — Stacktrace neben dem Video</span></div>
+          <div class="step"><i></i><span class="t">14:03</span><span>Rage-Click ×6 auf den Bezahl-Button</span></div>
+          <span class="fixed">✓ In 20 Minuten behoben statt in 3 Tagen</span>
+        </div>
+        <span class="ba-tag">Nachher</span>
+      </div>
+      <div class="ba-divider" aria-hidden="true"><span class="ba-handle">◂▸</span></div>
+      <input type="range" class="ba-range" min="0" max="100" step="1" value="50"
+             aria-label="Vergleichsregler zwischen Vorher und Nachher" />
+      <p class="vh">Vergleich: Links ein Bug-Ticket ohne Kontext mit ratlosen Notizen, rechts dieselbe Session als klare Timeline mit Fehler-Stacktrace in ReplayHQ.</p>
+    </div>
+    <p class="ba-hint" data-reveal>Regler ziehen oder mit den Pfeiltasten bewegen — links das Ticket-Chaos, rechts dieselbe Session in ReplayHQ.</p>
+  </div>
+</section>
+<script>
+(function () {
+  "use strict";
+  var root = document.querySelector(".bs-ba");
+  if (!root) return;
+  var stage = root.querySelector(".ba-stage");
+  var range = root.querySelector(".ba-range");
+  if (!stage || !range) return;
+  function update() {
+    stage.style.setProperty("--pos", range.value + "%");
+    range.setAttribute("aria-valuetext", "Trenner bei " + range.value + " Prozent");
+  }
+  range.addEventListener("input", update);
+  update();
+})();
+</script>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

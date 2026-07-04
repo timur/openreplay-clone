@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Preis-Designs</title>
+<meta name="description" content="2 wiederverwendbare Pricing-Bausteine für Landing Pages — Preiskarten mit Monats/Jahres-Umschalter und Vergleichstabelle. Plain HTML/CSS/JS." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: PREISE 1 · Preiskarten mit Umschalter (hell)
+     Monatlich/Jährlich-Pill, 3 Karten, mittlere hervorgehoben.
+     Preiswechsel: Mini-Skript am Seitenende (data-monthly/data-yearly).
+     Kopieren: diesen <style>-Block + die <section> + das Skript unten.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Preise 1 · Karten mit Umschalter <code>.bs-price-cards</code> <code>data-theme fehlt = hell</code></p></div>
+<style>
+  .bs-price-cards .inner { padding-top: 88px; padding-bottom: 96px; }
+
+  /* Monatlich/Jährlich-Pill */
+  .bs-price-cards .toggle { display: inline-flex; gap: 4px; padding: 5px;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--glass); }
+  .bs-price-cards .toggle button { border: 0; background: transparent; cursor: pointer;
+    font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--fg-soft);
+    padding: 9px 20px; border-radius: 999px; transition: background-color .2s, color .2s; }
+  .bs-price-cards .toggle button.active { background: var(--brand); color: #fff; }
+  .bs-price-cards .toggle button .save { font-size: 12px; font-weight: 700; margin-left: 6px;
+    color: var(--green); }
+  .bs-price-cards .toggle button.active .save { color: #fff; opacity: .85; }
+  .bs-price-cards .toggle-wrap { text-align: center; margin-bottom: 56px; }
+
+  /* Kartenraster */
+  .bs-price-cards .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+  .bs-price-cards .card { position: relative; display: flex; flex-direction: column;
+    background: var(--card); border: 1.5px solid var(--line); border-radius: var(--r-lg);
+    padding: 32px 28px; box-shadow: var(--shadow); }
+  .bs-price-cards .card h3 { font-size: 21px; font-weight: 800; }
+  .bs-price-cards .card .who { font-size: 14.5px; color: var(--fg-muted); margin-top: 6px; }
+  .bs-price-cards .price { display: flex; align-items: baseline; gap: 6px; margin: 22px 0 4px; }
+  .bs-price-cards .price b { font-family: var(--font-display); font-size: 46px; font-weight: 800;
+    letter-spacing: -.03em; color: var(--fg); }
+  .bs-price-cards .price span { font-size: 15px; color: var(--fg-muted); }
+  .bs-price-cards .interval { font-size: 13px; color: var(--fg-muted); min-height: 20px; }
+  .bs-price-cards .interval .y { display: none; }
+  .bs-price-cards.yearly .interval .m { display: none; }
+  .bs-price-cards.yearly .interval .y { display: inline; }
+
+  .bs-price-cards .feats { margin: 24px 0 28px; display: grid; gap: 12px; flex: 1; }
+  .bs-price-cards .feats li { display: flex; gap: 11px; align-items: flex-start; font-size: 15.5px; }
+  .bs-price-cards .feats svg { flex: none; margin-top: 3px; color: var(--green); }
+  .bs-price-cards .card .bs-btn { width: 100%; }
+
+  /* Mittlere Karte hervorheben */
+  .bs-price-cards .card.featured { border-color: var(--brand);
+    box-shadow: 0 24px 60px -20px rgba(var(--brand-rgb),.35); transform: scale(1.04); z-index: 1; }
+  .bs-price-cards .card.featured .flag { position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--brand); color: #fff; font-size: 12.5px; font-weight: 700; letter-spacing: .04em;
+    padding: 5px 16px; border-radius: 999px; white-space: nowrap; }
+
+  @media (max-width: 980px) {
+    .bs-price-cards .grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; }
+    .bs-price-cards .card.featured { transform: none; }
+  }
+</style>
+<section class="bs-price-cards">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Preise</p>
+      <h2>Ein Plan für jede Teamgröße</h2>
+      <p>Starte kostenlos und wachse, wenn dein Produkt wächst. Kein Kleingedrucktes, jederzeit kündbar.</p>
+    </div>
+
+    <div class="toggle-wrap" data-reveal>
+      <div class="toggle" role="group" aria-label="Abrechnungszeitraum">
+        <button type="button" class="active" data-interval="monthly">Monatlich</button>
+        <button type="button" data-interval="yearly">Jährlich <span class="save">−20&nbsp;%</span></button>
+      </div>
+    </div>
+
+    <div class="grid" data-stagger>
+      <article class="card">
+        <h3>Starter</h3>
+        <p class="who">Für Side-Projects und erste Schritte.</p>
+        <div class="price"><b><span data-monthly="0" data-yearly="0">0</span>&nbsp;€</b><span>/ Monat</span></div>
+        <p class="interval">Für immer kostenlos</p>
+        <ul class="feats">
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>1.000 Sitzungen pro Monat</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>1 Projekt, 1 Nutzer</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Heatmaps &amp; Klickkarten</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>7 Tage Datenaufbewahrung</li>
+        </ul>
+        <a href="#" class="bs-btn bs-btn-outline">Kostenlos starten</a>
+      </article>
+
+      <article class="card featured">
+        <span class="flag">Beliebt</span>
+        <h3>Pro</h3>
+        <p class="who">Für wachsende Produkt-Teams.</p>
+        <div class="price"><b><span data-monthly="29" data-yearly="24">29</span>&nbsp;€</b><span>/ Monat</span></div>
+        <p class="interval"><span class="m">monatlich abgerechnet</span><span class="y">bei jährlicher Zahlung</span></p>
+        <ul class="feats">
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>25.000 Sitzungen pro Monat</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>5 Team-Mitglieder</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Fehler- &amp; Crash-Tracking</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Funnels &amp; Segmente</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>30 Tage Datenaufbewahrung</li>
+        </ul>
+        <a href="#" class="bs-btn bs-btn-primary">14 Tage gratis testen</a>
+      </article>
+
+      <article class="card">
+        <h3>Business</h3>
+        <p class="who">Für Unternehmen mit hohen Anforderungen.</p>
+        <div class="price"><b><span data-monthly="79" data-yearly="65">79</span>&nbsp;€</b><span>/ Monat</span></div>
+        <p class="interval"><span class="m">monatlich abgerechnet</span><span class="y">bei jährlicher Zahlung</span></p>
+        <ul class="feats">
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>100.000 Sitzungen pro Monat</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Unbegrenzte Team-Mitglieder</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>SSO / SAML &amp; Audit-Log</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Prioritäts-Support (&lt; 4 h)</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>12 Monate Datenaufbewahrung</li>
+        </ul>
+        <a href="#" class="bs-btn bs-btn-outline">Vertrieb kontaktieren</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: PREISE 2 · Vergleichstabelle (dunkel)
+     4 Spalten (Feature, Starter, Pro, Business), ✓/— Zellen,
+     Pro-Spalte dezent getönt. Mobil horizontal scrollbar.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Preise 2 · Vergleichstabelle <code>.bs-price-table</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-price-table .inner { padding-top: 88px; padding-bottom: 96px; }
+  .bs-price-table .scroller { overflow-x: auto; -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--line); border-radius: var(--r-md); background: var(--card); }
+  .bs-price-table table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 15.5px; }
+  .bs-price-table th, .bs-price-table td { padding: 15px 20px; text-align: center; border-bottom: 1px solid var(--line); }
+  .bs-price-table tr:last-child th, .bs-price-table tr:last-child td { border-bottom: 0; }
+  .bs-price-table th[scope="row"], .bs-price-table thead th:first-child { text-align: left; }
+  .bs-price-table thead th { font-family: var(--font-display); font-size: 16px; font-weight: 800;
+    color: var(--fg); padding-top: 20px; padding-bottom: 20px; }
+  .bs-price-table th[scope="row"] { font-weight: 500; color: var(--fg-soft); }
+  .bs-price-table td { color: var(--fg-soft); }
+
+  /* Pro-Spalte dezent tönen (3. Spalte) */
+  .bs-price-table th:nth-child(3), .bs-price-table td:nth-child(3) { background: rgba(var(--brand-rgb),.16); }
+  .bs-price-table thead th:nth-child(3) { color: var(--brand-300); }
+
+  .bs-price-table td svg { display: inline-block; vertical-align: -3px; color: var(--green); }
+  .bs-price-table td .dash { color: var(--fg-muted); }
+  .bs-price-table tfoot .bs-btn { margin: 4px 0; }
+</style>
+<section class="bs-price-table" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Im Detail</p>
+      <h2>Alle Pläne im Vergleich</h2>
+      <p>Jeder Plan enthält unbegrenzte Projekte, SSL und tägliche Backups — hier die Unterschiede.</p>
+    </div>
+
+    <div class="scroller" data-reveal role="region" aria-label="Plan-Vergleich" tabindex="0">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Feature</th>
+            <th scope="col">Starter</th>
+            <th scope="col">Pro</th>
+            <th scope="col">Business</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Sitzungen pro Monat</th>
+            <td>1.000</td><td>25.000</td><td>100.000</td>
+          </tr>
+          <tr>
+            <th scope="row">Team-Mitglieder</th>
+            <td>1</td><td>5</td><td>Unbegrenzt</td>
+          </tr>
+          <tr>
+            <th scope="row">Datenaufbewahrung</th>
+            <td>7 Tage</td><td>30 Tage</td><td>12 Monate</td>
+          </tr>
+          <tr>
+            <th scope="row">Heatmaps &amp; Klickkarten</th>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+          </tr>
+          <tr>
+            <th scope="row">Fehler- &amp; Crash-Tracking</th>
+            <td><span class="dash" aria-label="nicht enthalten">—</span></td>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+          </tr>
+          <tr>
+            <th scope="row">Funnels &amp; Segmente</th>
+            <td><span class="dash" aria-label="nicht enthalten">—</span></td>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+          </tr>
+          <tr>
+            <th scope="row">API-Zugriff</th>
+            <td><span class="dash" aria-label="nicht enthalten">—</span></td>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+          </tr>
+          <tr>
+            <th scope="row">SSO / SAML</th>
+            <td><span class="dash" aria-label="nicht enthalten">—</span></td>
+            <td><span class="dash" aria-label="nicht enthalten">—</span></td>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+          </tr>
+          <tr>
+            <th scope="row">Prioritäts-Support</th>
+            <td><span class="dash" aria-label="nicht enthalten">—</span></td>
+            <td><span class="dash" aria-label="nicht enthalten">—</span></td>
+            <td><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-label="enthalten"><path d="M20 6 9 17l-5-5"/></svg></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row"></th>
+            <td><a href="#" class="bs-btn bs-btn-outline bs-btn-sm">Loslegen</a></td>
+            <td><a href="#" class="bs-btn bs-btn-primary bs-btn-sm">Testen</a></td>
+            <td><a href="#" class="bs-btn bs-btn-outline bs-btn-sm">Anfragen</a></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+
+<!-- Monatlich/Jährlich-Umschalter für .bs-price-cards (gehört zu Baustein 1) -->
+<script>
+  const cards = document.querySelector(".bs-price-cards");
+  cards.querySelectorAll(".toggle button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      cards.querySelectorAll(".toggle button").forEach((b) => b.classList.toggle("active", b === btn));
+      const yearly = btn.dataset.interval === "yearly";
+      cards.classList.toggle("yearly", yearly);
+      cards.querySelectorAll("[data-monthly]").forEach((el) => {
+        el.textContent = yearly ? el.dataset.yearly : el.dataset.monthly;
+      });
+    });
+  });
+</script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

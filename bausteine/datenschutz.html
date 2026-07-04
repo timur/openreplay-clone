@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Datenschutzerklärung (Vorlage)</title>
+<meta name="description" content="Datenschutzerklärungs-Vorlage für Landing Pages — DSGVO-Struktur, alle Angaben als markierte Platzhalter." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+<style>
+  /* ═══ BAUSTEIN: Rechtsseite (.bs-legal) — für Impressum & Datenschutz ═══ */
+  .bs-legal { padding: 72px 0 96px; }
+  .bs-legal .inner { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .bs-legal .back { display: inline-flex; align-items: center; gap: 7px;
+    font-size: 14.5px; font-weight: 600; color: var(--brand); margin-bottom: 34px; }
+  .bs-legal .back:hover { text-decoration: underline; }
+  .bs-legal h1 { font-size: clamp(34px, 4.5vw, 46px); font-weight: 800; margin-bottom: 18px; }
+  .bs-legal h2 { font-size: 22px; font-weight: 700; margin: 40px 0 12px; }
+  .bs-legal h3 { font-size: 17px; font-weight: 700; margin: 24px 0 8px; }
+  .bs-legal p, .bs-legal li { font-size: 16px; line-height: 1.75; color: var(--fg-soft); }
+  .bs-legal p { margin-bottom: 12px; }
+  .bs-legal ul { list-style: disc; padding-left: 22px; margin-bottom: 12px; }
+  .bs-legal a:not(.back) { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+  .bs-legal .hinweis { display: flex; gap: 12px; align-items: flex-start;
+    background: rgba(255,206,74,.14); border: 1px solid rgba(214,158,0,.35);
+    border-radius: var(--r-md); padding: 16px 18px; margin: 22px 0 34px;
+    font-size: 14.5px; line-height: 1.6; color: var(--fg-soft); }
+  .bs-legal .hinweis b { color: var(--fg); }
+  .bs-legal .optional { border-left: 3px solid var(--brand-300); background: rgba(var(--brand-rgb),.05);
+    border-radius: 0 var(--r-sm) var(--r-sm) 0; padding: 14px 18px; margin: 14px 0; }
+  .bs-legal .optional > em { display: block; font-style: normal; font-size: 13px; font-weight: 700;
+    color: var(--brand); margin-bottom: 8px; }
+  mark.ph { background: rgba(255,206,74,.35); color: var(--fg); border-radius: 4px;
+    padding: 1px 5px; font-weight: 600; }
+  .bs-legal .stand { margin-top: 44px; font-size: 14px; color: var(--fg-muted); }
+</style>
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<section class="bs-legal">
+  <div class="inner">
+    <a class="back" href="index.html">← Zurück zur Startseite</a>
+    <h1>Datenschutzerklärung</h1>
+
+    <div class="hinweis">⚠️
+      <span><b>Vorlage:</b> Ersetze alle <mark class="ph">[Platzhalter]</mark>, entferne nicht
+      zutreffende Abschnitte (blau markiert = optional) und lass die Erklärung vor
+      Veröffentlichung rechtlich prüfen. Diese Vorlage ist keine Rechtsberatung.</span>
+    </div>
+
+    <h2>1. Verantwortlicher</h2>
+    <p>
+      Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br />
+      <mark class="ph">[Firmenname GmbH]</mark>, <mark class="ph">[Straße Hausnummer]</mark>,
+      <mark class="ph">[PLZ Ort]</mark><br />
+      E-Mail: <mark class="ph">[E-Mail-Adresse]</mark> · Telefon: <mark class="ph">[Telefonnummer]</mark>
+    </p>
+
+    <h2>2. Übersicht der Verarbeitungen</h2>
+    <p>Beim Besuch dieser Website verarbeiten wir personenbezogene Daten in folgenden Fällen:</p>
+    <ul>
+      <li>beim Aufruf der Seiten (Server-Logfiles),</li>
+      <li>wenn du uns per E-Mail oder Formular kontaktierst,</li>
+      <li>wenn du unseren Newsletter abonnierst,</li>
+      <li>sofern eingesetzt: bei Cookies und Webanalyse (siehe Abschnitte 6 und 7).</li>
+    </ul>
+
+    <h2>3. Hosting und Server-Logfiles</h2>
+    <p>
+      Diese Website wird gehostet bei <mark class="ph">[Hosting-Anbieter, Ort/Land]</mark>.
+      Beim Aufruf der Seiten erhebt der Server automatisch Informationen in sogenannten
+      Server-Logfiles: IP-Adresse, Datum und Uhrzeit der Anfrage, aufgerufene Seite,
+      Browsertyp und -version, Betriebssystem sowie Referrer-URL.
+    </p>
+    <p>
+      Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes
+      Interesse liegt in der technisch fehlerfreien Darstellung und der Sicherheit der Website.
+      Die Logfiles werden nach <mark class="ph">[z. B. 14 Tagen]</mark> gelöscht.
+      Mit dem Hoster besteht ein Vertrag über Auftragsverarbeitung (Art. 28 DSGVO).
+    </p>
+
+    <h2>4. Kontaktaufnahme</h2>
+    <p>
+      Wenn du uns per E-Mail oder über ein Kontaktformular schreibst, verarbeiten wir deine
+      Angaben (Name, E-Mail-Adresse, Inhalt der Nachricht) zur Bearbeitung der Anfrage.
+      Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, sofern die Anfrage mit einem Vertrag
+      zusammenhängt, im Übrigen Art. 6 Abs. 1 lit. f DSGVO. Wir löschen die Daten, sobald die
+      Anfrage abschließend bearbeitet ist und keine gesetzlichen Aufbewahrungspflichten bestehen.
+    </p>
+
+    <h2>5. Newsletter</h2>
+    <p>
+      Für den Newsletter-Versand verwenden wir deine E-Mail-Adresse nur nach ausdrücklicher
+      Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) und im Double-Opt-in-Verfahren: Du erhältst
+      nach der Anmeldung eine Bestätigungs-E-Mail; erst mit Klick auf den Bestätigungslink ist
+      die Anmeldung wirksam. Versanddienstleister:
+      <mark class="ph">[Anbieter, Ort/Land — oder Abschnitt entfernen]</mark>.
+    </p>
+    <p>
+      Du kannst die Einwilligung jederzeit widerrufen — über den Abmeldelink in jeder E-Mail
+      oder formlos an <mark class="ph">[E-Mail-Adresse]</mark>. Die Rechtmäßigkeit der bereits
+      erfolgten Verarbeitung bleibt vom Widerruf unberührt.
+    </p>
+
+    <h2>6. Cookies und Einwilligung</h2>
+    <p>
+      Diese Website verwendet <mark class="ph">[keine Cookies / nur technisch notwendige
+      Cookies / Cookies gemäß Einwilligungs-Banner]</mark>. Technisch notwendige Cookies werden
+      auf Grundlage von § 25 Abs. 2 TDDDG und Art. 6 Abs. 1 lit. f DSGVO gesetzt. Alle weiteren
+      Cookies setzen wir nur mit deiner Einwilligung (§ 25 Abs. 1 TDDDG, Art. 6 Abs. 1 lit. a
+      DSGVO), die du jederzeit mit Wirkung für die Zukunft widerrufen kannst.
+    </p>
+
+    <div class="optional">
+      <em>Optional — nur aufnehmen, wenn ein Analyse-Tool eingesetzt wird</em>
+      <h3 style="margin-top:0">7. Webanalyse</h3>
+      <p>
+        Wir verwenden <mark class="ph">[Tool-Name, Anbieter, Ort/Land]</mark> zur statistischen
+        Auswertung der Nutzung dieser Website. Die Verarbeitung erfolgt
+        <mark class="ph">[auf Grundlage deiner Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) /
+        cookielos und ohne personenbezogene Profile auf Grundlage von Art. 6 Abs. 1 lit. f
+        DSGVO]</mark>. IP-Adressen werden <mark class="ph">[gekürzt/anonymisiert]</mark>
+        verarbeitet. <mark class="ph">[Angaben zu Speicherdauer und Widerspruchsmöglichkeit
+        des Tools ergänzen.]</mark>
+      </p>
+    </div>
+
+    <h2>8. Deine Rechte</h2>
+    <p>Dir stehen bezüglich deiner personenbezogenen Daten folgende Rechte zu:</p>
+    <ul>
+      <li>Auskunft über die verarbeiteten Daten (Art. 15 DSGVO),</li>
+      <li>Berichtigung unrichtiger Daten (Art. 16 DSGVO),</li>
+      <li>Löschung (Art. 17 DSGVO),</li>
+      <li>Einschränkung der Verarbeitung (Art. 18 DSGVO),</li>
+      <li>Datenübertragbarkeit (Art. 20 DSGVO),</li>
+      <li>Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21 DSGVO),</li>
+      <li>Widerruf erteilter Einwilligungen mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO),</li>
+      <li>Beschwerde bei einer Datenschutz-Aufsichtsbehörde (Art. 77 DSGVO) — zum Beispiel bei
+        der Aufsichtsbehörde des Bundeslandes <mark class="ph">[Bundesland]</mark>.</li>
+    </ul>
+    <p>Zur Ausübung deiner Rechte genügt eine E-Mail an <mark class="ph">[E-Mail-Adresse]</mark>.</p>
+
+    <h2>9. Speicherdauer</h2>
+    <p>
+      Soweit in dieser Erklärung keine speziellere Speicherdauer genannt ist, verbleiben
+      personenbezogene Daten bei uns, bis der Zweck der Verarbeitung entfällt. Machst du ein
+      berechtigtes Löschersuchen geltend oder widerrufst eine Einwilligung, werden die Daten
+      gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten (z. B. handels- oder
+      steuerrechtliche Fristen) entgegenstehen.
+    </p>
+
+    <h2>10. SSL-/TLS-Verschlüsselung</h2>
+    <p>
+      Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher
+      Inhalte eine SSL-/TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennst du an
+      „https://" und dem Schloss-Symbol in der Browserzeile.
+    </p>
+
+    <h2>11. Änderungen dieser Datenschutzerklärung</h2>
+    <p>
+      Wir passen diese Erklärung an, sobald sich die Rechtslage oder unsere Verarbeitungen
+      ändern. Es gilt jeweils die hier veröffentlichte Fassung.
+    </p>
+
+    <p class="stand">Stand: <mark class="ph">[Monat JJJJ]</mark></p>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

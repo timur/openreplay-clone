@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Feature-Sektionen</title>
+<meta name="description" content="4 wiederverwendbare Feature-Bausteine für Landing Pages — Plain HTML/CSS/JS, hell & dunkel." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: FEATURES 1 · Karten-Grid (hell)
+     Sektions-Kopf + 6 Feature-Karten im 3er-Grid, Pastell-Icon-Kacheln.
+     Kopieren: diesen <style>-Block + die <section> darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Features 1 · Karten-Grid <code>.bs-feat-grid</code></p></div>
+<style>
+  .bs-feat-grid .inner { padding-top: 96px; padding-bottom: 96px; }
+  .bs-feat-grid .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .bs-feat-grid .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 28px 26px; transition: transform .2s ease, box-shadow .25s ease, border-color .2s;
+  }
+  .bs-feat-grid .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: transparent; }
+  .bs-feat-grid .icon {
+    width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; margin-bottom: 18px;
+    background: color-mix(in srgb, var(--tint, var(--brand)) 12%, transparent);
+    color: var(--tint, var(--brand));
+  }
+  .bs-feat-grid .icon svg { width: 22px; height: 22px; }
+  .bs-feat-grid h3 { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+  .bs-feat-grid p.txt { font-size: 15.5px; color: var(--fg-soft); }
+  @media (max-width: 900px) { .bs-feat-grid .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 620px) { .bs-feat-grid .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-feat-grid">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow" style="justify-content:center">Alles an Bord</p>
+      <h2>Ein Werkzeugkasten statt fünf Abos</h2>
+      <p>Session-Replays, Fehler-Tracking und Produkt-Analytics greifen ineinander — ohne Datensilos, ohne Integrationsaufwand.</p>
+    </div>
+    <div class="grid" data-stagger>
+      <div class="card" style="--tint:var(--brand)">
+        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M10 9l4 2.5-4 2.5z"/><path d="M8 22h8"/></svg></div>
+        <h3>Session-Replay</h3>
+        <p class="txt">Jede Sitzung als Video-Timeline: Klicks, Scrolls und Eingaben — DSGVO-konform maskiert.</p>
+      </div>
+      <div class="card" style="--tint:var(--violet)">
+        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.7 3.86a2 2 0 0 0-3.4 0z"/></svg></div>
+        <h3>Fehler-Tracking</h3>
+        <p class="txt">JS-Errors und kaputte Requests landen automatisch im Postfach — samt Replay der betroffenen Sitzung.</p>
+      </div>
+      <div class="card" style="--tint:var(--teal)">
+        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 15l4-6 4 4 5-8"/></svg></div>
+        <h3>Produkt-Analytics</h3>
+        <p class="txt">Funnels, Retention und Feature-Nutzung in Minuten gebaut — ganz ohne SQL-Kenntnisse.</p>
+      </div>
+      <div class="card" style="--tint:var(--orange)">
+        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+        <h3>Performance-Monitoring</h3>
+        <p class="txt">Ladezeiten, Web Vitals und langsame API-Calls pro Seite — bevor Nutzer sich beschweren.</p>
+      </div>
+      <div class="card" style="--tint:var(--green)">
+        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Datenschutz eingebaut</h3>
+        <p class="txt">Hosting in Frankfurt, Maskierung per Default und Auftragsverarbeitung mit einem Klick.</p>
+      </div>
+      <div class="card" style="--tint:var(--red)">
+        <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg></div>
+        <h3>Feedback-Widgets</h3>
+        <p class="txt">Umfragen und Stimmungs-Abfragen direkt im Produkt — verknüpft mit dem passenden Replay.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: FEATURES 2 · Abwechselnder Split (hell)
+     Text + Checkliste neben CSS-Produkt-Panel, zweites Beispiel gespiegelt.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Features 2 · Abwechselnder Split <code>.bs-feat-split</code></p>
+<style>
+  .bs-feat-split .inner { padding-top: 96px; padding-bottom: 96px; display: grid; gap: 96px; }
+  .bs-feat-split .row { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .bs-feat-split .row.flip .copy { order: 2; }
+  .bs-feat-split h3 { font-size: clamp(26px, 3vw, 36px); font-weight: 800; margin-bottom: 14px; }
+  .bs-feat-split .copy p.txt { font-size: 17px; margin-bottom: 22px; max-width: 46ch; }
+  .bs-feat-split .checks { display: grid; gap: 12px; }
+  .bs-feat-split .checks li { display: flex; gap: 11px; align-items: flex-start; font-size: 15.5px; color: var(--fg); font-weight: 500; }
+  .bs-feat-split .checks svg { width: 19px; height: 19px; flex: none; margin-top: 3px; color: var(--green); }
+
+  /* Produkt-Panel (reines CSS — Vorbild: .mockup in hero.html) */
+  .bs-feat-split .panelbox { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    box-shadow: var(--shadow); overflow: hidden; font-size: 12px; }
+  .bs-feat-split .panelbox-bar { display: flex; align-items: center; gap: 6px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .bs-feat-split .panelbox-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .bs-feat-split .panelbox-bar b { margin-left: 8px; font-size: 11.5px; color: var(--fg-muted); font-weight: 600; }
+  .bs-feat-split .panelbox-body { padding: 18px; display: grid; gap: 12px; }
+  .bs-feat-split .kpis { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .bs-feat-split .kpi { border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+  .bs-feat-split .kpi span { display: block; font-size: 10.5px; color: var(--fg-muted); }
+  .bs-feat-split .kpi b { font-family: var(--font-display); font-size: 18px; color: var(--fg); }
+  .bs-feat-split .kpi em { font-style: normal; font-size: 10.5px; font-weight: 700; color: var(--green); }
+  .bs-feat-split .wave { border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+  .bs-feat-split .wave b { display: block; font-size: 11px; color: var(--fg); margin-bottom: 8px; }
+  .bs-feat-split .bars { display: flex; align-items: flex-end; gap: 5px; height: 64px; }
+  .bs-feat-split .bars span { flex: 1; border-radius: 3px 3px 0 0; background: var(--brand); opacity: .85; }
+  .bs-feat-split .bars span:nth-child(2n) { background: var(--violet); }
+  .bs-feat-split .bars span:nth-child(3n) { background: var(--teal); }
+  .bs-feat-split .steps { display: grid; gap: 8px; }
+  .bs-feat-split .step { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line);
+    border-radius: 10px; padding: 10px 12px; color: var(--fg-soft); }
+  .bs-feat-split .step i { width: 22px; height: 22px; flex: none; border-radius: 50%; display: grid; place-items: center;
+    font-style: normal; font-size: 11px; font-weight: 700; color: var(--brand);
+    background: color-mix(in srgb, var(--brand) 12%, transparent); }
+  .bs-feat-split .step b { margin-left: auto; font-size: 11px; color: var(--fg); }
+  .bs-feat-split .step.done i { color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
+  @media (max-width: 900px) {
+    .bs-feat-split .row, .bs-feat-split .row.flip { grid-template-columns: 1fr; gap: 36px; }
+    .bs-feat-split .row.flip .copy { order: 0; }
+    .bs-feat-split .inner { gap: 72px; }
+  }
+</style>
+<section class="bs-feat-split">
+  <div class="bs-container inner">
+
+    <div class="row">
+      <div class="copy" data-reveal="left">
+        <p class="bs-eyebrow">Verstehen statt vermuten</p>
+        <h3>Sieh dein Produkt mit den Augen deiner Nutzer</h3>
+        <p class="txt">Jede Sitzung wird zur nachvollziehbaren Geschichte: Wo Menschen zögern, wo sie abbrechen und was sie eigentlich erreichen wollten.</p>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 5-6"/></svg>Rage-Clicks und tote Zonen automatisch erkannt</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 5-6"/></svg>Filter nach Gerät, Land, Fehler oder Funnel-Schritt</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 5-6"/></svg>Sitzungen teilen — mit Timestamp und Kommentar</li>
+        </ul>
+      </div>
+      <div data-reveal="right" data-reveal-delay="120">
+        <div class="panelbox" aria-hidden="true">
+          <div class="panelbox-bar"><i style="background:var(--red)"></i><i></i><i></i><b>Sitzungen · Diese Woche</b></div>
+          <div class="panelbox-body">
+            <div class="kpis">
+              <div class="kpi"><span>Sitzungen</span><b>18.204</b> <em>+12 %</em></div>
+              <div class="kpi"><span>Ø Dauer</span><b>4:36</b> <em>+8 %</em></div>
+              <div class="kpi"><span>Abbrüche</span><b>3,1 %</b> <em>−22 %</em></div>
+            </div>
+            <div class="wave"><b>Aktivität nach Wochentag</b>
+              <div class="bars"><span style="height:40%"></span><span style="height:64%"></span><span style="height:52%"></span><span style="height:82%"></span><span style="height:70%"></span><span style="height:95%"></span><span style="height:58%"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row flip">
+      <div class="copy" data-reveal="right">
+        <p class="bs-eyebrow">Schneller beheben</p>
+        <h3>Vom Bug-Report zum Fix — ohne Rückfragen</h3>
+        <p class="txt">Jeder Fehler kommt mit vollem Kontext: Replay, Konsole, Netzwerk und Gerätedaten. Dein Team reproduziert nichts mehr mühsam nach.</p>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 5-6"/></svg>Stacktrace neben dem Replay der betroffenen Sitzung</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 5-6"/></svg>Ein Klick erstellt das Ticket in Jira oder Linear</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8.5 12.5l2.5 2.5 5-6"/></svg>Alerts in Slack, sobald ein Fehler gehäuft auftritt</li>
+        </ul>
+      </div>
+      <div data-reveal="left" data-reveal-delay="120">
+        <div class="panelbox" aria-hidden="true">
+          <div class="panelbox-bar"><i style="background:var(--red)"></i><i></i><i></i><b>Fehler · TypeError in checkout.js</b></div>
+          <div class="panelbox-body">
+            <div class="steps">
+              <div class="step done"><i>✓</i> Fehler erkannt &amp; gruppiert <b>142 Sitzungen</b></div>
+              <div class="step done"><i>✓</i> Replay &amp; Stacktrace angehängt <b>automatisch</b></div>
+              <div class="step"><i>3</i> Ticket erstellt in Linear <b>WEB-812</b></div>
+              <div class="step"><i>4</i> Team benachrichtigt <b>#frontend</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: FEATURES 3 · Bento-Grid (dunkel)
+     5 Glas-Karten in 4 Spalten: 1× groß (2×2) mit Mini-Chart,
+     2× breit, 2× klein. Hover hebt die Karten leicht an.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Features 3 · Bento-Grid <code>.bs-feat-bento</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-feat-bento { position: relative; overflow: hidden; }
+  .bs-feat-bento::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(55% 70% at 15% 0%, rgba(var(--violet-rgb),.22), transparent 60%),
+                radial-gradient(45% 60% at 90% 100%, rgba(24,184,166,.14), transparent 60%); }
+  .bs-feat-bento .inner { position: relative; padding-top: 96px; padding-bottom: 96px; }
+  .bs-feat-bento .bento { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(150px, auto);
+    gap: 18px; }
+  .bs-feat-bento .cell { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 26px; display: flex; flex-direction: column; gap: 10px;
+    transition: transform .22s ease, border-color .22s, background-color .22s; }
+  .bs-feat-bento .cell:hover { transform: translateY(-5px); border-color: var(--fg-muted); background: var(--glass); }
+  .bs-feat-bento .cell.big  { grid-column: span 2; grid-row: span 2; }
+  .bs-feat-bento .cell.wide { grid-column: span 2; }
+  .bs-feat-bento .cell svg.ico { width: 24px; height: 24px; color: var(--brand-300); }
+  .bs-feat-bento h3 { font-size: 19px; font-weight: 700; }
+  .bs-feat-bento .cell.big h3 { font-size: 24px; }
+  .bs-feat-bento p.txt { font-size: 15px; color: var(--fg-soft); }
+  .bs-feat-bento .chart { margin-top: auto; border: 1px solid var(--line); border-radius: 14px;
+    background: var(--glass); padding: 16px 16px 14px; }
+  .bs-feat-bento .chart small { display: block; font-size: 11.5px; color: var(--fg-muted); margin-bottom: 10px; }
+  .bs-feat-bento .chart .bars { display: flex; align-items: flex-end; gap: 7px; height: 92px; }
+  .bs-feat-bento .chart .bars span { flex: 1; border-radius: 4px 4px 0 0; background: var(--brand); opacity: .9; }
+  .bs-feat-bento .chart .bars span:nth-child(2n) { background: var(--violet); }
+  .bs-feat-bento .chart .bars span:nth-child(3n) { background: var(--teal); }
+  .bs-feat-bento .pill { align-self: flex-start; font-size: 12px; font-weight: 700; color: var(--fg);
+    border: 1px solid var(--line); background: var(--glass); border-radius: 999px; padding: 4px 12px; }
+  @media (max-width: 900px) {
+    .bs-feat-bento .bento { grid-template-columns: 1fr 1fr; }
+    .bs-feat-bento .cell.big { grid-column: span 2; }
+  }
+  @media (max-width: 620px) {
+    .bs-feat-bento .bento { grid-template-columns: 1fr; }
+    .bs-feat-bento .cell.big, .bs-feat-bento .cell.wide { grid-column: span 1; grid-row: span 1; }
+  }
+</style>
+<section class="bs-feat-bento" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow" style="justify-content:center">Die Plattform</p>
+      <h2>Alles, was dein Team sehen muss</h2>
+      <p>Ein Datenmodell, viele Blickwinkel — vom ersten Klick bis zur behobenen Störung.</p>
+    </div>
+    <div class="bento" data-stagger>
+      <div class="cell big">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 13l3-4 3 3 5-7"/></svg>
+        <h3>Dashboards in Echtzeit</h3>
+        <p class="txt">Conversion, Fehlerquote und Web Vitals auf einen Blick — pro Release, Segment oder Kampagne. Teile jedes Board per Link mit dem ganzen Team.</p>
+        <div class="chart" aria-hidden="true">
+          <small>Conversion-Rate · letzte 12 Wochen</small>
+          <div class="bars"><span style="height:34%"></span><span style="height:42%"></span><span style="height:38%"></span><span style="height:55%"></span><span style="height:48%"></span><span style="height:63%"></span><span style="height:58%"></span><span style="height:72%"></span><span style="height:66%"></span><span style="height:84%"></span><span style="height:78%"></span><span style="height:95%"></span></div>
+        </div>
+      </div>
+      <div class="cell wide">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+        <h3>Suche über alles</h3>
+        <p class="txt">Finde Sitzungen nach Klickpfad, Fehlermeldung oder sogar Text auf dem Bildschirm — in Millisekunden.</p>
+      </div>
+      <div class="cell">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/></svg>
+        <h3>EU-Hosting</h3>
+        <p class="txt">Alle Daten bleiben in Frankfurt — DSGVO ohne Sternchen.</p>
+      </div>
+      <div class="cell">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>
+        <h3>40+ Integrationen</h3>
+        <p class="txt">Slack, Jira, Linear, Segment &amp; Co. in zwei Minuten verbunden.</p>
+      </div>
+      <div class="cell wide">
+        <span class="pill">Neu</span>
+        <h3>KI-Zusammenfassungen</h3>
+        <p class="txt">Statt 40 Minuten Replay: drei Sätze, die erklären, woran der Checkout gescheitert ist — inklusive Sprungmarken zu den entscheidenden Momenten.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: FEATURES 4 · Zahlen-Band (dunkel)
+     Schmales Band mit 4 animierten Kennzahlen ([data-count-to])
+     und dünnen Trennlinien dazwischen.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Features 4 · Zahlen-Band <code>.bs-feat-stats</code> <code>data-theme="dark"</code></p>
+<style>
+  .bs-feat-stats .inner { padding-top: 64px; padding-bottom: 64px; }
+  .bs-feat-stats .band { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .bs-feat-stats .stat { text-align: center; padding: 10px 18px; border-left: 1px solid var(--line); }
+  .bs-feat-stats .stat:first-child { border-left: none; }
+  .bs-feat-stats .stat b { display: block; font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(30px, 3.6vw, 46px); color: var(--fg); letter-spacing: -.02em; }
+  .bs-feat-stats .stat span { font-size: 14px; color: var(--fg-muted); }
+  @media (max-width: 720px) {
+    .bs-feat-stats .band { grid-template-columns: 1fr 1fr; gap: 28px 0; }
+    .bs-feat-stats .stat:nth-child(3) { border-left: none; }
+  }
+  @media (max-width: 420px) {
+    .bs-feat-stats .band { grid-template-columns: 1fr; }
+    .bs-feat-stats .stat { border-left: none; border-top: 1px solid var(--line); padding-top: 24px; }
+    .bs-feat-stats .stat:first-child { border-top: none; padding-top: 0; }
+  }
+</style>
+<section class="bs-feat-stats" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="band" data-reveal>
+      <div class="stat"><b data-count-to="4200" data-count-suffix="+">0</b><span>Teams im Einsatz</span></div>
+      <div class="stat"><b data-count-to="99" data-count-suffix="%">0</b><span>Verfügbarkeit zugesichert</span></div>
+      <div class="stat"><b data-count-to="38" data-count-suffix="%">0</b><span>weniger Support-Tickets</span></div>
+      <div class="stat"><b data-count-to="12" data-count-suffix=" Min.">0</b><span>bis zum ersten Insight</span></div>
+    </div>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

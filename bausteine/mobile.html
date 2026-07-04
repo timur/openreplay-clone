@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Bausteine · Mobile-Conversion</title>
+<meta name="description" content="Mobile-Conversion-Bausteine: Sticky-Bottom-CTA, Tap-to-Call, Tabellen-zu-Karten, Bottom-Tab-Navigation — Plain HTML/CSS/JS." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DEMO-CHROME: Telefon-Mockup — NICHT mitkopieren.
+     Rahmen + eigener Scroll-Container, damit die mobilen Bausteine
+     (Sticky-CTA, Tab-Navigation) auch am Desktop erlebbar sind.
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+  .demo-phone { position: relative; width: min(380px, 100%); margin: 0 auto;
+    padding: 14px 14px 18px; border-radius: 46px;
+    background: color-mix(in srgb, var(--indigo-deep) 55%, #000);
+    border: 1px solid var(--line);
+    box-shadow: 0 40px 90px -30px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.08); }
+  .demo-phone::before { /* Notch */
+    content: ""; position: absolute; top: 26px; left: 50%; transform: translateX(-50%);
+    width: 106px; height: 24px; border-radius: 14px; z-index: 5;
+    background: color-mix(in srgb, var(--indigo-deep) 30%, #000); }
+  .demo-phone .screen { height: 600px; overflow-y: auto; overscroll-behavior: contain;
+    border-radius: 32px; background: var(--bg); border: 1px solid var(--line);
+    scrollbar-width: none; }
+  .demo-phone .screen::-webkit-scrollbar { display: none; }
+  .demo-phone figcaption { margin-top: 16px; text-align: center;
+    font-size: 13px; color: var(--fg-muted); }
+  figure.demo-phone { margin: 0; }
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: MOBILE 1 · Sticky-Bottom-CTA (dunkel)
+     Kaufleiste in der Daumenzone: erscheint nach Scroll-Schwelle,
+     env(safe-area-inset-bottom) hält Abstand zur iPhone-Home-Bar.
+     Kopieren: .bs-bottom-cta-Teil des <style>-Blocks + das
+     <div class="bs-bottom-cta">-Markup + das Scroll-JS (Kommentar unten).
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Mobile 1 · Sticky-Bottom-CTA <code>.bs-bottom-cta</code> <code>data-theme="dark"</code></p></div>
+<style>
+  /* ── Der Baustein: .bs-bottom-cta ─────────────────────────────────
+     Im echten Einsatz: direktes Kind von <body>, position: fixed.
+     Sichtbar wird die Leiste über die Klasse .is-visible (JS unten). */
+  .bs-bottom-cta {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    /* Safe-Area: unter der iPhone-Home-Bar bleibt Luft (braucht viewport-fit=cover) */
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border-top: 1px solid var(--line);
+    transform: translateY(112%);
+    transition: transform .4s cubic-bezier(.2,.7,.3,1);
+  }
+  .bs-bottom-cta.is-visible { transform: none; }
+  .bs-bottom-cta .info { display: flex; flex-direction: column; min-width: 0; line-height: 1.35; }
+  .bs-bottom-cta .info strong { color: var(--fg); font-size: 14.5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bs-bottom-cta .info span { font-size: 12.5px; color: var(--fg-muted); }
+  .bs-bottom-cta .bs-btn { flex: none; }
+  /* Ab Tablet-Breite gibt es die Leiste nicht — sie ist ein Mobile-Muster */
+  @media (min-width: 761px) { .bs-bottom-cta { display: none; } }
+
+  /* ── Demo-Bühne — NICHT mitkopieren ─────────────────────────────── */
+  .bs-mob-cta .inner { position: relative; display: grid; grid-template-columns: 1.05fr .95fr;
+    gap: 56px; align-items: center; padding-top: 88px; padding-bottom: 88px; }
+  .bs-mob-cta h2 { font-size: clamp(30px, 3.8vw, 46px); font-weight: 800; margin: 14px 0 16px; }
+  .bs-mob-cta .sub { font-size: 17.5px; max-width: 48ch; margin-bottom: 26px; }
+  .bs-mob-cta .facts li { display: flex; gap: 10px; align-items: flex-start;
+    padding: 7px 0; font-size: 15px; color: var(--fg-soft); }
+  .bs-mob-cta .facts li::before { content: "✓"; flex: none; font-weight: 800; color: var(--green); }
+  .bs-mob-cta code { font: 600 12.5px ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--glass); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; color: var(--fg); }
+  @media (max-width: 900px) { .bs-mob-cta .inner { grid-template-columns: 1fr; } }
+
+  /* NUR Demo: im Telefon-Mockup klebt die Leiste per sticky am unteren
+     Rand des Scroll-Containers (statt fixed am Viewport) und ist auch
+     am Desktop sichtbar. Diese zwei Zeilen NICHT mitkopieren. */
+  .demo-phone .bs-bottom-cta { position: sticky; display: flex; z-index: 4; }
+
+  /* Demo-Füller: die fingierte Shop-Seite im Telefon — NICHT mitkopieren */
+  .bs-mob-cta .app { font-size: 14px; padding: 54px 16px 0; }
+  .bs-mob-cta .app-head { display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 2px 14px; font-weight: 800; color: var(--fg); font-family: var(--font-display); }
+  .bs-mob-cta .pic { height: 220px; border-radius: 18px; display: grid; place-items: center; font-size: 62px;
+    background:
+      radial-gradient(80% 100% at 18% 0%, rgba(var(--violet-rgb),.5), transparent 62%),
+      radial-gradient(90% 90% at 88% 100%, rgba(var(--brand-rgb),.45), transparent 65%),
+      var(--bg-soft); }
+  .bs-mob-cta .app h3 { font-size: 19px; margin: 16px 0 4px; }
+  .bs-mob-cta .price { font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--fg); }
+  .bs-mob-cta .price s { font-size: 14px; font-weight: 400; color: var(--fg-muted); margin-left: 8px; }
+  .bs-mob-cta .stars { font-size: 12.5px; color: var(--fg-muted); margin: 4px 0 14px; }
+  .bs-mob-cta .app p { font-size: 13.5px; color: var(--fg-soft); margin-bottom: 12px; }
+  .bs-mob-cta .specs li { display: flex; justify-content: space-between; gap: 12px;
+    padding: 8px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
+  .bs-mob-cta .specs b { color: var(--fg); font-weight: 600; }
+  .bs-mob-cta .app .end { padding: 18px 0 26px; text-align: center; font-size: 12.5px; color: var(--fg-muted); }
+</style>
+<section class="bs-mob-cta" data-theme="dark">
+  <div class="bs-container inner">
+    <div data-stagger>
+      <p class="bs-eyebrow">Mobile-Conversion</p>
+      <h2>Der Kauf-Button wohnt in der Daumenzone</h2>
+      <p class="sub">Auf dem Handy ist der wichtigste Button oft aus dem Bild gescrollt. Die Sticky-Bottom-Leiste bringt Produkt, Preis und CTA dauerhaft dorthin, wo der Daumen ohnehin liegt.</p>
+      <ul class="facts">
+        <li>Erscheint erst nach einer Scroll-Schwelle — kein Zudecken des Einstiegs</li>
+        <li><code>env(safe-area-inset-bottom)</code> hält Abstand zur iPhone-Home-Bar</li>
+        <li>Ab <code>761px</code> Viewport-Breite automatisch ausgeblendet</li>
+        <li>Touch-Ziel des Buttons: 40–48&nbsp;px hoch, volle Beschriftung</li>
+      </ul>
+    </div>
+    <figure class="demo-phone" data-reveal="right" data-reveal-delay="150">
+      <div class="screen" data-cta-scroller>
+        <!-- Demo-Füller (Shop-Seite) — NICHT mitkopieren -->
+        <div class="app">
+          <div class="app-head"><span>bergkind.</span><span aria-hidden="true">☰</span></div>
+          <div class="pic" aria-hidden="true">🎒</div>
+          <h3>Fjellrav Daypack 24&nbsp;L</h3>
+          <p class="price">89&nbsp;€ <s>109&nbsp;€</s></p>
+          <p class="stars">★★★★★ 4,8 · 312 Bewertungen</p>
+          <p>Leichter Tagesrucksack aus recyceltem Ripstop-Nylon. Gepolstertes 16″-Laptopfach, Regenhülle im Bodenfach, Trinksystem-kompatibel.</p>
+          <ul class="specs">
+            <li><span>Volumen</span><b>24 Liter</b></li>
+            <li><span>Gewicht</span><b>780 g</b></li>
+            <li><span>Material</span><b>100 % rec. Nylon</b></li>
+            <li><span>Rückensystem</span><b>AirMesh, belüftet</b></li>
+            <li><span>Garantie</span><b>10 Jahre</b></li>
+          </ul>
+          <p style="margin-top:14px">Der Hüftgurt ist abnehmbar, die Fronttasche schluckt Helm oder Jacke. Alle Reißverschlüsse sind wasserabweisend verschweißt.</p>
+          <p>Lieferung in 1–2 Werktagen, kostenloser Rückversand innerhalb von 30 Tagen.</p>
+          <p class="end">— Ende der Produktseite —</p>
+        </div>
+        <!-- ▼ Der eigentliche Baustein — dieses Markup kopieren -->
+        <div class="bs-bottom-cta" role="region" aria-label="Kaufleiste">
+          <p class="info">
+            <strong>Fjellrav Daypack 24&nbsp;L</strong>
+            <span>89&nbsp;€ · versandkostenfrei</span>
+          </p>
+          <a href="#" class="bs-btn bs-btn-primary bs-btn-sm">In den Warenkorb</a>
+        </div>
+      </div>
+      <figcaption>⇣ Im Telefon scrollen — nach ~240&nbsp;px erscheint die Leiste</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: MOBILE 2 · Tap-to-Call / WhatsApp / E-Mail (hell)
+     Drei große Touch-Ziele (min. 48px) mit tel:/wa.me/mailto:-Links,
+     Inline-SVG-Icons und Hinweis zu Erreichbarkeitszeiten.
+     Kopieren: diesen <style>-Block + die <section> darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Mobile 2 · Tap-to-Call-Leiste <code>.bs-tap-actions</code> <code>hell</code></p>
+<style>
+  .bs-tap-actions .inner { padding-top: 88px; padding-bottom: 88px; }
+  .bs-tap-actions .grid { display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; max-width: 900px; margin: 0 auto; }
+  /* Ein Tap-Ziel: ganzer Kasten ist der Link, deutlich > 48px hoch */
+  .bs-tap-actions .tap { display: flex; align-items: center; gap: 14px;
+    min-height: 76px; padding: 14px 18px;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    box-shadow: var(--shadow); transition: transform .15s ease, border-color .2s; }
+  .bs-tap-actions .tap:hover { transform: translateY(-2px); border-color: rgba(var(--brand-rgb),.5); }
+  .bs-tap-actions .ico { flex: none; width: 46px; height: 46px; border-radius: 14px;
+    display: grid; place-items: center; color: #fff; }
+  .bs-tap-actions .tap-tel .ico  { background: var(--brand); }
+  .bs-tap-actions .tap-wa  .ico  { background: var(--green); }
+  .bs-tap-actions .tap-mail .ico { background: var(--violet); }
+  .bs-tap-actions .tap b { display: block; color: var(--fg); font-size: 15.5px; line-height: 1.3; }
+  .bs-tap-actions .tap small { display: block; font-size: 13px; color: var(--fg-muted); }
+  .bs-tap-actions .hours { display: flex; gap: 8px; justify-content: center; align-items: baseline;
+    flex-wrap: wrap; margin-top: 22px; text-align: center;
+    font-size: 13.5px; color: var(--fg-muted); }
+  .bs-tap-actions code { font: 600 13px ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--glass); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1px 6px; color: var(--fg); }
+  @media (max-width: 760px) { .bs-tap-actions .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-tap-actions">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Direktkontakt</p>
+      <h2>Ein Tipp, ein Kanal — kein Abtippen</h2>
+      <p>Nummern und Adressen als echte <code>tel:</code>-, <code>wa.me</code>- und <code>mailto:</code>-Links: Auf dem Handy öffnet sich direkt die passende App.</p>
+    </div>
+    <div class="grid" data-stagger>
+      <a class="tap tap-tel" href="tel:+49305550123">
+        <span class="ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </span>
+        <span><b>Anrufen</b><small>030 555 01 23</small></span>
+      </a>
+      <a class="tap tap-wa" href="https://wa.me/4915123456789" target="_blank" rel="noopener">
+        <span class="ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </span>
+        <span><b>WhatsApp schreiben</b><small>0151 23456789</small></span>
+      </a>
+      <a class="tap tap-mail" href="mailto:werkstatt@radhaus-berlin.de">
+        <span class="ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+        </span>
+        <span><b>E-Mail senden</b><small>werkstatt@radhaus-berlin.de</small></span>
+      </a>
+    </div>
+    <p class="hours" data-reveal><span class="bs-badge">🕘 Erreichbarkeit</span> Telefon &amp; WhatsApp: Mo–Fr 9–18 Uhr, Sa 10–14 Uhr · E-Mails beantworten wir innerhalb eines Werktags.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: MOBILE 3 · Tabelle → Karten-Stack (hell)
+     Referenz-Implementierung: EINE <table> als Datenquelle.
+     Desktop: normale Tabelle · Mobil (≤ 719px): jede Zeile wird per
+     CSS zur Karte, td::before blendet das Spaltenlabel aus data-label ein.
+     Kopieren: diesen <style>-Block + die <section> darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Mobile 3 · Tabelle → Karten-Stack <code>.bs-table-cards</code> <code>hell</code></p>
+<style>
+  .bs-table-cards { background: var(--bg-soft); }
+  .bs-table-cards .inner { padding-top: 88px; padding-bottom: 88px; }
+  .bs-table-cards .tbl-scroll { overflow-x: auto; max-width: 980px; margin: 0 auto; }
+  .bs-table-cards .bs-section-head code { font: 600 13px ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--glass); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1px 6px; color: var(--fg); }
+
+  /* ── Schritt 1: Desktop — ganz normale Tabelle ── */
+  .bs-table-cards table { width: 100%; border-collapse: collapse;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    overflow: hidden; box-shadow: var(--shadow); font-size: 15px; }
+  .bs-table-cards caption { caption-side: bottom; padding: 14px 4px 0;
+    font-size: 13px; color: var(--fg-muted); text-align: center; }
+  .bs-table-cards th, .bs-table-cards td { padding: 14px 18px; text-align: left; }
+  .bs-table-cards thead th { font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--fg-muted); border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--card) 60%, var(--bg-soft)); }
+  .bs-table-cards tbody tr + tr { border-top: 1px solid var(--line); }
+  .bs-table-cards tbody th[scope="row"] { font-family: var(--font-display); font-weight: 800; color: var(--fg); }
+  .bs-table-cards td { color: var(--fg-soft); }
+  .bs-table-cards .flag { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 700;
+    color: #fff; background: var(--brand); border-radius: 999px; padding: 2px 9px; vertical-align: 2px; }
+  .bs-table-cards tr.hot { background: rgba(var(--brand-rgb),.05); }
+
+  /* ── Schritt 2: Mobil — Zeilen werden zu Karten ──
+     Achtung: display:block hebt die Tabellen-Semantik im Accessibility-
+     Tree weitgehend auf. data-label + th[scope=row] halten die Zuordnung
+     trotzdem sichtbar und vorlesbar. */
+  @media (max-width: 719px) {
+    /* 2a · Alles zu Block-Elementen machen */
+    .bs-table-cards table, .bs-table-cards tbody,
+    .bs-table-cards tr, .bs-table-cards th, .bs-table-cards td { display: block; }
+    .bs-table-cards table { background: none; border: 0; box-shadow: none; overflow: visible; }
+    /* 2b · Kopfzeile visuell verstecken (Labels kommen aus data-label) */
+    .bs-table-cards thead { position: absolute; width: 1px; height: 1px;
+      overflow: hidden; clip-path: inset(50%); }
+    /* 2c · Jede Zeile = eine Karte */
+    .bs-table-cards tbody tr { background: var(--card); border: 1px solid var(--line) !important;
+      border-radius: var(--r-md); box-shadow: var(--shadow); padding: 6px 16px 12px; margin-bottom: 14px; }
+    .bs-table-cards tbody th[scope="row"] { padding: 12px 0 6px; font-size: 18px;
+      border-bottom: 1px solid var(--line); }
+    /* 2d · Zelle = Label links (aus data-label), Wert rechts */
+    .bs-table-cards td { display: grid; grid-template-columns: 45% 1fr; gap: 10px;
+      padding: 9px 0; font-size: 14px; }
+    .bs-table-cards td + td { border-top: 1px dashed var(--line); }
+    .bs-table-cards td::before { content: attr(data-label);
+      font-weight: 700; color: var(--fg); }
+  }
+</style>
+<section class="bs-table-cards">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Responsive Daten</p>
+      <h2>Eine Tabelle, zwei Gesichter</h2>
+      <p>Breite Tabellen sind der häufigste Mobile-Killer. Hier wird dieselbe <code>&lt;table&gt;</code> unter 720&nbsp;px per CSS zum Karten-Stack — ohne doppelte Daten, ohne JavaScript.</p>
+    </div>
+    <div class="tbl-scroll" data-reveal>
+      <table>
+        <caption>Fenster schmaler ziehen (oder am Handy ansehen): Zeilen werden zu Karten.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Tarif</th>
+            <th scope="col">Monatspreis</th>
+            <th scope="col">Projekte</th>
+            <th scope="col">Teammitglieder</th>
+            <th scope="col">Support</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Starter</th>
+            <td data-label="Monatspreis">0&nbsp;€</td>
+            <td data-label="Projekte">3</td>
+            <td data-label="Teammitglieder">1</td>
+            <td data-label="Support">Community-Forum</td>
+          </tr>
+          <tr class="hot">
+            <th scope="row">Team <span class="flag">Beliebt</span></th>
+            <td data-label="Monatspreis">29&nbsp;€</td>
+            <td data-label="Projekte">Unbegrenzt</td>
+            <td data-label="Teammitglieder">Bis 10</td>
+            <td data-label="Support">E-Mail, Antwort &lt;&nbsp;24&nbsp;h</td>
+          </tr>
+          <tr>
+            <th scope="row">Business</th>
+            <td data-label="Monatspreis">79&nbsp;€</td>
+            <td data-label="Projekte">Unbegrenzt</td>
+            <td data-label="Teammitglieder">Unbegrenzt</td>
+            <td data-label="Support">Priorität + Telefon</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: MOBILE 4 · Bottom-Tab-Navigation (dunkel)
+     4 Tabs mit Icon + Label in der Daumenzone, aktiver Tab über
+     aria-current="page" markiert, safe-area-Padding unten.
+     Kopieren: .bs-thumb-nav-Teil des <style>-Blocks + das <nav>-Markup.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Mobile 4 · Bottom-Tab-Navigation <code>.bs-thumb-nav</code> <code>data-theme="dark"</code></p>
+<style>
+  /* ── Der Baustein: .bs-thumb-nav ──────────────────────────────────
+     Im echten Einsatz: direktes Kind von <body>, position: fixed. */
+  .bs-thumb-nav {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
+    padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border-top: 1px solid var(--line);
+  }
+  .bs-thumb-nav a { position: relative; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 3px;
+    min-height: 48px; /* Touch-Ziel */ padding: 6px 4px; border-radius: 12px;
+    font-size: 11px; font-weight: 600; color: var(--fg-muted);
+    transition: color .2s, background-color .2s; }
+  .bs-thumb-nav a svg { width: 22px; height: 22px; }
+  .bs-thumb-nav a:hover { color: var(--fg); }
+  .bs-thumb-nav a[aria-current="page"] { color: var(--brand); background: rgba(var(--brand-rgb),.12); }
+  [data-theme="dark"] .bs-thumb-nav a[aria-current="page"] { color: var(--brand-300); }
+  .bs-thumb-nav .badge { position: absolute; top: 3px; left: calc(50% + 4px);
+    min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;
+    display: grid; place-items: center; font-size: 10px; font-weight: 800;
+    color: #fff; background: var(--red); }
+  /* Ab Tablet-Breite übernimmt die normale Top-Navigation */
+  @media (min-width: 761px) { .bs-thumb-nav { display: none; } }
+
+  /* NUR Demo: im Telefon-Mockup sticky statt fixed, auch am Desktop
+     sichtbar. Diese Zeile NICHT mitkopieren. */
+  .demo-phone .bs-thumb-nav { position: sticky; display: grid; z-index: 4; }
+
+  /* ── Demo-Bühne — NICHT mitkopieren ─────────────────────────────── */
+  .bs-mob-nav .inner { display: grid; grid-template-columns: .95fr 1.05fr;
+    gap: 56px; align-items: center; padding-top: 88px; padding-bottom: 88px; }
+  .bs-mob-nav h2 { font-size: clamp(30px, 3.8vw, 46px); font-weight: 800; margin: 14px 0 16px; }
+  .bs-mob-nav .sub { font-size: 17.5px; max-width: 48ch; margin-bottom: 26px; }
+  .bs-mob-nav .facts li { display: flex; gap: 10px; align-items: flex-start;
+    padding: 7px 0; font-size: 15px; color: var(--fg-soft); }
+  .bs-mob-nav .facts li::before { content: "✓"; flex: none; font-weight: 800; color: var(--green); }
+  .bs-mob-nav code { font: 600 12.5px ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--glass); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; color: var(--fg); }
+  @media (max-width: 900px) { .bs-mob-nav .inner { grid-template-columns: 1fr; } }
+
+  /* Demo-Füller: App-Screen hinter der Navigation — NICHT mitkopieren */
+  .bs-mob-nav .app { padding: 54px 14px 0; }
+  .bs-mob-nav .app-head { padding: 8px 4px 14px; font-family: var(--font-display);
+    font-weight: 800; font-size: 19px; color: var(--fg); }
+  .bs-mob-nav .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 16px; }
+  .bs-mob-nav .tile { height: 116px; border-radius: 14px; display: grid; place-items: center;
+    gap: 0; background: var(--card); border: 1px solid var(--line); font-size: 30px; }
+  .bs-mob-nav .tile small { font-size: 11.5px; color: var(--fg-muted); }
+</style>
+<section class="bs-mob-nav" data-theme="dark">
+  <div class="bs-container inner">
+    <figure class="demo-phone" data-reveal="left" data-reveal-delay="150">
+      <div class="screen">
+        <!-- Demo-Füller (App-Screen) — NICHT mitkopieren -->
+        <div class="app" aria-hidden="true">
+          <p class="app-head">Entdecken</p>
+          <div class="tiles">
+            <div class="tile"><span>🚲</span><small>Räder</small></div>
+            <div class="tile"><span>🪖</span><small>Helme</small></div>
+            <div class="tile"><span>🎽</span><small>Bekleidung</small></div>
+            <div class="tile"><span>🔧</span><small>Werkstatt</small></div>
+            <div class="tile"><span>💡</span><small>Licht</small></div>
+            <div class="tile"><span>🔒</span><small>Schlösser</small></div>
+            <div class="tile"><span>🧰</span><small>Zubehör</small></div>
+            <div class="tile"><span>🏷️</span><small>Sale</small></div>
+          </div>
+        </div>
+        <!-- ▼ Der eigentliche Baustein — dieses Markup kopieren -->
+        <nav class="bs-thumb-nav" aria-label="Hauptnavigation (mobil)">
+          <a href="#" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+            <span>Start</span>
+          </a>
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span>Suche</span>
+          </a>
+          <a href="#" aria-label="Warenkorb, 2 Artikel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span>Warenkorb</span>
+            <span class="badge" aria-hidden="true">2</span>
+          </a>
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Konto</span>
+          </a>
+        </nav>
+      </div>
+      <figcaption>Aktiver Tab über <code>aria-current="page"</code></figcaption>
+    </figure>
+    <div data-stagger>
+      <p class="bs-eyebrow">App-Gefühl im Browser</p>
+      <h2>Vier Tabs, ein Daumen</h2>
+      <p class="sub">Die Bottom-Tab-Navigation macht die wichtigsten Ziele mit einer Hand erreichbar — wie in nativen Apps. Icon plus Label, nie Icon allein.</p>
+      <ul class="facts">
+        <li>Jedes Tab-Ziel ist mindestens <code>48px</code> hoch</li>
+        <li>Aktiver Tab semantisch markiert: <code>aria-current="page"</code></li>
+        <li>Maximal 4–5 Tabs — mehr zerstört die Trefferfläche</li>
+        <li>Safe-Area-Padding unten, damit die Home-Bar nichts verdeckt</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BAUSTEIN: MOBILE 5 · Mobile-Checkliste (hell)
+     8 Prüfpunkte für mobile Conversion + Copy-Grundlagen als Snippet.
+     Kopieren: diesen <style>-Block + die <section> darunter.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Mobile 5 · Mobile-Checkliste <code>.bs-mob-check</code> <code>hell</code></p>
+<style>
+  .bs-mob-check .inner { padding-top: 88px; padding-bottom: 96px; }
+  .bs-mob-check ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px; max-width: 980px; margin: 0 auto; counter-reset: mc; list-style: none; }
+  .bs-mob-check li { counter-increment: mc; position: relative;
+    padding: 18px 18px 18px 64px; font-size: 14px; line-height: 1.55; color: var(--fg-soft);
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    box-shadow: var(--shadow); }
+  .bs-mob-check li::before { content: counter(mc, decimal-leading-zero);
+    position: absolute; left: 16px; top: 18px;
+    font: 800 14px/1 var(--font-display); color: var(--brand);
+    background: rgba(var(--brand-rgb),.1); border: 1px solid rgba(var(--brand-rgb),.25);
+    border-radius: 10px; padding: 9px 7px; }
+  .bs-mob-check li b { display: block; color: var(--fg); font-size: 15.5px; margin-bottom: 3px; }
+  .bs-mob-check code { font: 600 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--glass); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1px 6px; color: var(--fg); white-space: nowrap; }
+  .bs-mob-check .snippet-wrap { max-width: 760px; margin: 40px auto 0; }
+  .bs-mob-check .snippet-wrap h3 { font-size: 18px; margin-bottom: 12px; text-align: center; }
+</style>
+<section class="bs-mob-check">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Qualitätssicherung</p>
+      <h2>Die Mobile-Checkliste</h2>
+      <p>Acht Punkte, die über mobile Conversion entscheiden — vor jedem Launch einmal durchgehen.</p>
+    </div>
+    <ol data-stagger>
+      <li><b>Touch-Ziele ≥ 48 px</b> Buttons, Links und Icons brauchen mindestens <code>48×48px</code> Trefferfläche — plus 8&nbsp;px Abstand zueinander.</li>
+      <li><b>Daumenzone nutzen</b> Primäre Aktionen ins untere Drittel des Screens; oben liegt nur, was man liest, nicht was man drückt.</li>
+      <li><b>Kein Input-Zoom</b> Formularfelder mit <code>font-size: 16px</code> — darunter zoomt iOS beim Fokussieren automatisch hinein.</li>
+      <li><b>Safe-Area respektieren</b> Fixe Leisten mit <code>env(safe-area-inset-bottom)</code> polstern, sonst verdeckt die Home-Bar den CTA.</li>
+      <li><b>Tabellen stapeln</b> Breite Tabellen ab ~720&nbsp;px zu Karten umbauen (siehe Baustein 3) statt seitlich scrollen zu lassen.</li>
+      <li><b>Viewport-Meta setzen</b> Ohne <code>width=device-width, initial-scale=1</code> rendert das Handy die Desktop-Breite — alles wird winzig.</li>
+      <li><b>Kontakt klickbar machen</b> Telefonnummern und Adressen als <code>tel:</code>-/<code>mailto:</code>-Links — niemand tippt Nummern ab.</li>
+      <li><b>Sticky sparsam einsetzen</b> Maximal eine fixe Leiste, nie oben und unten gleichzeitig — sonst bleiben vom Inhalt nur Schlitze.</li>
+    </ol>
+    <div class="snippet-wrap" data-reveal>
+      <h3>Copy-Grundlagen für jede mobile Seite</h3>
+      <div class="bs-snippet"><button class="bs-copy" type="button" data-copy>Kopieren</button><pre><span class="cm">&lt;!-- 1 · Viewport-Meta im &lt;head&gt; — Pflicht, viewport-fit=cover aktiviert env() --&gt;</span>
+&lt;meta name="viewport" content="<span class="hl">width=device-width, initial-scale=1, viewport-fit=cover</span>"&gt;
+
+<span class="cm">/* 2 · Kein iOS-Auto-Zoom beim Fokussieren von Formularfeldern */</span>
+input, select, textarea { font-size: <span class="hl">16px</span>; }
+
+<span class="cm">/* 3 · Fixe Leisten respektieren die iPhone-Home-Bar */</span>
+.bottom-bar { padding-bottom: calc(12px + <span class="hl">env(safe-area-inset-bottom)</span>); }</pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Scroll-Logik für den Sticky-Bottom-CTA ─────────────────────────
+     Demo: lauscht auf den Scroll-Container des Telefon-Mockups.
+     Im echten Einsatz scrollt das Fenster — dann reicht:
+
+       var bar = document.querySelector(".bs-bottom-cta");
+       addEventListener("scroll", function () {
+         bar.classList.toggle("is-visible", window.scrollY > 480);
+       }, { passive: true });
+     ─────────────────────────────────────────────────────────────────── -->
+<script>
+  (function () {
+    "use strict";
+    document.querySelectorAll("[data-cta-scroller]").forEach(function (screen) {
+      var bar = screen.querySelector(".bs-bottom-cta");
+      if (!bar) return;
+      screen.addEventListener("scroll", function () {
+        bar.classList.toggle("is-visible", screen.scrollTop > 240);
+      }, { passive: true });
+    });
+  })();
+</script>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Scroll-Animationen</title>
+<meta name="description" content="Schaukasten aller Scroll-Animations-Muster des Baustein-Systems: Reveals, Stagger, Zähler, Parallax, Spring und Sticky-Stapel. Plain HTML/CSS/JS." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     LEGENDE · So funktionieren die Attribute (dunkel)
+     Kein eigener Code nötig: css/base.css + js/base.js einbinden,
+     dann steuern data-Attribute alles. Reduced Motion wird global
+     respektiert (Reveals erscheinen dann sofort).
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">Legende · Alle Attribute auf einen Blick <code>js/base.js</code> <code>data-theme="dark"</code></p></div>
+<style>
+  .bs-anim-legend .inner { padding-top: 88px; padding-bottom: 88px; }
+  .bs-anim-legend h1 { font-size: clamp(34px, 4.6vw, 56px); font-weight: 800; max-width: 16ch; margin-bottom: 18px; }
+  .bs-anim-legend .sub { font-size: 18px; max-width: 58ch; margin-bottom: 44px; }
+  .bs-anim-legend .cheats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .bs-anim-legend .cheat { display: flex; flex-direction: column; gap: 8px;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 18px 20px; }
+  .bs-anim-legend .cheat code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13.5px; color: var(--brand-300); background: var(--glass);
+    border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; width: max-content; max-width: 100%; overflow-x: auto; }
+  .bs-anim-legend .cheat span { font-size: 14.5px; color: var(--fg-soft); }
+  .bs-anim-legend .note { margin-top: 28px; font-size: 14px; color: var(--fg-muted); max-width: 70ch; }
+  @media (max-width: 760px) { .bs-anim-legend .cheats { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-anim-legend" data-theme="dark">
+  <div class="bs-container inner">
+    <div data-stagger>
+      <p class="bs-eyebrow">Schaukasten</p>
+      <h1>Scroll-Animationen des Baustein-Systems</h1>
+      <p class="sub">Jedes Muster unten ist ein einziges data-Attribut — die Logik liegt komplett in <strong>js/base.js</strong> und <strong>css/base.css</strong>. Scroll langsam durch die Seite und beobachte, wie die Beispiele einsetzen.</p>
+    </div>
+    <div class="cheats" data-stagger>
+      <div class="cheat"><code>data-reveal</code><span>Element blendet weich von unten ein, sobald es sichtbar wird.</span></div>
+      <div class="cheat"><code>data-reveal="left" | "right" | "zoom"</code><span>Richtung bzw. Skalierung des Reveals.</span></div>
+      <div class="cheat"><code>data-reveal-delay="200"</code><span>Verzögerung in Millisekunden für choreografierte Abfolgen.</span></div>
+      <div class="cheat"><code>data-stagger</code><span>Staffelt automatisch alle direkten Kinder im 80-ms-Takt.</span></div>
+      <div class="cheat"><code>data-count-to="4200" data-count-suffix="+"</code><span>Zahl zählt beim Erscheinen hoch, formatiert auf Deutsch.</span></div>
+      <div class="cheat"><code>data-parallax="60"</code><span>Element driftet beim Scrollen um 60&nbsp;px (negativ = Gegenrichtung).</span></div>
+      <div class="cheat"><code>data-reveal="spring"</code><span>Federnder Reveal via motion.dev — progressives Enhancement per CDN.</span></div>
+      <div class="cheat"><code>prefers-reduced-motion</code><span>Wird global respektiert: Inhalte erscheinen dann sofort, ohne Bewegung.</span></div>
+    </div>
+    <p class="note">Voraussetzung pro Seite: <strong>css/base.css</strong> verlinken und <strong>js/base.js</strong> als <strong>type="module"</strong> am Seitenende einbinden — keine eigenen IntersectionObserver nötig.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MUSTER 1 · data-reveal — weich von unten (hell)
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Muster 1 · Von unten einblenden <code>data-reveal</code></p>
+<style>
+  .bs-anim-up .inner { padding-top: 80px; padding-bottom: 88px; }
+  .bs-anim-up .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .bs-anim-up .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 26px 24px; box-shadow: var(--shadow); }
+  .bs-anim-up .card svg { color: var(--brand); margin-bottom: 14px; }
+  .bs-anim-up .card h3 { font-size: 18px; margin-bottom: 8px; }
+  .bs-anim-up .card p { font-size: 15px; }
+  @media (max-width: 820px) { .bs-anim-up .grid { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-anim-up">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <p class="bs-eyebrow">Muster 1</p>
+      <h2>Der Standard-Reveal</h2>
+      <p>Einfach <code>data-reveal</code> auf ein Element setzen — es startet 28&nbsp;px tiefer und unsichtbar und gleitet beim Erscheinen an seinen Platz.</p>
+    </div>
+    <div class="grid">
+      <div class="card" data-reveal>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg>
+        <h3>Ein Attribut genügt</h3>
+        <p>Kein eigener Beobachter-Code, keine Klassen jonglieren — das Markup bleibt lesbar.</p>
+      </div>
+      <div class="card" data-reveal>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg>
+        <h3>Läuft nur einmal</h3>
+        <p>Jedes Element wird nach dem ersten Erscheinen wieder freigegeben — kein Flackern beim Zurückscrollen.</p>
+      </div>
+      <div class="card" data-reveal>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5 3 21l4.5-1.5M21 3l-6.5 6.5M14 4l6 6M8 12l4 4"/></svg>
+        <h3>Barrierefrei</h3>
+        <p>Bei <code>prefers-reduced-motion</code> erscheint alles sofort — automatisch, ohne Extra-Code.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MUSTER 2 · data-reveal="left" / "right" — seitlich einfliegen (dunkel)
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Muster 2 · Seitlich einfliegen <code>data-reveal="left"</code> <code>data-reveal="right"</code></p>
+<style>
+  .bs-anim-sides .inner { padding-top: 80px; padding-bottom: 88px; }
+  .bs-anim-sides .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .bs-anim-sides .pane { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 30px 28px; }
+  .bs-anim-sides .pane .dir { display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+    color: var(--brand-300); margin-bottom: 14px; }
+  .bs-anim-sides .pane h3 { font-size: 20px; margin-bottom: 8px; }
+  .bs-anim-sides .pane p { font-size: 15.5px; }
+  @media (max-width: 760px) { .bs-anim-sides .duo { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-anim-sides" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <p class="bs-eyebrow">Muster 2</p>
+      <h2>Von links und rechts</h2>
+      <p>Perfekt für zweispaltige Abschnitte: Text und Visual fliegen aus entgegengesetzten Richtungen aufeinander zu.</p>
+    </div>
+    <div class="duo">
+      <div class="pane" data-reveal="left">
+        <span class="dir"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> data-reveal="left"</span>
+        <h3>Kommt von links</h3>
+        <p>Startet 36&nbsp;px links versetzt. Typischer Einsatz: die Text-Spalte eines Feature-Blocks.</p>
+      </div>
+      <div class="pane" data-reveal="right">
+        <span class="dir">data-reveal="right" <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <h3>Kommt von rechts</h3>
+        <p>Das Gegenstück für Screenshots, Mockups oder Illustrationen auf der anderen Seite.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MUSTER 3 · data-reveal="zoom" — skaliert ein (hell)
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Muster 3 · Hineinzoomen <code>data-reveal="zoom"</code></p>
+<style>
+  .bs-anim-zoom .inner { padding-top: 80px; padding-bottom: 88px; }
+  .bs-anim-zoom .shot { max-width: 760px; margin: 0 auto; background: var(--card);
+    border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow); overflow: hidden; }
+  .bs-anim-zoom .shot-bar { display: flex; gap: 6px; padding: 13px 16px; border-bottom: 1px solid var(--line); }
+  .bs-anim-zoom .shot-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .bs-anim-zoom .shot-bar i:first-child { background: var(--red); }
+  .bs-anim-zoom .shot-body { height: 260px;
+    background: radial-gradient(45% 70% at 30% 40%, rgba(var(--brand-rgb),.18), transparent 70%),
+                radial-gradient(40% 60% at 75% 65%, rgba(var(--violet-rgb),.16), transparent 70%),
+                var(--bg-soft);
+    display: grid; place-items: center; }
+  .bs-anim-zoom .shot-body span { font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--fg); }
+</style>
+<section class="bs-anim-zoom">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Muster 3</p>
+      <h2>Der Zoom-Reveal</h2>
+      <p>Startet bei 92&nbsp;% Größe und wächst auf 100&nbsp;% — ideal für Screenshots und Produkt-Mockups, die „aufpoppen" sollen.</p>
+    </div>
+    <div class="shot" data-reveal="zoom" aria-hidden="true">
+      <div class="shot-bar"><i></i><i></i><i></i></div>
+      <div class="shot-body"><span>data-reveal="zoom"</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MUSTER 4 · data-stagger — Kinder gestaffelt (dunkel)
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Muster 4 · Gestaffeltes Raster <code>data-stagger</code></p>
+<style>
+  .bs-anim-stagger .inner { padding-top: 80px; padding-bottom: 88px; }
+  .bs-anim-stagger .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .bs-anim-stagger .tile { display: flex; align-items: center; gap: 14px;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 20px 22px; }
+  .bs-anim-stagger .tile svg { flex: none; color: var(--teal); }
+  .bs-anim-stagger .tile b { font-family: var(--font-display); font-size: 16px; color: var(--fg); }
+  @media (max-width: 820px) { .bs-anim-stagger .tiles { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .bs-anim-stagger .tiles { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-anim-stagger" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <p class="bs-eyebrow">Muster 4</p>
+      <h2>Staffeln ohne Rechnen</h2>
+      <p><code>data-stagger</code> auf dem Container verteilt automatisch 80&nbsp;ms Versatz auf jedes Kind — Delays von Hand setzen entfällt.</p>
+    </div>
+    <div class="tiles" data-stagger>
+      <div class="tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12h8"/></svg><b>Kachel 1 · 0 ms</b></div>
+      <div class="tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg><b>Kachel 2 · 80 ms</b></div>
+      <div class="tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m9 12 2 2 4-4"/></svg><b>Kachel 3 · 160 ms</b></div>
+      <div class="tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 15V9l4 6V9M16 9v6"/></svg><b>Kachel 4 · 240 ms</b></div>
+      <div class="tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="3"/></svg><b>Kachel 5 · 320 ms</b></div>
+      <div class="tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 12h2l2-4 2 8 2-4h2"/></svg><b>Kachel 6 · 400 ms</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MUSTER 5 · data-reveal-delay — Choreografie per ms (hell)
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Muster 5 · Manuelle Verzögerung <code>data-reveal-delay="200"</code></p>
+<style>
+  .bs-anim-delay .inner { padding-top: 80px; padding-bottom: 88px; }
+  .bs-anim-delay .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .bs-anim-delay .step { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: 26px 24px; box-shadow: var(--shadow); text-align: center; }
+  .bs-anim-delay .step .ms { display: inline-block; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px; font-weight: 600; color: var(--brand); background: var(--glass);
+    border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; margin-bottom: 12px; }
+  .bs-anim-delay .step h3 { font-size: 18px; margin-bottom: 6px; }
+  .bs-anim-delay .step p { font-size: 14.5px; }
+  @media (max-width: 820px) { .bs-anim-delay .row { grid-template-columns: 1fr; } }
+</style>
+<section class="bs-anim-delay">
+  <div class="bs-container inner">
+    <div class="bs-section-head left" data-reveal>
+      <p class="bs-eyebrow">Muster 5</p>
+      <h2>Delays von Hand setzen</h2>
+      <p>Wenn Elemente nicht Geschwister sind oder ein eigener Rhythmus gewünscht ist: <code>data-reveal-delay</code> nimmt Millisekunden entgegen.</p>
+    </div>
+    <div class="row">
+      <div class="step" data-reveal>
+        <span class="ms">delay: 0 ms</span>
+        <h3>Zuerst</h3>
+        <p>Startet sofort beim Erscheinen im Viewport.</p>
+      </div>
+      <div class="step" data-reveal data-reveal-delay="200">
+        <span class="ms">delay: 200 ms</span>
+        <h3>Dann</h3>
+        <p>Folgt eine Fünftelsekunde später.</p>
+      </div>
+      <div class="step" data-reveal data-reveal-delay="400">
+        <span class="ms">delay: 400 ms</span>
+        <h3>Zuletzt</h3>
+        <p>Schließt die kleine Choreografie ab.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MUSTER 6 · data-count-to — Zahlenband (dunkel)
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Muster 6 · Zähler <code>data-count-to</code> <code>data-count-suffix</code></p>
+<style>
+  .bs-anim-count .inner { padding-top: 80px; padding-bottom: 88px; }
+  .bs-anim-count .band { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 38px 0; }
+  .bs-anim-count .band > div { text-align: center; }
+  .bs-anim-count .band b { display: block; font-family: var(--font-display);
+    font-size: clamp(30px, 3.6vw, 44px); font-weight: 800; color: var(--fg);
+    font-variant-numeric: tabular-nums; }
+  .bs-anim-count .band span { font-size: 14px; color: var(--fg-muted); }
+  @media (max-width: 760px) { .bs-anim-count .band { grid-template-columns: 1fr 1fr; row-gap: 30px; } }
+</style>
+<section class="bs-anim-count" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Muster 6</p>
+      <h2>Zahlen, die hochzählen</h2>
+      <p><code>data-count-to</code> zählt beim ersten Sichtbarwerden hoch, <code>data-count-suffix</code> hängt Einheit oder Zeichen an — deutsch formatiert mit Tausenderpunkt.</p>
+    </div>
+    <div class="band" data-reveal>
+      <div><b data-count-to="12500" data-count-suffix="+">0</b><span>aktive Teams</span></div>
+      <div><b data-count-to="240" data-count-suffix=" Mio.">0</b><span>Sitzungen analysiert</span></div>
+      <div><b data-count-to="98" data-count-suffix=" %">0</b><span>Weiterempfehlung</span></div>
+      <div><b data-count-to="35" data-count-suffix=" ms">0</b><span>mittlere Ladezeit</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MUSTER 7 · data-parallax — Ebenen driften unterschiedlich (hell)
+     Positive Werte driften nach unten, negative nach oben.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Muster 7 · Parallax-Ebenen <code>data-parallax="60"</code> <code>data-parallax="-40"</code></p>
+<style>
+  .bs-anim-parallax .inner { padding-top: 80px; padding-bottom: 120px; }
+  .bs-anim-parallax .stage { position: relative; max-width: 760px; margin: 0 auto; min-height: 360px; }
+  .bs-anim-parallax .layer-back { position: absolute; inset: 0; border-radius: var(--r-xl);
+    background: radial-gradient(60% 90% at 25% 20%, rgba(var(--brand-rgb),.16), transparent 65%),
+                radial-gradient(50% 80% at 80% 80%, rgba(24,184,166,.14), transparent 65%),
+                var(--bg-soft);
+    border: 1px solid var(--line); }
+  .bs-anim-parallax .layer-back small { position: absolute; left: 22px; bottom: 16px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--fg-muted); }
+  .bs-anim-parallax .layer-front { position: absolute; right: 8%; top: 22%; width: min(320px, 70%);
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+    box-shadow: var(--shadow); padding: 22px 24px; }
+  .bs-anim-parallax .layer-front b { display: block; font-family: var(--font-display); font-size: 17px;
+    color: var(--fg); margin-bottom: 6px; }
+  .bs-anim-parallax .layer-front p { font-size: 14px; }
+  .bs-anim-parallax .layer-front small { display: block; margin-top: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--brand); }
+</style>
+<section class="bs-anim-parallax">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Muster 7</p>
+      <h2>Zwei Ebenen, zwei Geschwindigkeiten</h2>
+      <p>Die Fläche hinten driftet mit <code>data-parallax="60"</code> nach unten, die Karte vorn mit <code>data-parallax="-40"</code> dagegen — beim Scrollen entsteht Tiefe.</p>
+    </div>
+    <div class="stage">
+      <div class="layer-back" data-parallax="60" aria-hidden="true"><small>Ebene hinten · data-parallax="60"</small></div>
+      <div class="layer-front" data-parallax="-40">
+        <b>Ebene vorn</b>
+        <p>Bewegt sich beim Scrollen in die Gegenrichtung und wirkt dadurch näher.</p>
+        <small>data-parallax="-40"</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MUSTER 8 · data-reveal="spring" — federnder Reveal (dunkel)
+     Progressive Enhancement: motion.dev lädt per CDN; ohne Netz
+     greift der normale Reveal aus base.css.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Muster 8 · Federnder Reveal <code>data-reveal="spring"</code></p>
+<style>
+  .bs-anim-spring .inner { padding-top: 80px; padding-bottom: 96px; }
+  .bs-anim-spring .bouncy { max-width: 560px; margin: 0 auto; text-align: center;
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 44px 36px; box-shadow: var(--shadow); }
+  .bs-anim-spring .bouncy svg { margin: 0 auto 18px; color: var(--brand-300); }
+  .bs-anim-spring .bouncy h3 { font-size: 22px; margin-bottom: 10px; }
+  .bs-anim-spring .bouncy p { font-size: 15.5px; }
+  .bs-anim-spring .hint { text-align: center; margin-top: 22px; font-size: 13.5px; color: var(--fg-muted); }
+</style>
+<section class="bs-anim-spring" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Muster 8</p>
+      <h2>Mit Feder statt Kurve</h2>
+      <p>Für einzelne Hingucker: <code>data-reveal="spring"</code> animiert mit echter Federphysik (Steifigkeit 120, Dämpfung 17) statt einer festen Easing-Kurve.</p>
+    </div>
+    <div class="bouncy" data-reveal="spring">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5Z"/></svg>
+      <h3>Boing.</h3>
+      <p>Diese Karte schwingt beim Erscheinen kurz über ihr Ziel hinaus und pendelt sich dann ein.</p>
+    </div>
+    <p class="hint">Progressive Enhancement: motion.dev lädt per CDN — offline greift automatisch der Standard-Reveal.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MUSTER 9 · Sticky-Stapel — pure CSS, kein JS (hell)
+     Drei Karten rasten per position: sticky übereinander ein;
+     der top-Versatz lässt die Kartenköpfe sichtbar bleiben.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Muster 9 · Sticky-Stapel <code>position: sticky</code> <code>CSS-only</code></p>
+<style>
+  .bs-anim-sticky .inner { padding-top: 80px; padding-bottom: 120px; }
+  .bs-anim-sticky .stack { display: grid; gap: 28px; max-width: 760px; margin: 0 auto; }
+  .bs-anim-sticky .scard { position: sticky; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-lg); box-shadow: var(--shadow); padding: 34px 32px; min-height: 340px; }
+  .bs-anim-sticky .scard:nth-child(1) { top: 96px; }
+  .bs-anim-sticky .scard:nth-child(2) { top: 124px; }
+  .bs-anim-sticky .scard:nth-child(3) { top: 152px; }
+  .bs-anim-sticky .scard .num { display: inline-grid; place-items: center; width: 40px; height: 40px;
+    border-radius: 12px; background: var(--brand); color: #fff;
+    font-family: var(--font-display); font-weight: 800; font-size: 16px; margin-bottom: 18px; }
+  .bs-anim-sticky .scard h3 { font-size: 22px; margin-bottom: 10px; }
+  .bs-anim-sticky .scard p { font-size: 16px; max-width: 56ch; }
+  @media (max-width: 480px) { .bs-anim-sticky .scard { padding: 26px 22px; min-height: 300px; } }
+</style>
+<section class="bs-anim-sticky">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Muster 9 · Bonus</p>
+      <h2>Der Sticky-Stapel</h2>
+      <p>Ganz ohne JavaScript: Jede Karte bekommt <code>position: sticky</code> mit wachsendem <code>top</code>-Versatz — beim Scrollen schiebt sich die nächste Karte über die vorige.</p>
+    </div>
+    <div class="stack">
+      <article class="scard">
+        <span class="num">1</span>
+        <h3>Karte eins bleibt stehen</h3>
+        <p>Sobald ihr oberer Rand den <code>top</code>-Versatz von 96&nbsp;px erreicht, haftet sie am Viewport. Scroll weiter, um den Effekt zu sehen.</p>
+      </article>
+      <article class="scard">
+        <span class="num">2</span>
+        <h3>Karte zwei schiebt sich darüber</h3>
+        <p>Ihr Versatz liegt 28&nbsp;px tiefer — dadurch bleibt der Kopf der ersten Karte als schmaler Streifen sichtbar, wie ein Kartenstapel.</p>
+      </article>
+      <article class="scard">
+        <span class="num">3</span>
+        <h3>Karte drei schließt den Stapel</h3>
+        <p>Da der Effekt reines CSS ist, funktioniert er auch mit <code>prefers-reduced-motion</code> — es bewegt sich nur, was der Nutzer selbst scrollt.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>

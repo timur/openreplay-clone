@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bausteine · Grundlagen: SEO &amp; Meta</title>
+<meta name="description" content="Kopierfertige SEO-Snippets für Landing Pages: head-Vorlage, Open Graph, JSON-LD (Organization, FAQ, Preise, Breadcrumbs), hreflang, robots.txt & sitemap.xml." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/demo.css" />
+</head>
+<body>
+
+<a class="demo-bar" href="index.html">← Bausteine-Übersicht</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRUNDLAGEN · SEO & META — Snippet-Bibliothek
+     Kein visueller Baustein: Diese Seite ist eine Kopier-Bibliothek.
+     Kopiert werden NUR die dunklen Code-Karten (.bs-snippet) — der
+     Seitenrahmen, die grauen Label-Leisten und dieser <style>-Block
+     sind Demo-Chrome und werden NICHT mitkopiert.
+     Beispiel-Domain lumeo.de, Marke „Lumeo" und alle Texte sind
+     Platzhalter — durch eigene Werte ersetzen.
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+  /* Demo-Chrome dieser Bibliotheksseite — NICHT mitkopieren */
+  .bs-seo-intro { position: relative; overflow: hidden; }
+  .bs-seo-intro::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(60% 85% at 85% 0%, rgba(var(--brand-rgb),.28), transparent 60%),
+      radial-gradient(45% 65% at 5% 100%, rgba(var(--violet-rgb),.2), transparent 60%); }
+  .bs-seo-intro .inner { position: relative; padding-top: 92px; padding-bottom: 76px; max-width: 880px; }
+  .bs-seo-intro h1 { font-size: clamp(34px, 4.6vw, 56px); font-weight: 800; margin: 14px 0 18px; }
+  .bs-seo-intro .sub { font-size: 18px; max-width: 58ch; }
+  .bs-seo-intro .hint { margin-top: 18px; font-size: 13.5px; color: var(--fg-muted);
+    border-left: 3px solid rgba(var(--brand-rgb),.5); padding-left: 12px; max-width: 62ch; }
+  .bs-seo-intro .toc { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+  .bs-seo-intro .toc a { transition: border-color .2s, color .2s; }
+  .bs-seo-intro .toc a:hover { border-color: rgba(255,255,255,.55); color: var(--fg); }
+
+  /* Ein Layout für alle 8 Abschnitte: Erklärung links, Snippet rechts */
+  .bs-seo { scroll-margin-top: 16px; }
+  .bs-seo .inner { padding-top: 72px; padding-bottom: 78px; }
+  .bs-seo .grid { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    gap: 32px 56px; align-items: start; }
+  .bs-seo .num { display: inline-grid; place-items: center; width: 40px; height: 40px;
+    border-radius: 12px; font: 800 15px/1 var(--font-display);
+    color: var(--brand); background: rgba(var(--brand-rgb),.1);
+    border: 1px solid rgba(var(--brand-rgb),.28); margin-bottom: 16px; }
+  [data-theme="dark"] .bs-seo .num { color: var(--brand-300); background: rgba(var(--brand-rgb),.2); }
+  .bs-seo h2 { font-size: clamp(24px, 2.7vw, 33px); font-weight: 800; margin-bottom: 14px; }
+  .bs-seo .info p { font-size: 16px; }
+  .bs-seo .tip { margin-top: 16px; font-size: 13.5px; color: var(--fg-muted);
+    border-left: 3px solid rgba(var(--brand-rgb),.45); padding-left: 12px; }
+  .bs-seo .snips { display: flex; flex-direction: column; gap: 26px; min-width: 0; }
+  .bs-seo .snip-title { font: 700 12.5px/1.3 var(--font-body); letter-spacing: .09em;
+    text-transform: uppercase; color: var(--fg-muted); margin: 0 0 10px; }
+  @media (max-width: 920px) {
+    .bs-seo .grid { grid-template-columns: 1fr; gap: 26px; }
+    .bs-seo .inner { padding-top: 56px; padding-bottom: 60px; }
+  }
+
+  /* Abschluss-Checkliste */
+  .bs-seo-check .inner { padding-top: 84px; padding-bottom: 96px; }
+  .bs-seo-check ul { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .bs-seo-check li { display: flex; gap: 14px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 16px 18px; }
+  .bs-seo-check .ico { flex: none; width: 27px; height: 27px; border-radius: 50%;
+    display: grid; place-items: center; margin-top: 2px;
+    color: var(--brand); background: rgba(var(--brand-rgb),.12);
+    border: 1px solid rgba(var(--brand-rgb),.3); }
+  [data-theme="dark"] .bs-seo-check .ico { color: var(--brand-300); }
+  .bs-seo-check b { display: block; color: var(--fg); font-size: 15.5px; line-height: 1.35; }
+  .bs-seo-check .d { font-size: 13.5px; color: var(--fg-muted); }
+  @media (max-width: 720px) { .bs-seo-check ul { grid-template-columns: 1fr; } }
+</style>
+
+<section class="bs-seo-intro" data-theme="dark">
+  <div class="bs-container inner" data-stagger>
+    <p class="bs-eyebrow">Grundlagen</p>
+    <h1>SEO &amp; Meta — Snippets zum Kopieren</h1>
+    <p class="sub">Acht kopierfertige Vorlagen für alles, was Suchmaschinen und Share-Vorschauen von deiner Landing Page brauchen: <code>&lt;head&gt;</code>, Social Cards, strukturierte Daten, Sprachvarianten, robots.txt und Sitemap.</p>
+    <p class="hint">Kopiert werden nur die dunklen Code-Karten. Domain <b>lumeo.de</b>, Marke „Lumeo" und alle Texte sind Platzhalter — vor dem Livegang durch eigene Werte ersetzen. Seitenrahmen und Label-Leisten sind Demo-Chrome: NICHT mitkopieren.</p>
+    <nav class="toc" aria-label="Abschnitte dieser Seite">
+      <a class="bs-badge" href="#seo-head">01 · &lt;head&gt;-Vorlage</a>
+      <a class="bs-badge" href="#seo-og">02 · Open Graph &amp; Twitter</a>
+      <a class="bs-badge" href="#seo-org">03 · Organization &amp; WebSite</a>
+      <a class="bs-badge" href="#seo-faq">04 · FAQPage</a>
+      <a class="bs-badge" href="#seo-preis">05 · Software &amp; Preise</a>
+      <a class="bs-badge" href="#seo-crumbs">06 · BreadcrumbList</a>
+      <a class="bs-badge" href="#seo-hreflang">07 · hreflang DE/EN</a>
+      <a class="bs-badge" href="#seo-robots">08 · robots.txt &amp; Sitemap</a>
+      <a class="bs-badge" href="#seo-checkliste">✓ Checkliste</a>
+    </nav>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO 1 · Komplette <head>-Vorlage
+     Title/Description mit Längenregeln, Canonical, theme-color,
+     Favicon-Zeilen — die Pflicht-Basis jeder Landing Page.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="demo-label-wrap"><p class="demo-label">SEO 1 · Komplette <code>&lt;head&gt;</code>-Vorlage <code>title</code> <code>description</code> <code>canonical</code></p></div>
+<section class="bs-seo" id="seo-head">
+  <div class="bs-container inner">
+    <div class="grid">
+      <div class="info" data-reveal>
+        <span class="num" aria-hidden="true">01</span>
+        <h2>Die &lt;head&gt;-Vorlage</h2>
+        <p>Der <code>&lt;head&gt;</code> entscheidet, wie deine Seite im Suchergebnis aussieht: Title (50–60 Zeichen, Keyword vorn, Marke hinten) und Description (120–155 Zeichen, konkreter Nutzen plus Handlungsaufforderung) sind dein Werbetext bei Google. Der Canonical-Link legt die eine gültige URL fest und verhindert Duplicate Content zwischen Varianten wie mit/ohne <code>www</code>.</p>
+        <p class="tip">Jede Unterseite bekommt eigenen Title, eigene Description und eigenen Canonical — nie 1:1 von der Startseite kopieren.</p>
+      </div>
+      <div class="snips" data-reveal data-reveal-delay="120">
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="<span class="hl">de</span>"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+
+  <span class="cm">&lt;!-- Title: 50–60 Zeichen — Keyword vorn, Marke hinten --&gt;</span>
+  &lt;title&gt;<span class="hl">Session-Replays und Produkt-Analytics — Lumeo</span>&lt;/title&gt;
+
+  <span class="cm">&lt;!-- Description: 120–155 Zeichen — Nutzen + Handlungsaufforderung --&gt;</span>
+  &lt;meta name="description" content="<span class="hl">Sieh exakt, wie Nutzer dein Produkt bedienen: Session-Replays, Fehler-Tracking und Funnels — DSGVO-konform aus Frankfurt. Jetzt kostenlos starten.</span>" /&gt;
+
+  <span class="cm">&lt;!-- Canonical: genau EINE gültige URL pro Seite (https + www konsequent) --&gt;</span>
+  &lt;link rel="canonical" href="https://www.lumeo.de/" /&gt;
+
+  <span class="cm">&lt;!-- Färbt die Browser-Leiste auf Mobilgeräten — Markenfarbe eintragen --&gt;</span>
+  &lt;meta name="theme-color" content="#394dfe" /&gt;
+
+  <span class="cm">&lt;!-- Favicons: SVG modern, ICO als Fallback, PNG 180×180 für iOS --&gt;</span>
+  &lt;link rel="icon" href="/favicon.svg" type="image/svg+xml" /&gt;
+  &lt;link rel="icon" href="/favicon.ico" sizes="32x32" /&gt;
+  &lt;link rel="apple-touch-icon" href="/apple-touch-icon.png" /&gt;
+
+  &lt;link rel="stylesheet" href="/css/style.css" /&gt;
+  <span class="cm">&lt;!-- Open Graph + Twitter Cards: Abschnitt 02 · JSON-LD: Abschnitte 03–06 --&gt;</span>
+&lt;/head&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO 2 · Open Graph + Twitter Cards
+     Steuert die Vorschaukarte beim Teilen. Bild: 1200×630 px.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">SEO 2 · Open Graph &amp; Twitter Cards <code>og:image 1200×630</code> <code>summary_large_image</code></p>
+<section class="bs-seo" id="seo-og">
+  <div class="bs-container inner">
+    <div class="grid">
+      <div class="info" data-reveal>
+        <span class="num" aria-hidden="true">02</span>
+        <h2>Open Graph &amp; Twitter Cards</h2>
+        <p>Diese Tags bestimmen die Vorschaukarte beim Teilen in LinkedIn, WhatsApp, Slack und X. Ohne <code>og:image</code> wählt jede Plattform irgendein Bild von der Seite — mit einer eigenen 1200×630-Grafik behältst du die Kontrolle. Twitter/X liest die <code>og:*</code>-Werte als Fallback, braucht aber zwingend den Karten-Typ <code>twitter:card</code>.</p>
+        <p class="tip">Vorschau vor dem Livegang testen: LinkedIn Post Inspector, Meta Sharing Debugger oder einfach ein Testpost in Slack.</p>
+      </div>
+      <div class="snips" data-reveal data-reveal-delay="120">
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">&lt;!-- Open Graph — Vorschaukarte für LinkedIn, WhatsApp, Slack, Facebook … --&gt;</span>
+&lt;meta property="og:type" content="<span class="hl">website</span>" /&gt;
+&lt;meta property="og:url" content="https://www.lumeo.de/" /&gt;
+&lt;meta property="og:title" content="Session-Replays und Produkt-Analytics — Lumeo" /&gt;
+&lt;meta property="og:description" content="Sieh exakt, wie Nutzer dein Produkt bedienen. DSGVO-konform, in 5 Minuten startklar." /&gt;
+
+<span class="cm">&lt;!-- Bild: 1200 × 630 px (Verhältnis 1,91:1), unter 1 MB, JPG/PNG — absolute URL! --&gt;</span>
+&lt;meta property="og:image" content="https://www.lumeo.de/og/start-1200x630.png" /&gt;
+&lt;meta property="og:image:width" content="<span class="hl">1200</span>" /&gt;
+&lt;meta property="og:image:height" content="<span class="hl">630</span>" /&gt;
+&lt;meta property="og:image:alt" content="Lumeo-Dashboard mit Session-Replay und Funnel-Ansicht" /&gt;
+&lt;meta property="og:locale" content="de_DE" /&gt;
+&lt;meta property="og:site_name" content="Lumeo" /&gt;
+
+<span class="cm">&lt;!-- Twitter/X — nutzt og:* als Fallback, der Karten-Typ ist aber Pflicht --&gt;</span>
+&lt;meta name="twitter:card" content="<span class="hl">summary_large_image</span>" /&gt;
+&lt;meta name="twitter:title" content="Session-Replays und Produkt-Analytics — Lumeo" /&gt;
+&lt;meta name="twitter:description" content="Sieh exakt, wie Nutzer dein Produkt bedienen. DSGVO-konform, in 5 Minuten startklar." /&gt;
+&lt;meta name="twitter:image" content="https://www.lumeo.de/og/start-1200x630.png" /&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO 3 · JSON-LD Organization + WebSite
+     Einmalig auf der Startseite — sagt Suchmaschinen, wer hinter
+     der Seite steckt (Logo, Kontakt, Profile).
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">SEO 3 · JSON-LD Organization &amp; WebSite <code>@graph</code> <code>data-theme="dark"</code></p>
+<section class="bs-seo" id="seo-org" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="grid">
+      <div class="info" data-reveal>
+        <span class="num" aria-hidden="true">03</span>
+        <h2>Organization &amp; WebSite</h2>
+        <p>Dieses JSON-LD sagt Suchmaschinen maschinenlesbar, wer hinter der Seite steckt — Grundlage für das Logo im Knowledge Panel und eine saubere Markensuche. Es gehört einmalig in den <code>&lt;head&gt;</code> der Startseite; die <code>@id</code>-Verweise verknüpfen beide Objekte, sodass die WebSite auf die Organisation zeigt.</p>
+        <p class="tip">In <code>sameAs</code> nur Profile eintragen, die es wirklich gibt — leere oder tote Links schaden mehr, als sie nützen.</p>
+      </div>
+      <div class="snips" data-reveal data-reveal-delay="120">
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "<span class="hl">Organization</span>",
+      "@id": "https://www.lumeo.de/#organization",
+      "name": "Lumeo GmbH",
+      "url": "https://www.lumeo.de/",
+      "logo": "https://www.lumeo.de/logo-512x512.png",
+      "sameAs": [
+        "https://www.linkedin.com/company/lumeo",
+        "https://github.com/lumeo"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "support@lumeo.de",
+        "availableLanguage": ["de", "en"]
+      }
+    },
+    {
+      "@type": "<span class="hl">WebSite</span>",
+      "@id": "https://www.lumeo.de/#website",
+      "url": "https://www.lumeo.de/",
+      "name": "Lumeo",
+      "inLanguage": "de",
+      "publisher": { "@id": "https://www.lumeo.de/#organization" }
+    }
+  ]
+}
+&lt;/script&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO 4 · JSON-LD FAQPage
+     Passend zum FAQ-Baustein (faq.html). Fragen/Antworten müssen
+     1:1 mit dem sichtbaren FAQ übereinstimmen.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">SEO 4 · JSON-LD FAQPage <code>passt zu faq.html</code> <code>data-theme="dark"</code></p>
+<section class="bs-seo" id="seo-faq" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="grid">
+      <div class="info" data-reveal>
+        <span class="num" aria-hidden="true">04</span>
+        <h2>FAQPage</h2>
+        <p>Macht dein FAQ für Suchmaschinen auswertbar. Die beiden Beispiel-Fragen entsprechen wörtlich dem Baustein <b>FAQ 1</b> in <code>faq.html</code> — genau so muss es sein: Fragen und Antworten im JSON-LD müssen 1:1 mit dem sichtbaren FAQ auf der Seite übereinstimmen. Unsichtbare Zusatzfragen wertet Google als Spam.</p>
+        <p class="tip">Für jede weitere sichtbare Frage einfach ein zusätzliches <code>Question</code>-Objekt ins <code>mainEntity</code>-Array hängen.</p>
+      </div>
+      <div class="snips" data-reveal data-reveal-delay="120">
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "<span class="hl">FAQPage</span>",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Kann ich jederzeit kündigen?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Monats-Abos sind zum Ende des laufenden Abrechnungsmonats kündbar, Jahres-Abos zum Ende des Vertragsjahres — direkt in den Einstellungen, ohne Anruf und ohne Frist von mehreren Monaten. Nach der Kündigung wechselt dein Konto automatisch in den kostenlosen Starter-Plan."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ist das Produkt DSGVO-konform?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ja. Alle Daten liegen in einem Rechenzentrum in Frankfurt am Main, IP-Adressen werden anonymisiert und sensible Eingabefelder standardmäßig maskiert. Einen Auftragsverarbeitungsvertrag (AVV) kannst du dir mit einem Klick im Dashboard generieren."
+      }
+    }
+  ]
+}
+&lt;/script&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO 5 · JSON-LD SoftwareApplication mit Preisen
+     Passend zum Preise-Baustein (preise.html): Starter 0 €,
+     Pro 29 €, Business 79 € — jeweils Monatspreis.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">SEO 5 · JSON-LD SoftwareApplication &amp; Offers <code>passt zu preise.html</code> <code>data-theme="dark"</code></p>
+<section class="bs-seo" id="seo-preis" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="grid">
+      <div class="info" data-reveal>
+        <span class="num" aria-hidden="true">05</span>
+        <h2>SoftwareApplication mit Preisen</h2>
+        <p>Für SaaS-Produkte ist <code>SoftwareApplication</code> mit <code>offers</code> der passende Typ — die drei Angebote entsprechen den Preiskarten in <code>preise.html</code>: Starter 0 €, Pro 29 €, Business 79 € (jeweils Monatspreis bei monatlicher Zahlung). Wie beim FAQ gilt: Die Preise im JSON-LD müssen mit den sichtbaren Preisen übereinstimmen.</p>
+        <p class="tip">Ein <code>aggregateRating</code> nur ergänzen, wenn echte, auf der Seite sichtbare Bewertungen existieren — sonst weglassen.</p>
+      </div>
+      <div class="snips" data-reveal data-reveal-delay="120">
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "<span class="hl">SoftwareApplication</span>",
+  "name": "Lumeo",
+  "url": "https://www.lumeo.de/",
+  "description": "Session-Replays, Fehler-Tracking und Funnels für Produktteams — DSGVO-konform gehostet in Frankfurt.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Starter",
+      "price": "<span class="hl">0</span>",
+      "priceCurrency": "EUR",
+      "url": "https://www.lumeo.de/preise/"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pro",
+      "price": "<span class="hl">29</span>",
+      "priceCurrency": "EUR",
+      "url": "https://www.lumeo.de/preise/"
+    },
+    {
+      "@type": "Offer",
+      "name": "Business",
+      "price": "<span class="hl">79</span>",
+      "priceCurrency": "EUR",
+      "url": "https://www.lumeo.de/preise/"
+    }
+  ]
+}
+&lt;/script&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO 6 · JSON-LD BreadcrumbList
+     Passend zum Breadcrumbs-Baustein (utility.html, Utility 5).
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">SEO 6 · JSON-LD BreadcrumbList <code>passt zu utility.html</code></p>
+<section class="bs-seo" id="seo-crumbs">
+  <div class="bs-container inner">
+    <div class="grid">
+      <div class="info" data-reveal>
+        <span class="num" aria-hidden="true">06</span>
+        <h2>BreadcrumbList</h2>
+        <p>Zeigt in den Suchergebnissen den Klickpfad statt der nackten URL. Das Beispiel entspricht dem Breadcrumbs-Baustein <b>Utility 5</b> in <code>utility.html</code>: Die Reihenfolge steckt in <code>position</code>, die letzte Ebene (die aktuelle Seite) bekommt kein <code>item</code>. Das Snippet gehört in den <code>&lt;head&gt;</code> der jeweiligen Unterseite.</p>
+        <p class="tip">Sichtbare Brotkrumen und JSON-LD müssen dieselben Ebenen in derselben Reihenfolge zeigen.</p>
+      </div>
+      <div class="snips" data-reveal data-reveal-delay="120">
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "<span class="hl">BreadcrumbList</span>",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://www.lumeo.de/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.lumeo.de/blog/" },
+    { "@type": "ListItem", "position": 3, "name": "Produkt-Analytics", "item": "https://www.lumeo.de/blog/produkt-analytics/" },
+    { "@type": "ListItem", "position": 4, "name": "Session-Replays DSGVO-konform einsetzen" }
+  ]
+}
+&lt;/script&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO 7 · hreflang-Paar DE/EN
+     Für zweisprachige Seiten — beide Richtungen + x-default.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">SEO 7 · hreflang DE/EN <code>x-default</code></p>
+<section class="bs-seo" id="seo-hreflang">
+  <div class="bs-container inner">
+    <div class="grid">
+      <div class="info" data-reveal>
+        <span class="num" aria-hidden="true">07</span>
+        <h2>hreflang für DE/EN</h2>
+        <p>Gibt es die Seite auf Deutsch und Englisch, sagt <code>hreflang</code> Google, welche Sprachversion wem gezeigt wird — und verhindert, dass beide als Duplikate konkurrieren. Entscheidend: <b>Jede</b> Sprachversion trägt das komplette Set inklusive Verweis auf sich selbst; einseitige Verweise werden ignoriert. <code>x-default</code> fängt alle übrigen Sprachen ab.</p>
+        <p class="tip">Voraussetzung ist eine parallele Seitenstruktur — jede DE-Seite hat ein EN-Gegenstück, z. B. <code>/preise/</code> ↔ <code>/en/pricing/</code>. Passt zum Sprach-Umschalter in <code>utility.html</code>.</p>
+      </div>
+      <div class="snips" data-reveal data-reveal-delay="120">
+        <div class="bs-snippet">
+          <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm">&lt;!-- Identisch in den &lt;head&gt; BEIDER Sprachversionen — jede nennt alle, auch sich selbst --&gt;</span>
+&lt;link rel="alternate" hreflang="<span class="hl">de</span>" href="https://www.lumeo.de/preise/" /&gt;
+&lt;link rel="alternate" hreflang="<span class="hl">en</span>" href="https://www.lumeo.de/en/pricing/" /&gt;
+
+<span class="cm">&lt;!-- x-default: Fallback für alle übrigen Sprachen (hier: die deutsche Hauptseite) --&gt;</span>
+&lt;link rel="alternate" hreflang="<span class="hl">x-default</span>" href="https://www.lumeo.de/preise/" /&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEO 8 · robots.txt + sitemap.xml
+     Minimal-Vorlagen, beide Dateien liegen im Root der Domain.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">SEO 8 · robots.txt &amp; sitemap.xml <code>im Domain-Root</code> <code>data-theme="dark"</code></p>
+<section class="bs-seo" id="seo-robots" data-theme="dark">
+  <div class="bs-container inner">
+    <div class="grid">
+      <div class="info" data-reveal>
+        <span class="num" aria-hidden="true">08</span>
+        <h2>robots.txt &amp; sitemap.xml</h2>
+        <p>Für eine einzelne, gut verlinkte Landing Page sind beide Dateien optional — Google findet sie auch so. Sobald mehrere Unterseiten existieren (Blog, Docs, Rechtsseiten) oder Bereiche wie <code>/danke/</code> nicht gecrawlt werden sollen, lohnen sich beide: robots.txt steuert das Crawlen, sitemap.xml beschleunigt das Entdecken neuer Seiten. Beide liegen immer im Root der Domain.</p>
+        <p class="tip">Achtung: <code>Disallow</code> blockiert nur das Crawlen. Soll eine Seite sicher aus dem Index bleiben (z. B. die Danke-Seite), gehört zusätzlich <code>&lt;meta name="robots" content="noindex"&gt;</code> in deren <code>&lt;head&gt;</code>.</p>
+      </div>
+      <div class="snips" data-reveal data-reveal-delay="120">
+        <div>
+          <h3 class="snip-title">robots.txt</h3>
+          <div class="bs-snippet">
+            <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre><span class="cm"># robots.txt — liegt unter https://www.lumeo.de/robots.txt</span>
+User-agent: *
+Allow: /
+
+<span class="cm"># Bereiche, die kein Crawler besuchen soll</span>
+Disallow: /danke/
+Disallow: /intern/
+
+<span class="cm"># Sitemap immer mit absoluter URL angeben</span>
+Sitemap: <span class="hl">https://www.lumeo.de/sitemap.xml</span></pre>
+          </div>
+        </div>
+        <div>
+          <h3 class="snip-title">sitemap.xml</h3>
+          <div class="bs-snippet">
+            <button class="bs-copy" type="button" data-copy>Kopieren</button>
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+  &lt;url&gt;
+    &lt;loc&gt;<span class="hl">https://www.lumeo.de/</span>&lt;/loc&gt;
+    &lt;lastmod&gt;2026-06-02&lt;/lastmod&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://www.lumeo.de/preise/&lt;/loc&gt;
+    &lt;lastmod&gt;2026-06-02&lt;/lastmod&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://www.lumeo.de/en/&lt;/loc&gt;
+    &lt;lastmod&gt;2026-06-02&lt;/lastmod&gt;
+  &lt;/url&gt;
+&lt;/urlset&gt;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ABSCHLUSS · SEO-Checkliste (10 Punkte)
+     Gestaltete Liste — vor jedem Livegang einmal durchgehen.
+     ═══════════════════════════════════════════════════════════════ -->
+<p class="demo-label">Abschluss · SEO-Checkliste <code>10 Punkte vor dem Livegang</code></p>
+<section class="bs-seo-check" id="seo-checkliste">
+  <div class="bs-container inner">
+    <div class="bs-section-head" data-reveal>
+      <p class="bs-eyebrow">Checkliste</p>
+      <h2>10 Punkte vor dem Livegang</h2>
+      <p>Jeder Punkt kostet höchstens ein paar Minuten — spart aber Rankings, kaputte Share-Vorschauen und doppelten Content.</p>
+    </div>
+    <ul data-stagger>
+      <li><span class="ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Title: 50–60 Zeichen, pro Seite einzigartig</b><span class="d">Keyword vorn, Marke hinten — nie zweimal derselbe Title.</span></div></li>
+      <li><span class="ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Description: 120–155 Zeichen mit Nutzen</b><span class="d">Konkretes Versprechen + Handlungsaufforderung, keine Keyword-Liste.</span></div></li>
+      <li><span class="ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Genau eine &lt;h1&gt; pro Seite</b><span class="d">Danach lückenlose Hierarchie: h2 → h3, keine Ebene überspringen.</span></div></li>
+      <li><span class="ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Canonical gesetzt, eine URL-Variante</b><span class="d">https und www/non-www konsequent, alle anderen Varianten per 301.</span></div></li>
+      <li><span class="ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>OG-Bild 1200 × 630 px vorhanden</b><span class="d">Share-Vorschau mit LinkedIn Post Inspector oder Slack-Testpost geprüft.</span></div></li>
+      <li><span class="ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>JSON-LD validiert</b><span class="d">Google Rich-Results-Test und Schema-Validator laufen ohne Fehler durch.</span></div></li>
+      <li><span class="ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Strukturierte Daten = sichtbarer Inhalt</b><span class="d">FAQ-Fragen und Preise im JSON-LD stimmen 1:1 mit der Seite überein.</span></div></li>
+      <li><span class="ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>hreflang wechselseitig komplett</b><span class="d">Jede Sprachversion nennt alle Versionen inklusive sich selbst + x-default.</span></div></li>
+      <li><span class="ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>robots.txt &amp; Sitemap erreichbar</b><span class="d">Beide im Domain-Root, Sitemap in der Search Console eingereicht.</span></div></li>
+      <li><span class="ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Alt-Texte &amp; Mobil-Check</b><span class="d">Jedes inhaltliche Bild beschrieben, Seite ab 360 px Breite fehlerfrei nutzbar.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<script src="js/base.js"></script>
+<script src="../js/font-switcher.js"></script>
+<script src="../js/color-switcher.js"></script>
+<script src="../js/mode-switcher.js"></script>
+</body>
+</html>
