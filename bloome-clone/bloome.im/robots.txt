@@ -1,0 +1,67 @@
+# robots.txt for bloome.im — served by the bloome-seo worker.
+#
+# Policy: the bloome-seo surface is open to every crawler, including AI answer
+# engines (GPTBot, ClaudeBot, Google-Extended, PerplexityBot, …). The SEO/GEO
+# pages, sitemap, robots.txt, llms.txt, llms-full.txt, and SEO assets are
+# crawlable by default.
+#
+# The app / account / public-dynamic surfaces stay sealed here. They are owned
+# by the Reson app, not the SEO app, and either return the SPA shell, require
+# auth, or are dynamic invite/share pages that should not become SERP entries.
+# Reson should also return X-Robots-Tag: noindex, nofollow for public dynamic
+# pages such as /join/:code and /s/:code; robots.txt keeps crawlers off them
+# after any urgent GSC removal / deindexing cleanup is complete.
+
+User-agent: *
+Allow: /
+
+# --- SEO/GEO surfaces owned by bloome-seo: explicitly crawlable ---
+Allow: /features/
+Allow: /guides/
+Allow: /alternatives/
+Allow: /showcase/
+Allow: /zh-CN/
+Allow: /ja/
+Allow: /es/
+Allow: /pt-BR/
+Allow: /seo-assets/
+Allow: /sitemap.xml
+Allow: /robots.txt
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+# --- Public entry pages: intentionally crawlable (NOT disallowed) ---
+#   /login, /register — public sign-in / sign-up entry pages.
+#   /explore           — public agent gallery (individual /agents/:id stay sealed).
+
+# --- App / account surface (SPA routes + API): sealed ---
+Disallow: /api/
+Disallow: /admin
+Disallow: /app
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email-notice
+Disallow: /activate-invite
+Disallow: /welcome
+Disallow: /onboarding/
+Disallow: /inbox
+Disallow: /credits/
+Disallow: /guest-chat/
+Disallow: /image-standalone/
+Disallow: /widget-standalone/
+Disallow: /embed/
+
+# --- Public dynamic pages owned by Reson: sealed after GSC cleanup ---
+Disallow: /agent/
+Disallow: /agents/
+Disallow: /join/
+Disallow: /s/
+Disallow: /arena
+Disallow: /chat
+Disallow: /contacts
+Disallow: /resources
+Disallow: /me
+Disallow: /create
+Disallow: /new
+
+Sitemap: https://bloome.im/sitemap.xml
